@@ -1,0 +1,42 @@
+---
+description: BAUDOTlab teaching_material Quarto book and Config bundle
+globs: "**/*.{qmd,Rmd,md},_quarto.yml,Config/**/*"
+alwaysApply: false
+---
+
+# teaching_material repository
+
+This repo is the **BAUDOTlab teaching Quarto book** (installation guides, Git,
+R packages, LaTeX). It is not the DeCovarT package.
+
+## Layout
+
+- `index.qmd`, chapter folders (`fresh-installation/`, `Git/`, `R/`, `latex/`),
+  `_quarto.yml` — book sources; output under `docs/` for GitHub Pages.
+- `Config/` — portable dotfiles and **Cursor bundle** (`Config/.cursor/rules/`,
+  `Config/.cursor/skills/`). Students copy or symlink into `~/.cursor/`.
+- `SNF/` — legacy R Markdown course assets; do not break URLs without intent.
+
+## Conventions
+
+- British English in prose; reproducible Quarto where chunks run.
+- Cross-link chapters from `index.qmd`; keep `_quarto.yml` `project.render`
+  list in sync when adding chapters.
+- LaTeX chapter aligns with `latex/latex-guidelines.qmd` and
+  `rules/latex-scientific.mdc`.
+- Do not commit secrets, API keys, or machine-specific paths in shared Config.
+
+## Deploying Cursor rules from this bundle
+
+```bash
+# user-wide (recommended for teaching defaults)
+cp -r Config/.cursor/rules/* ~/.cursor/rules/
+cp -r Config/.cursor/skills/* ~/.cursor/skills/
+
+# or per-project
+mkdir -p .cursor/rules .cursor/skills
+cp -r Config/.cursor/rules/* .cursor/rules/
+cp -r Config/.cursor/skills/* .cursor/skills/
+```
+
+Install Firecrawl skills separately (see `skills/firecrawl/SKILL.md`).

@@ -130,18 +130,3 @@ Avoid `$$…$$` in classic LaTeX sources, `eqnarray`, decorative `\\`,
 deprecated font switches, hardcoded visual markup, and habitual `[H]`
 floats. Prefer semantic structure, modular files, modern packages, and
 Quarto-compatible syntax when the deliverable is a website or vignette.
-
-## Quarto ↔ LaTeX mapping {#sec-latex-quarto}
-
-| LaTeX | Quarto / Markdown |
-|---------------------------|---------------------------|
-| `\citep{Smith2020}` | `[@Smith2020]` |
-| `\citet{Smith2020}` | `@Smith2020` |
-| `\( x + y \)` | `$x + y$` |
-| numbered display math | `$$ ... $$ {#eq-square}` then `@eq-square` |
-| `\section{Introduction}` | `# Introduction` |
-| `\href{URL}{Text}` | `[Text](URL)` |
-| `\url{URL}` | `<URL>` |
-| `\textit` / `\textbf` | `*…*` / `**…**` |
-| `\footnote{…}` | `^[…]` or `[^id]` |
-| figure / table refs | `@fig-…` / `@tbl-…` |
