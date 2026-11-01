@@ -217,10 +217,10 @@ sudo apt autoclean
 ## Check for Broken Packages
 sudo dpkg --configure -a
 ## Install missing dependencies
-sudo apt -f install
+sudo apt --fix-broken install
 
 ## List all Hardware Driver Errors
-dmesg -l err,crit,alert,emerg
+sudo dmesg -l err,crit,alert,emerg
 ```
 :::
 
