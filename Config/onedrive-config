@@ -1,0 +1,15 @@
+# Exclude build caches, virtualenvs, and editor junk from OneDrive sync
+skip_dir = "venv|\.venv|__pycache__|node_modules|\.next|renv|.cache|\.Rproj\.user|\.dvc|\.ipynb_checkpoints|\.snakemake|\.pytest_cache|\.mypy_cache|\.tox|\.vscode|\.idea|*_cache"
+skip_file = "\.Rhistory$|\.RData$|~*|.~*|*.tmp|*.swp|*.partial|*.Rproj|*.pyc|*.aux|*.out|*.fdb_latexmk|*.fls|*.synctex.gz|*.rdb|*.rdx|*.knit.md"
+check_nosync = "true"
+# Local folders take precedence over remote files
+local_first = "true"
+display_manager_integration = "true"
+use_recycle_bin = "true"
+## Prevent fatal removal of file contents with editors that use atomic saves
+force_session_upload = "true"
+delay_inotify_processing = "true"
+
+sync_dir = "~/OneDrive"
+upload_only = "false"
+download_only = "false"
