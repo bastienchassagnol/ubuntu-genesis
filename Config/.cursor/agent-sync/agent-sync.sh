@@ -268,6 +268,8 @@ cmd_after_edit() {
   elif [[ "${path}" == "${CURSOR_RULES}/"* ]] || [[ "${path}" == "${CURSOR_SKILLS}/"* ]] \
     || [[ "${path}" == "${CLAUDE_RULES}/"* ]] || [[ "${path}" == "${CLAUDE_SKILLS}/"* ]]; then
     cmd_publish
+    # Re-deploy so the other tool's copy matches the edited one.
+    cmd_install_user
   fi
 }
 
