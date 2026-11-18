@@ -1,0 +1,39 @@
+# Vendored agent packs (bundle root: ../rules and ../skills).
+# agent-sync.sh reads this file with simple grep/sed — keep the layout stable.
+
+never_sync_skills:
+  - firecrawl
+
+packs:
+  user-global:
+    description: Full teaching bundle rules and vendored skills
+    rules: all
+    skills: all
+  quarto-only:
+    description: Quarto website and slides
+    rules:
+      - scope-workspace.mdc
+      - documentation-bibliography.mdc
+      - quarto-presentations.mdc
+      - scientific-writing.mdc
+      - token-budget.mdc
+      - figure-sources.mdc
+    skills:
+      - quarto
+      - quarto-revealjs
+      - quarto-revealjs-fragment
+      - auto-animate-elements
+      - data-visualisation
+  r-stats-only:
+    description: R, statistics, and figures
+    rules:
+      - scope-workspace.mdc
+      - r-development.mdc
+      - statistical-modelling.mdc
+      - data-visualisation.mdc
+      - scientific-writing.mdc
+      - token-budget.mdc
+    skills:
+      - data-visualisation
+      - deslop
+      - graphify

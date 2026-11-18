@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "./hooks/agent-sync-after-edit.sh",
+        "matcher": "Config/\\.cursor/"
+      },
+      {
+        "command": "./hooks/agent-sync-after-edit.sh",
+        "matcher": "\\.cursor/rules/"
+      },
+      {
+        "command": "./hooks/agent-sync-after-edit.sh",
+        "matcher": "\\.cursor/skills/"
+      },
+      {
+        "command": "./hooks/agent-sync-after-edit.sh",
+        "matcher": "\\.claude/rules/"
+      },
+      {
+        "command": "./hooks/agent-sync-after-edit.sh",
+        "matcher": "\\.claude/skills/"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+repo_root="$(git rev-parse --show-toplevel)"
+sync="${repo_root}/Config/.cursor/agent-sync/agent-sync.sh"
+if [[ -x "${sync}" ]]; then
+  AGENT_BUNDLE_ROOT="${repo_root}/Config/.cursor" AGENT_PROJECT_ROOT="${repo_root}" \
+    "${sync}" install-user
+fi

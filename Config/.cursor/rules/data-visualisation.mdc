@@ -13,7 +13,8 @@ or palette, use it; the defaults below apply when the repository is silent.
 Code is R/`ggplot2`; the principles hold in any language.
 
 Long material lives in the `data-visualisation` skill
-(`~/.claude/skills/data-visualisation/references/`): `chart-chooser.md`
+(`~/.claude/skills/data-visualisation/references/` after
+`agent-sync install-user`; same under `~/.cursor/skills/`): `chart-chooser.md`
 (decision tree), `caveats.md` (avoid/prefer snippets), `line-chart-makeover.md`,
 `libraries.md` (static → interactive ladder), `colour-palettes.md`,
 `fonts.md`, and one file per chart module (`annotated-scatter.md`,

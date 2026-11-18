@@ -47,15 +47,24 @@ These copies follow `~/.claude/rules` and `~/.claude/skills`. Firecrawl
 sub-skills are symlinks on this machine and are **not** vendored here
 (repo size, API keys). Follow `skills/firecrawl/SKILL.md`.
 
-## Installation
+## Installation (user home)
+
+Git source of truth: this folder. Deploy with **agent-sync** (laptop and MMG cluster):
 
 ```bash
-TEACHING_CONFIG="/path/to/teaching_material/Config/.cursor"
-
-mkdir -p ~/.cursor/rules ~/.cursor/skills
-cp -r "$TEACHING_CONFIG/rules/"* ~/.cursor/rules/
-cp -r "$TEACHING_CONFIG/skills/"* ~/.cursor/skills/
+export AGENT_BUNDLE_ROOT="/path/to/ubuntu-genesis/Config/.cursor"
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-user
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" verify
 ```
+
+After editing `~/.cursor` or `~/.claude`, copy changes back before commit:
+
+```bash
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" publish
+```
+
+See [`agent-sync/CLUSTER.md`](agent-sync/CLUSTER.md) for the **`bastienc`** cluster account and
+[`../../AGENTS.md`](../../AGENTS.md) for project hooks and packs.
 
 Optional **User Rules** one-liner (Cursor → Settings → Rules):
 
