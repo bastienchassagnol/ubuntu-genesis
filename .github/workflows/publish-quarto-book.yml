@@ -1,10 +1,9 @@
-# Render Quarto to ./docs then deploy as static files (no Jekyll build of ./docs).
+# Render Quarto to ./docs, then `quarto publish gh-pages` pushes that HTML
+# to the gh-pages branch. GitHub Pages serves that branch (root), not ./docs
+# on main. The gh-pages branch must already exist; `quarto publish` does not
+# create it from Actions.
 #
-# GitHub repo → Settings → Pages:
-#   Build and deployment → Source: "GitHub Actions"
-#
-# Do NOT use "Deploy from a branch" → /docs unless you commit ./docs to git.
-# Do NOT use the default "Jekyll" starter workflow (it expects ./docs in the checkout).
+# Settings → Pages → Source: Deploy from a branch → gh-pages → / (root).
 
 name: Quarto Publish Website
 
