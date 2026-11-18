@@ -1,1 +1,0 @@
-Sitemap: https://baudotlab.github.io/teaching_material/sitemap.xml

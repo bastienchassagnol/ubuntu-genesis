@@ -1,59 +1,69 @@
-# Quarto book project — only these sources are rendered (see `project.render`).
-# https://quarto.org/docs/books/
+# Quarto website — only these sources are rendered (see `project.render`).
+# https://quarto.org/docs/websites/
 
 # =========================
 # Project scope and build
 # =========================
 project:
-  type: book
+  type: website
   output-dir: docs
   render:
     - index.qmd
-    - fresh-installation/ubuntu-general.qmd
-    - fresh-installation/software.qmd
-    - fresh-installation/amu-and-server.qmd
-    - fresh-installation/onedrive.qmd
-    - fresh-installation/network-troubleshooting.qmd
-    - R/R_package.qmd
-    - Git/git-guidelines.qmd
-    - latex/latex-guidelines.qmd
+    - ubuntu.qmd
+    - software.qmd
+    - network.qmd
+    - onedrive.qmd
+    - r.qmd
+    - git.qmd
+    - latex.qmd
 
 # =========================
-# Book metadata and order
+# Website metadata and navigation
 # =========================
-book:
+website:
   title: "Team teaching material"
   description: "Teaching resources (Linux installation guide and more)."
-  author: "Bastien Chassagnol, Benjamin Loire, Morgane, Philippe, Marielle"
-  chapters:
-    - index.qmd
-    - part: "Fresh Ubuntu installation"
-      chapters:
-        - fresh-installation/ubuntu-general.qmd
-        - fresh-installation/software.qmd
-        - fresh-installation/amu-and-server.qmd
-  appendices:
-    - fresh-installation/onedrive.qmd
-    - fresh-installation/network-troubleshooting.qmd
-    - R/R_package.qmd
-    - Git/git-guidelines.qmd
-    - latex/latex-guidelines.qmd
-  repo-url: https://github.com/BAUDOTlab/teaching_material
-  site-url: https://baudotlab.github.io/teaching_material/
+  site-url: https://bastienchassagnol.github.io/ubuntu-genesis/
+  repo-url: https://github.com/bastienchassagnol/ubuntu-genesis
   repo-branch: main
   repo-actions: [edit, issue, source]
-  sharing: []
   open-graph: true
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - href: ubuntu.qmd
+        text: Ubuntu
+      - href: software.qmd
+        text: Software
+      - href: network.qmd
+        text: Network
+      - href: onedrive.qmd
+        text: OneDrive
+      - href: r.qmd
+        text: R
+      - href: git.qmd
+        text: Git
+      - href: latex.qmd
+        text: LaTeX
+    right:
+      - icon: github
+        href: https://github.com/bastienchassagnol/ubuntu-genesis
+        aria-label: GitHub
+  sidebar: false
   page-footer:
     center:  |
-       Written by Bastien CHASSAGNOL and Benjamin LOIRE, with suggestions from Marielle, Kenza, Morgane and Philippe. This book is built with <a href="https://quarto.org/">Quarto</a>.
+       Written by Bastien CHASSAGNOL and Benjamin LOIRE, with suggestions from Marielle, Kenza, Morgane and Philippe. This website is built with <a href="https://quarto.org/">Quarto</a>.
     background: "#f8f9fa"
     border: false
     right:
       - icon: github
-        href: https://github.com/BAUDOTlab/teaching_material
+        href: https://github.com/bastienchassagnol/ubuntu-genesis
       - icon: linkedin
         href: https://www.linkedin.com/company/marseille-medical-genetics/posts/?feedView=all
+
+author: "Bastien Chassagnol, Benjamin Loire, Morgane, Philippe, Marielle"
 
 # =========================
 # Shared document defaults
@@ -88,6 +98,8 @@ format:
     crossrefs-hover: true
     footnotes-hover: true
     citations-hover: true
+    include-in-header:
+      - file: github-corner.html
 
 # =========================
 # Filters and execution
@@ -124,12 +136,6 @@ knitr:
 # =========================
 editor:
   source: true
-
-# =========================
-# Cross-references
-# =========================
-crossref:
-  chapters: true
 
 # =========================
 # Metadata

@@ -1,29 +1,30 @@
 ---
-description: BAUDOTlab teaching_material Quarto book and Config bundle
+description: Ubuntu genesis Quarto website and Config bundle
 globs: "**/*.{qmd,Rmd,md},_quarto.yml,Config/**/*"
 alwaysApply: false
 ---
 
-# teaching_material repository
+# ubuntu-genesis repository
 
-This repo is the **BAUDOTlab teaching Quarto book** (installation guides, Git,
-R packages, LaTeX). It is not the DeCovarT package.
+This repo is a **Quarto website** of installation guides (Ubuntu, software,
+Git, R packages, LaTeX). It is not the DeCovarT package.
 
 ## Layout
 
-- `index.qmd`, chapter folders (`fresh-installation/`, `Git/`, `R/`, `latex/`),
-  `_quarto.yml` — book sources; output under `docs/` for GitHub Pages.
+- Pages at the root (`index.qmd`, `ubuntu.qmd`, `software.qmd`, `network.qmd`,
+  `onedrive.qmd`, `r.qmd`, `git.qmd`, `latex.qmd`) and `_quarto.yml`.
+- `assets/` — figures, scripts, and PDFs, one subfolder per topic.
 - `Config/` — portable dotfiles and **Cursor bundle** (`Config/.cursor/rules/`,
   `Config/.cursor/skills/`). Students copy or symlink into `~/.cursor/`.
-- `SNF/` — legacy R Markdown course assets; do not break URLs without intent.
+- Rendered HTML goes to `docs/` and is published by GitHub Actions, not
+  committed.
 
 ## Conventions
 
 - British English in prose; reproducible Quarto where chunks run.
-- Cross-link chapters from `index.qmd`; keep `_quarto.yml` `project.render`
-  list in sync when adding chapters.
-- LaTeX chapter aligns with `latex/latex-guidelines.qmd` and
-  `rules/latex-scientific.mdc`.
+- Cross-link pages from `index.qmd`; keep `_quarto.yml` `project.render`
+  and the navbar in sync when adding pages.
+- LaTeX page aligns with `latex.qmd` and `rules/latex-scientific.mdc`.
 - Do not commit secrets, API keys, or machine-specific paths in shared Config.
 
 ## Deploying Cursor rules from this bundle

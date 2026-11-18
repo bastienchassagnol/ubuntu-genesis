@@ -2,13 +2,12 @@
 title: "Welcome"
 ---
 
-This site is built with [Quarto](https://quarto.org) as a **book** project. Use the table of contents to browse:
+This site is built with [Quarto](https://quarto.org) as a website. Use the navigation bar to browse:
 
--   [Ubuntu general guidelines](fresh-installation/ubuntu-general.qmd)
--   [Software to install](fresh-installation/software.qmd)
--   [AMU tools and remote servers](fresh-installation/amu-and-server.qmd)
--   Appendices: [OneDrive](fresh-installation/onedrive.qmd),
-    [Network / Wi-Fi](fresh-installation/network-troubleshooting.qmd),
-    [R package guidelines](R/R_package.qmd),
-    [Git and GitHub](Git/git-guidelines.qmd),
-    [Modern LaTeX](latex/latex-guidelines.qmd)
+-   [Ubuntu general guidelines](ubuntu.qmd)
+-   [Software to install](software.qmd)
+-   [Network / Wi-Fi](network.qmd)
+-   [OneDrive](onedrive.qmd)
+-   [R package guidelines](r.qmd)
+-   [Git and GitHub](git.qmd)
+-   [Modern LaTeX](latex.qmd)

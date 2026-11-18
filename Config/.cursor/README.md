@@ -22,7 +22,7 @@ split by domain instead of one `.cursorrules` file.
 | `ponytail.mdc` | Prefer the smallest change that works |
 | `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
 | `token-budget.mdc` | Always — route work so documents are not loaded whole |
-| `teaching-material-repo.mdc` | This Quarto book repo layout |
+| `teaching-material-repo.mdc` | This Quarto website layout |
 
 ## Skills (`skills/`)
 
