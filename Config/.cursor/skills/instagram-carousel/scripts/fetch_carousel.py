@@ -9,7 +9,7 @@ import sys
 import time
 from pathlib import Path
 
-SHORTCODE_RE = re.compile(r"instagram\.com/p/([A-Za-z0-9_-]+)")
+SHORTCODE_RE = re.compile(r"instagram\.com(?:/[^/?#]+)?/p/([A-Za-z0-9_-]+)")
 BARE_RE = re.compile(r"^[A-Za-z0-9_-]{5,}$")
 
 

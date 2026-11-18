@@ -1,0 +1,16 @@
+{
+  "name": "react-visx-bundle",
+  "private": true,
+  "description": "Template: bundle a React + visx chart as an ES module for Quarto OJS cells.",
+  "scripts": {
+    "build": "esbuild src/qviz.jsx --bundle --format=esm --minify --jsx=automatic --define:process.env.NODE_ENV='\"production\"' --outfile=qviz.js"
+  },
+  "dependencies": {
+    "@visx/visx": "4.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

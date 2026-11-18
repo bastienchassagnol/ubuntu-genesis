@@ -15,6 +15,13 @@ split by domain instead of one `.cursorrules` file.
 | `python-development.mdc` | `*.py`, `pyproject.toml` — uv, Ruff, ty |
 | `quarto-presentations.mdc` | `*.qmd`, slides — Mermaid, reveal.js |
 | `latex-scientific.mdc` | `*.tex` — LuaLaTeX, TikZ, minted |
+| `data-visualisation.mdc` | Charts in R, Python, Quarto, LaTeX |
+| `document-extraction.mdc` | Local PDFs via Docling and Chroma; `.qmd` as text |
+| `figure-sources.mdc` | Always — reuse, draw, then generate a figure |
+| `graphical-models.mdc` | Plate notation in Quarto and LaTeX |
+| `ponytail.mdc` | Prefer the smallest change that works |
+| `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
+| `token-budget.mdc` | Always — route work so documents are not loaded whole |
 | `teaching-material-repo.mdc` | This Quarto book repo layout |
 
 ## Skills (`skills/`)
@@ -22,16 +29,23 @@ split by domain instead of one `.cursorrules` file.
 | Skill | Role |
 |-------|------|
 | `deslop` | De-AI prose (LaTeX-safe) |
-| `peer-review-assistant` | Manuscript review workflow |
+| `peer-review` | Open ScholarPeer review in the paper folder |
+| `peer-review-assistant` | Structured manuscript review with literature checks |
 | `latex-modern-audit` | Modern LaTeX compliance check |
+| `quarto` | Slides, websites, and Observable JS |
 | `quarto-revealjs` (+ fragment, auto-animate) | Slide decks |
+| `data-visualisation` | Chart choice and the dataviz caveats |
+| `graphify` | Codebase questions when a graphify index exists |
 | `convert-documents-to-markdown` | Office/PDF → Markdown |
 | `find-skills` | Discover third-party skills |
 | `instagram-carousel` | Carousel copy/layout |
+| `react-and-nextjs-data-visualization` | Charts inside React and Next.js |
+| `testing-data-visualizations` | Visual tests for charts and dashboards |
 | `firecrawl` | **Pointer only** — install from [firecrawl/skills](https://github.com/firecrawl/skills) |
 
-Firecrawl sub-skills are **not** vendored here (repo size, API keys). Follow
-`skills/firecrawl/SKILL.md`.
+These copies follow `~/.claude/rules` and `~/.claude/skills`. Firecrawl
+sub-skills are symlinks on this machine and are **not** vendored here
+(repo size, API keys). Follow `skills/firecrawl/SKILL.md`.
 
 ## Installation
 

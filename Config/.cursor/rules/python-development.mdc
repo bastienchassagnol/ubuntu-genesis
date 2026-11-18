@@ -2,8 +2,11 @@
 description: Python environments, uv, Ruff, ty, and library choices
 globs: "**/*.py,**/pyproject.toml,**/uv.lock"
 alwaysApply: false
+paths:
+  - "**/*.py"
+  - "**/pyproject.toml"
+  - "**/uv.lock"
 ---
-
 # Python
 
 Use Python when appropriate. Do not duplicate an established R API without need.
