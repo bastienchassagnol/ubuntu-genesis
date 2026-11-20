@@ -8,7 +8,8 @@
 /temp*
 
 # Quarto site build output (published via GitHub Actions, not committed)
-docs/
+docs/*
+!docs/agent/
 .quarto/
 
 
