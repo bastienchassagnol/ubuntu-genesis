@@ -22,6 +22,9 @@ checklist. This skill holds the long material; read only the file you need.
 | Treemap for a count and its share of a parent | `references/treemap.md` |
 | Ternary plot for exactly three closed parts | `references/ternary.md` |
 | Waterfall of tumour response in a clinical study | `references/waterfall-clinical.md` |
+| Differential expression: null calibration, p-value histograms, gate, volcano, heatmap, UpSet, bimodality | `references/differential-expression.md` |
+| Enrichment (ORA, GSEA): summary lollipop, Manhattan, GSEA volcano, semantic map, dot plot | `references/enrichment-plots.md` |
+| Mathematical notation in a figure (`latex2exp::TeX()`) | `references/differential-expression.md` |
 
 Interactive implementation (OJS, D3, React in Quarto): the `quarto` skill,
 `references/ojs-*.md` and `references/react-in-quarto.md`.
