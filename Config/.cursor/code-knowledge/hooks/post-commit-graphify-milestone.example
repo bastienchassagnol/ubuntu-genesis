@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Optional post-commit: Graphify milestone when DESCRIPTION Version changes.
+# Install: copy to your hooks path or symlink from install-project.sh
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$ROOT"
+
+[[ -f DESCRIPTION ]] || exit 0
+
+if ! git diff-tree --no-commit-id -r HEAD | grep -q '^:.*DESCRIPTION$'; then
+  exit 0
+fi
+
+OLD_VER="$(git show HEAD~1:DESCRIPTION 2>/dev/null | sed -n 's/^Version: *//p' | head -1 | tr -d '[:space:]' || true)"
+NEW_VER="$(sed -n 's/^Version: *//p' DESCRIPTION | head -1 | tr -d '[:space:]')"
+
+[[ -n "$NEW_VER" ]] || exit 0
+[[ "$NEW_VER" != "$OLD_VER" ]] || exit 0
+
+SCRIPT="${ROOT}/Config/.cursor/code-knowledge/scripts/graphify-milestone.sh"
+[[ -x "$SCRIPT" ]] || exit 0
+
+GRAPHIFY_MILESTONE_REASON="description:${NEW_VER}" "$SCRIPT" </dev/null >/tmp/graphify-milestone.log 2>&1 &

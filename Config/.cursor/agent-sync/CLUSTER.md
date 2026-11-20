@@ -15,6 +15,29 @@ AGENT_BUNDLE_ROOT="$PWD/Config/.cursor" AGENT_PROJECT_ROOT="$PWD" \
   ./Config/.cursor/agent-sync/agent-sync.sh verify
 ```
 
+## CodeGraph (user-global, not in git)
+
+Per-project code graphs (`codegraph init`) live under each repo’s `.codegraph/`.
+The CLI and MCP wiring are installed once per account (`bastienc` on MMG).
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+# new shell so ~/.local/bin is on PATH
+codegraph telemetry off
+codegraph install --target=cursor,claude --yes
+```
+
+Then, in each repo you work in:
+
+```bash
+cd ~/repos/ubuntu-genesis   # or an R package checkout
+codegraph init
+```
+
+Optional: copy or adapt `codegraph.json` from
+[`Config/.cursor/code-knowledge/templates/codegraph.json`](../code-knowledge/templates/codegraph.json).
+Restart Cursor / Claude Code after the first `codegraph install`.
+
 ## Routine
 
 ```bash

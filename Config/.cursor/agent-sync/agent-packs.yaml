@@ -13,6 +13,7 @@ packs:
     description: Quarto website and slides
     rules:
       - scope-workspace.mdc
+      - code-intelligence.mdc
       - documentation-bibliography.mdc
       - quarto-presentations.mdc
       - scientific-writing.mdc
@@ -24,10 +25,13 @@ packs:
       - quarto-revealjs-fragment
       - auto-animate-elements
       - data-visualisation
+      - codegraph
+      - graphify
   r-stats-only:
     description: R, statistics, and figures
     rules:
       - scope-workspace.mdc
+      - code-intelligence.mdc
       - r-development.mdc
       - statistical-modelling.mdc
       - data-visualisation.mdc
@@ -36,4 +40,5 @@ packs:
     skills:
       - data-visualisation
       - deslop
+      - codegraph
       - graphify

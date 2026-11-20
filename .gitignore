@@ -14,3 +14,7 @@ docs/
 
 /.quarto/
 **/*.quarto_ipynb
+
+# CodeGraph / Graphify (local indexes)
+.codegraph/
+graphify-out/

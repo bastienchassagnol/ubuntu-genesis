@@ -22,6 +22,7 @@ split by domain instead of one `.cursorrules` file.
 | `ponytail.mdc` | Prefer the smallest change that works |
 | `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
 | `token-budget.mdc` | Always — route work so documents are not loaded whole |
+| `code-intelligence.mdc` | Always — CodeGraph vs Graphify routing |
 | `teaching-material-repo.mdc` | This Quarto website layout |
 
 ## Skills (`skills/`)
@@ -35,7 +36,8 @@ split by domain instead of one `.cursorrules` file.
 | `quarto` | Slides, websites, and Observable JS |
 | `quarto-revealjs` (+ fragment, auto-animate) | Slide decks |
 | `data-visualisation` | Chart choice and the dataviz caveats |
-| `graphify` | Codebase questions when a graphify index exists |
+| `codegraph` | Structural code queries when `.codegraph/` exists |
+| `graphify` | Mixed corpora when `graphify-out/` exists (milestone builds) |
 | `convert-documents-to-markdown` | Office/PDF → Markdown |
 | `find-skills` | Discover third-party skills |
 | `instagram-carousel` | Carousel copy/layout |

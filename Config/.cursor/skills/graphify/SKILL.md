@@ -1,6 +1,6 @@
 ---
 name: graphify
-description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools."
+description: "Mixed corpora (docs, papers, Quarto, images) and cross-material architecture when graphify-out/graph.json exists. For pure code structure with .codegraph/, use the codegraph skill first. Build at release milestones—not every commit."
 ---
 
 # /graphify
@@ -41,6 +41,15 @@ Turn any folder of files into a navigable knowledge graph with community detecti
 /graphify path "AuthModule" "Database"                # shortest path between two concepts
 /graphify explain "SwinTransformer"                   # plain-language explanation of a node
 ```
+
+## Layering with CodeGraph
+
+- **CodeGraph** (`.codegraph/`): daily agent coding—call graphs, impact, source
+  flows via MCP. Auto-syncs; do not mirror that with Graphify on every commit.
+- **Graphify** (`graphify-out/`): milestone corpus graph (tags, R `DESCRIPTION`
+  bumps). Use [`Config/.cursor/code-knowledge/scripts/graphify-milestone.sh`](../../code-knowledge/scripts/graphify-milestone.sh).
+- Do **not** recommend `graphify hook install` or `graphify claude install`
+  when CodeGraph is active unless the user explicitly wants always-on Graphify.
 
 ## What graphify is for
 

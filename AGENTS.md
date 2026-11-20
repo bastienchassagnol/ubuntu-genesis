@@ -44,6 +44,26 @@ project_cursor:
 
 Remote SSH agents read **`/home/bastienc`** only; they do not see the laptop home.
 
+## Code intelligence
+
+| Layer | Tool | When |
+| --- | --- | --- |
+| Daily coding | [CodeGraph](https://github.com/colbymchenry/codegraph) (`codegraph init` → `.codegraph/`) | Structure, callers, flows |
+| Milestones | Graphify (`graphify-out/`) | Git tags or R `DESCRIPTION` version bumps |
+
+Bundle docs: [`Config/.cursor/code-knowledge/README.md`](Config/.cursor/code-knowledge/README.md).
+Skills: **codegraph**, **graphify** (deploy with `install-user` to `~/.claude/skills`
+and `~/.cursor/skills`). Rule: `code-intelligence.mdc`.
+
+Per-repo bootstrap:
+
+```bash
+./Config/.cursor/code-knowledge/install-project.sh
+codegraph init
+```
+
+Do not use Graphify post-commit hooks or pxpipe by default.
+
 ## Hooks (optional)
 
 - Cursor user hook: copy [`Config/.cursor/agent-sync/hooks/cursor-hooks.json.example`](Config/.cursor/agent-sync/hooks/cursor-hooks.json.example) to `~/.cursor/hooks.json` and install [`agent-sync-after-edit.sh`](Config/.cursor/agent-sync/hooks/agent-sync-after-edit.sh) under `~/.cursor/hooks/`.
