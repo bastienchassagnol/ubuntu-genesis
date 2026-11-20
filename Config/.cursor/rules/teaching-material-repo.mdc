@@ -2,6 +2,9 @@
 description: Ubuntu genesis Quarto website and Config bundle
 globs: "**/*.{qmd,Rmd,md},_quarto.yml,Config/**/*"
 alwaysApply: false
+paths:
+  - "Config/**"
+  - "**/_quarto.yml"
 ---
 
 # ubuntu-genesis repository

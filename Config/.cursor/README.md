@@ -19,6 +19,7 @@ split by domain instead of one `.cursorrules` file.
 | `document-extraction.mdc` | Local PDFs via Docling and Chroma; `.qmd` as text |
 | `figure-sources.mdc` | Always — reuse, draw, then generate a figure |
 | `graphical-models.mdc` | Plate notation in Quarto and LaTeX |
+| `graphify.mdc` | Always, when `graphify-out/` exists: query the graph before exploring |
 | `ponytail.mdc` | Prefer the smallest change that works |
 | `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
 | `token-budget.mdc` | Always — route work so documents are not loaded whole |
