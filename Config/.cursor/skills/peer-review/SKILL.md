@@ -14,7 +14,11 @@ description: >-
 | Missing citations, methods currency, intro claims | Generic web search with no manuscript |
 
 Shared rules: cite only papers returned by searches in the session; never invent
-references; no identifiable patient data to web tools; flag author-name conflicts.
+references; flag author-name conflicts. **Confidentiality:** the manuscript under review,
+unpublished results and patient data never go to Firecrawl or any upload or web
+tool. Parse locally (`doc-search` / Docling, `pdftotext`, Pandoc). Firecrawl
+tools are for public literature lookups in Path B only, with queries that do
+not quote unpublished text or identifiers.
 
 ---
 
@@ -69,8 +73,8 @@ Requires `user-firecrawl` MCP and `FIRECRAWL_API_KEY` when using cloud search.
 
 ### Phase 1 — Parse
 
-Read PDF/DOCX via `firecrawl_parse`, **document-extraction** rule (anydoc → md),
-or pasted text. Extract title, question, 2–4 load-bearing intro claims, methods,
+Read PDF/DOCX locally (`doc-search`, Docling, `pdftotext`; **document-extraction**
+rule) or from pasted text. Never `firecrawl_parse`. Extract title, question, 2–4 load-bearing intro claims, methods,
 findings. Flag **abstract-only** limits.
 
 ### Phase 2 — Literature (4–6 sequential searches)
@@ -86,8 +90,8 @@ after three failures, partial report with `[Search failed]`.
 | 4 | Methods currency |
 | 5–6 | Optional extra claim or adjacent field |
 
-**Integrity:** only cite papers from tool output; tag model memory as
-`[Not from search — verify]`; zero hits = sparse coverage, not author vindication.
+**Integrity:** see `scientific-writing` rule. Only cite papers from tool output;
+tag model memory `[Not from search — verify]`.
 
 ### Phase 3–4 — Report
 
@@ -107,5 +111,5 @@ Optional `pandoc` → DOCX. Pair **deslop** for `.tex` prose edits if asked.
 
 Short chat summary + path to report.
 
-**Upstream for Path B:**
+Path B is adapted from
 [stephenturner/skill-peer-review-assistant](https://github.com/stephenturner/skill-peer-review-assistant).

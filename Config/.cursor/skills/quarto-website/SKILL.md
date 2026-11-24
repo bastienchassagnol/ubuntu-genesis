@@ -9,7 +9,7 @@ Index for `type: website` projects. Slides (`format: revealjs`) → **quarto-rev
 
 | Task | Reference |
 |---|---|
-| Full-width figures, margin notes, folded `sessionInfo()`, GitHub corner | `references/web-layout.md` |
+| Full-width figures, margin notes, folded session info, GitHub corner | `references/web-layout.md` |
 | New site: static ggplot, OJS embed, Sphinx static assets | `references/interactive-embed.md` |
 
 ## `_quarto.yml` checklist
@@ -17,8 +17,8 @@ Index for `type: website` projects. Slides (`format: revealjs`) → **quarto-rev
 - `project.type: website` and `output-dir` (e.g. `docs/` for GitHub Pages).
 - `website.site-url`, `repo-url`, `navbar.left` hrefs match rendered `.qmd` files.
 - `project.render` lists only sources that should publish (exclude drafts).
-- `format.html`: `code-fold`, `code-tools`, `toc`, theme — once per project.
-- Split bibliographies when literature and software keys are separate
-  (`documentation-bibliography` rule).
+- `format.html`: `code-tools`, `toc`, theme — once per project; `code-fold`,
+  bibliographies and session info per the `quarto-presentations` and
+  `documentation-bibliography` rules.
 
 Official docs: https://quarto.org/docs/websites/

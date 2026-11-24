@@ -45,17 +45,16 @@ latents, observations inside inner plates; minimal crossings; consistent
 ## Shared TikZ preamble
 
 Quarto: `diagram.engine.tikz.header-includes` in `_quarto.yml`. LaTeX: macros
-preamble once. Load `amsmath` and `unicode-math` for maths in labels
-([quarto-cli#13113](https://github.com/quarto-dev/quarto-cli/issues/13113));
-fonts follow `latex-scientific`: STIX Two Math for maths, TeX Gyre Heros for
-labels (no `amssymb`/`bm` with `unicode-math`; use `\symbf`).
+preamble once. The first five lines are the `latex-scientific` font block
+(STIX Two Math, TeX Gyre Heros; `\symbf`, not `bm`), repeated so the preamble
+can be pasted whole ([quarto-cli#13113](https://github.com/quarto-dev/quarto-cli/issues/13113)).
 
 ```latex
 \usepackage{amsmath}
 \usepackage{fontspec}
 \usepackage{unicode-math}
 \setmathfont{STIX Two Math}
-\setmainfont{TeX Gyre Heros}   % standalone figures; \setsansfont in a manuscript
+\setmainfont{TeX Gyre Heros}[Ligatures=CommonOff] % figures; \setsansfont in a manuscript
 \usepackage{tikz}
 \usetikzlibrary{bayesnet,positioning,fit,calc,arrows.meta}
 \tikzset{
@@ -65,8 +64,10 @@ labels (no `amssymb`/`bm` with `unicode-math`; use `\symbf`).
 }
 ```
 
-Use `\draw[dependency]` or `\draw[->]`; do not redefine `latent`, `obs`, `det`,
-or `\plate`.
+Use `\draw[dependency]` or `\draw[->]`, not `\edge` (nullfont `;` warnings);
+do not redefine `latent`, `obs`, `det`, or `\plate`. Only the outermost plate
+is the independent sampling unit; inner plates index repeated measures within
+it.
 
 ## Quarto (`diagram` filter)
 
@@ -97,24 +98,33 @@ image width to `auto`.
 
 Filter builds `standalone`; default binary name is `pdflatex` but passes
 `-interaction=nonstopmode` and `-output-directory` — **point `TIKZ_BIN` at a
-wrapper** that runs **LuaLaTeX** (XeLaTeX acceptable), then outline fonts for SVG:
+wrapper** that runs **LuaLaTeX** (XeLaTeX acceptable), then outlines fonts.
+Web output is the portable SVG only (no editable variant):
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 lualatex "$@"
-# resolve -output-directory and .tex from "$@", then:
+outdir="."; tex=""
+while [ $# -gt 0 ]; do   # filter passes: -interaction=..., -output-directory DIR, file.tex
+  case "$1" in
+    -output-directory) outdir="$2"; shift 2 ;;
+    -*) shift ;;
+    *) tex="$1"; shift ;;
+  esac
+done
+pdf="$outdir/$(basename "${tex%.tex}").pdf"
 gs -q -dNOPAUSE -dBATCH -dNoOutputFonts -sDEVICE=pdfwrite \
   -o "$pdf.outlined" "$pdf"
 mv "$pdf.outlined" "$pdf"
 ```
 
-Inkscape converts PDF → SVG; Ghostscript `-dNoOutputFonts` keeps labels portable.
-Set `TIKZ_BIN` in `_environment.local`. Cache key is source only — clear cache
+The filter converts the PDF to SVG; Ghostscript `-dNoOutputFonts` keeps the
+labels portable. Set `TIKZ_BIN` in `_environment.local`. Cache key is source only — clear cache
 after preamble edits.
 
 ## LaTeX articles
 
-Keep each `tikzpicture` in its own `standalone` source and follow the
+Keep each `tikzpicture` in its own `standalone` source and follow the TikZ
 SVG-first workflow in `latex-scientific` (editable SVG, portable SVG, PDF from
-the portable SVG). Compile with **LuaLaTeX**.
+the portable SVG).

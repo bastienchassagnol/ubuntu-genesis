@@ -621,11 +621,12 @@ the Zotero connection
 ### Two-way sync with zotcurate (`zotc`) and project rules
 
 [zotcurate](https://github.com/jeetsukumaran/zotcurate) bridges citation
-keys in `.qmd` / `.bib` / `.tex` and Zotero **collections**. Project
-`.cursorrules` (Bibliography section) encode the hygiene rules: leaf-only
-collection membership, allowed BibTeX fields, and
-`bib_enrich.py` (and `check_bibliography.py --clean` on DeCovarT-style package
-repos) after every export — see `scripts/curate_bibliography/`.
+keys in `.qmd` / `.bib` / `.tex` and Zotero **collections**. The
+`documentation-bibliography` rule of the agent bundle (@sec-agent-bundle)
+encodes the hygiene rules: leaf-only collection membership, allowed BibTeX
+fields, and `bib_enrich.py` (plus `check_bibliography.py --clean` in R
+package repositories) after every export. Each repository's `AGENTS.md`
+says which rules it carries; the scripts live in `scripts/curate_bibliography/`.
 
 ```{mermaid}
 %%| label: fig-zotero-flow
@@ -640,7 +641,7 @@ flowchart LR
   P[packages.bib] -.->|software only| Q
 ```
 
-![How `.cursorrules` + zotcurate keep Zotero collections and document citekeys aligned across formats](assets/zotero/zotero-zotcurate-sync.png){#fig-zotero-zotcurate-sync}
+![How the bibliography rule and zotcurate keep Zotero collections and document citekeys aligned across formats](assets/zotero/zotero-zotcurate-sync.png){#fig-zotero-zotcurate-sync}
 
 **Both directions (as used in lab projects):**
 
@@ -1083,12 +1084,41 @@ For syncing configuration across many users, see also Benjamin’s notes
 and
 [Cursor Config Sync](https://open-vsx.org/extension/KushalCodes/cursor-config-sync).
 
-![Map of the main sections hard-coded in `Config/.cursor/.cursorrules` (structure, R, bibliography, writing, LaTeX, slides)](Config/.cursor/cursorrules-map.png){#fig-cursorrules-map}
-
-The figure summarises what those rules enforce for agents and humans:
-project layout, R package hygiene, Zotero/bibliography sync, Nature
-Methods–style writing, LaTeX semantics, and Quarto reveal.js slidecraft.
+Agent rules and skills are synced separately, with `agent-sync`
+(@sec-agent-bundle).
 :::
+
+### Agent rules and skills: `AGENTS.md` and `Config/.cursor` {#sec-agent-bundle}
+
+The single `.cursorrules` file is retired. Agent guidance now has three
+layers, shared by Cursor and Claude Code:
+
+1.  **`AGENTS.md`** at the root of each repository: what the project is,
+    where things live, and which rule packs it carries (a short `yaml`
+    block read by `agent-sync`).
+2.  **Rules** (`Config/.cursor/rules/*.mdc`): short, normative, and loaded
+    either in every session or when a matching file is open
+    (@fig-agent-rules-map).
+3.  **Skills** (`Config/.cursor/skills/*/SKILL.md`): longer how-to material
+    with reference files read on demand (@fig-agent-skills-map).
+
+```{#lst-agent-sync .bash lst-cap="Deploy and check the agent bundle"}
+export AGENT_BUNDLE_ROOT="$HOME/OneDrive/04. BNCL (Post Doc)/ubuntu-genesis/Config/.cursor"
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-user   # ~/.cursor and ~/.claude
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" verify
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-project /path/to/repo
+```
+
+`install-user` copies every rule and skill to `~/.cursor` and `~/.claude`
+and removes the ones deleted from the bundle. `install-project` copies the
+packs named in a repository's `AGENTS.md` into its `.cursor/rules` and
+`.claude/rules`. Hooks redeploy after an edit, check the copies at the
+start of each Claude Code session, and redeploy after `git pull`; see
+`Config/.cursor/README.md`.
+
+![Core agent rules, grouped by when they load: always, or when a matching code, analysis or document file is open](assets/agents/rules-map.svg){#fig-agent-rules-map}
+
+![Agent skills: main skills on top, their reference files and scripts summarised below](assets/agents/skills-map.svg){#fig-agent-skills-map}
 
 ## Password manager: Bitwarden {#sec-bitwarden}
 

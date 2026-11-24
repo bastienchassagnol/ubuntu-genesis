@@ -37,7 +37,7 @@ Column options, narrowest to widest: `body` (default), `body-outset`, `page`,
 ````markdown
 ```{r}
 #| column: margin
-knitr::kable(mtcars[1:3, 1:3])
+tinytable::tt(mtcars[1:3, 1:3])
 ```
 
 ::: {.column-margin}
@@ -50,9 +50,8 @@ Also `fig-cap-location: margin`, `reference-location: margin`,
 
 ## Session info, folded
 
-Put `sessionInfo()` (or `sessioninfo::session_info()`) at the end of any page
-that runs R, folded so it does not interrupt reading. Use the native
-collapsible callout rather than a hand-written Bootstrap accordion:
+Policy is in the `quarto-presentations` rule; the folded block (native callout,
+not a Bootstrap accordion):
 
 ````markdown
 ::: {.callout-note collapse="true" appearance="minimal"}
@@ -71,7 +70,7 @@ add `{{< include _session-info.qmd >}}` at the end of each page.
 ## GitHub corner
 
 An animated octocat linking to the repository, top-right of every page.
-Asset: **quarto-revealjs** `assets/github-corner.html` (Tim Holman's
+Asset: `assets/github-corner.html` in this skill (Tim Holman's
 github-corners, MIT). Copy it next to `_quarto.yml`, replace `OWNER/REPO`, and
 change `fill:#69b3a2` to the site colour.
 

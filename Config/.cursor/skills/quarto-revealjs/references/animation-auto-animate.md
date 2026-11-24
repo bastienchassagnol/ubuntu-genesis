@@ -76,6 +76,3 @@ Don't hand-tune every coordinate — use [quarto-revealjs-editable](https://gith
 - `overflow: hidden` on the base element gives clean shrink-to-marker.
 - Raw SVG must go in a ` ```{=html} ` block; Pandoc won't pass it through an inline span.
 - A non-auto-animate slide between two auto-animate slides breaks the tween; mark the "quiet" slide `auto-animate=true` too and park the element as a marker.
-- Book examples never use `self-contained`; `examples/` builds before the book.
-
-Full worked decks: `examples/auto-animate/` in repos that ship them (basics, agenda, hero-shape, colored-panels, figure-in-element).

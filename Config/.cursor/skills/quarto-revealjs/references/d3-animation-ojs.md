@@ -4,13 +4,13 @@ Aligned with [D3 + React AI skill](https://www.data-to-viz.com/ai-skills/d3.html
 
 ## Routing
 
+Tool choice (static, OJS, D3, React): `data-visualisation/references/libraries.md`. Here: motion only.
+
 | Goal | Where |
 |---|---|
-| Static slide figure | ggplot2 chunk |
-| Input-driven chart | OJS + Observable Plot (`ojs-basics.md`) |
-| Custom marks, brush, drag | OJS + `d3-scale` / `d3-shape` / `d3-selection` (`ojs-d3.md`) |
 | Motion / enter-update-exit | This note + fragment replay |
-| WebGL / huge networks | React visx bundle in OJS |
+| Custom marks, brush, drag | `ojs-d3.md` |
+| WebGL / huge networks | React visx bundle in OJS (`react-in-quarto.md`) |
 
 ## Animation in OJS
 

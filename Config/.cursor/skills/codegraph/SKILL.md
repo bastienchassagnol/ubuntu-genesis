@@ -9,8 +9,7 @@ Pre-indexed, local code graph with MCP tool `codegraph_explore`. Auto-syncs on
 file changes while the MCP server runs. Official docs:
 <https://colbymchenry.github.io/codegraph/>
 
-For mixed corpora (docs + papers + Quarto), use the **graphify** skill after a
-**milestone** build—not CodeGraph.
+Routing between CodeGraph and Graphify: rule `code-intelligence`.
 
 ## When to use
 
@@ -59,7 +58,7 @@ Deprioritise agent bundle or script trees so product code ranks first:
 
 ```json
 {
-  "deprioritize": ["Config/.cursor/", "scripts/", "optional-skills/"]
+  "deprioritize": ["Config/.cursor/", "scripts/"]
 }
 ```
 
@@ -67,8 +66,7 @@ Re-index after changes: `codegraph index`.
 
 ## Do not
 
-- Replace Graphify for document-heavy milestone graphs
-- Run `graphify hook install` for code sync—CodeGraph handles that
+- Run `graphify hook install` for code sync; CodeGraph handles that
 - Assume multi-repo Cypher queries (solo-repo default)
 
 ## Uninstall

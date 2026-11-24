@@ -9,7 +9,7 @@ Build and polish presentations written in Quarto that render to [reveal.js](http
 
 References throughout point at three sources:
 
-- The book: <https://slidecrafting-book.com>
+- Slidecrafting by Emil Hvitfeldt: <https://slidecrafting-book.com>
 - Quarto reveal.js docs: <https://quarto.org/docs/presentations/revealjs/>
 - reveal.js docs: <https://revealjs.com>
 
@@ -21,7 +21,7 @@ References throughout point at three sources:
 - Showing code or plots well (highlighting, transparent plot backgrounds, figure sizing)
 - Fragment or auto-animate motion
 - Presenting and exporting (notes, speaker view, PDF, chalkboard, multiplex)
-- Reaching for one of Emil's Quarto reveal.js extensions
+- Reaching for a Quarto reveal.js extension (`editable`, `codewindow`, by Emil Hvitfeldt)
 
 ## Quick start
 
@@ -95,9 +95,7 @@ Read these first for most tasks.
 
 | Topic | Reference |
 |---|---|
-| Multi-column / side-by-side | `references/layout-columns.md` |
 | Big text with `r-fit-text` | `references/layout-fit-text.md` |
-| Absolute positioning (text and images) | `references/layout-absolute.md` |
 | Images: basic, absolute, background | `references/layout-images.md` |
 | Readable text over busy photos | `references/layout-overlay-textbox.md` |
 | Distributing bullets evenly (`.spread`) | `references/layout-spread.md` |
@@ -111,7 +109,7 @@ Read these first for most tasks.
 | Showing Quarto code literally (unexecuted) | `references/content-code-unexecuted.md` |
 | Hand-styled / manually highlighted code | `references/content-code-manual.md` |
 | Animated terminal recordings (asciicast) | `references/content-code-asciicast.md` |
-| Transparent plot backgrounds (R, Python) | `references/content-plot-background.md` |
+| Plot backgrounds on slides (R, `ragg` on white) | `references/content-plot-background.md` |
 | Sizing figures for slides | `references/content-plot-sizing.md` |
 
 ## Animation & interactivity
@@ -169,4 +167,5 @@ Full React/Next.js applications live outside Quarto; see **data-visualisation**
 - CSS that targets slide content needs the `.reveal .slides section` (or `.reveal .slide`) prefix to beat theme specificity.
 - Most people use text that is too small. Size up.
 - Contrast between background, text, and highlight colors matters more than any other single choice.
-- Do not add `self-contained: true` inside this repo's `examples/` (shared `libs/`, two-pass build).
+- Slide labels, callouts, `code-fold`, split bibliographies and `sessionInfo()` follow the `quarto-presentations` and `documentation-bibliography` rules.
+- Tables: `tinytable`; static R figures: `ragg` + `theme_slide()` (data-visualisation skill).

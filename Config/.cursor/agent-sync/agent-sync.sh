@@ -23,6 +23,11 @@ acquire_lock() {
   fi
 }
 
+MANIFEST=".agent-sync-manifest"
+# Names deployed before manifests existed; pruned once if still present.
+LEGACY_RULES="graphify teaching-material-repo scope-workspace"
+LEGACY_SKILLS="convert-documents-to-markdown latex-modern-audit peer-review-assistant find-skills testing-data-visualizations quarto auto-animate-elements quarto-revealjs-fragment react-and-nextjs-data-visualization"
+
 skill_excluded() {
   local name="$1"
   case "${name}" in
@@ -42,31 +47,84 @@ list_vendored_skills() {
   done
 }
 
+list_bundle_rules() {
+  local f
+  for f in "${BUNDLE_ROOT}/rules/"*.mdc; do
+    [[ -f "${f}" ]] && basename "${f}" .mdc
+  done
+}
+
+# prune_dir DIR KIND LEGACY NAMES... : delete entries this tool deployed before
+# (manifest, or LEGACY when no manifest yet) that are no longer in NAMES, then
+# record NAMES. KIND: mdc | md (rule files) or dir (skill folders). Entries the
+# tool never deployed are left alone.
+prune_dir() {
+  local dir="$1" kind="$2" legacy="$3"
+  shift 3
+  local -A keep=()
+  local n
+  for n in "$@"; do keep["${n}"]=1; done
+  local old
+  if [[ -f "${dir}/${MANIFEST}" ]]; then
+    old="$(cat "${dir}/${MANIFEST}")"
+  else
+    old="${legacy}"
+  fi
+  for n in ${old}; do
+    [[ -n "${keep[${n}]:-}" ]] && continue
+    case "${kind}" in
+      dir)
+        if [[ -d "${dir}/${n}" && ! -L "${dir}/${n}" ]]; then
+          rm -rf "${dir:?}/${n}"
+          log "prune: ${dir}/${n}/"
+        fi ;;
+      *)
+        # rule files may be symlinks (~/.cursor/rules -> ~/.claude/rules)
+        if [[ -e "${dir}/${n}.${kind}" || -L "${dir}/${n}.${kind}" ]]; then
+          rm -f "${dir}/${n}.${kind}"
+          log "prune: ${dir}/${n}.${kind}"
+        fi ;;
+    esac
+  done
+  printf '%s\n' "$@" > "${dir}/${MANIFEST}"
+}
+
+in_manifest() {
+  [[ -f "$1/${MANIFEST}" ]] && grep -qxF "$2" "$1/${MANIFEST}"
+}
+
 install_rules() {
   mkdir -p "${CURSOR_RULES}" "${CLAUDE_RULES}"
-  local f base
-  for f in "${BUNDLE_ROOT}/rules/"*.mdc; do
-    [[ -f "${f}" ]] || continue
-    base="$(basename "${f}")"
-    cp -a "${f}" "${CURSOR_RULES}/${base}"
-    cp -a "${f}" "${CLAUDE_RULES}/${base%.mdc}.md"
-  done
+  local name
+  local -a names=()
+  while IFS= read -r name; do
+    names+=("${name}")
+    cp -a "${BUNDLE_ROOT}/rules/${name}.mdc" "${CURSOR_RULES}/${name}.mdc"
+    cp -a "${BUNDLE_ROOT}/rules/${name}.mdc" "${CLAUDE_RULES}/${name}.md"
+  done < <(list_bundle_rules)
+  prune_dir "${CURSOR_RULES}" mdc "${LEGACY_RULES}" "${names[@]}"
+  prune_dir "${CLAUDE_RULES}" md "${LEGACY_RULES}" "${names[@]}"
 }
 
 install_skills() {
   mkdir -p "${CURSOR_SKILLS}" "${CLAUDE_SKILLS}"
   local name
+  local -a names=()
   while IFS= read -r name; do
     [[ -n "${name}" ]] || continue
     if [[ -L "${BUNDLE_ROOT}/skills/${name}" ]]; then
       log "skip symlink skill in bundle: ${name}"
       continue
     fi
-    rsync -a --no-links --exclude '.git' --exclude '__pycache__' --exclude 'node_modules' \
+    names+=("${name}")
+    # --delete: a bundle skill folder is fully owned by the bundle.
+    rsync -a --delete --no-links --exclude '.git' --exclude '__pycache__' --exclude 'node_modules' \
       "${BUNDLE_ROOT}/skills/${name}/" "${CURSOR_SKILLS}/${name}/"
-    rsync -a --no-links --exclude '.git' --exclude '__pycache__' --exclude 'node_modules' \
+    rsync -a --delete --no-links --exclude '.git' --exclude '__pycache__' --exclude 'node_modules' \
       "${BUNDLE_ROOT}/skills/${name}/" "${CLAUDE_SKILLS}/${name}/"
   done < <(list_vendored_skills)
+  prune_dir "${CURSOR_SKILLS}" dir "${LEGACY_SKILLS}" "${names[@]}"
+  prune_dir "${CLAUDE_SKILLS}" dir "${LEGACY_SKILLS}" "${names[@]}"
 }
 
 cmd_install_user() {
@@ -91,7 +149,8 @@ cmd_publish() {
         log "publish: ${base} (cursor → bundle)"
         changed=$((changed + 1))
       fi
-    else
+    elif ! in_manifest "${CURSOR_RULES}" "${base%.mdc}" \
+      && [[ " ${LEGACY_RULES} " != *" ${base%.mdc} "* ]]; then
       cp -a "${f}" "${BUNDLE_ROOT}/rules/${base}"
       log "publish: new rule ${base}"
       changed=$((changed + 1))
@@ -129,63 +188,37 @@ cmd_publish() {
   fi
 }
 
-rule_body_match() {
-  local cursor_file="$1"
-  local bundle_file="$2"
-  cmp -s "${cursor_file}" "${bundle_file}"
-}
-
 cmd_verify() {
-  local failures=0
-  [[ -f "${BUNDLE_ROOT}/rules/r-python-project.mdc" ]] || {
-    log "FAIL: bundle r-python-project.mdc missing"
-    failures=$((failures + 1))
-  }
-  if [[ -f "${BUNDLE_ROOT}/rules/r-python-project.mdc" ]]; then
-    if [[ ! -f "${CURSOR_RULES}/r-python-project.mdc" ]]; then
-      log "FAIL: missing ${CURSOR_RULES}/r-python-project.mdc"
-      failures=$((failures + 1))
-    elif ! rule_body_match "${CURSOR_RULES}/r-python-project.mdc" \
-      "${BUNDLE_ROOT}/rules/r-python-project.mdc"; then
-      log "FAIL: cursor rule r-python-project.mdc differs from bundle"
-      failures=$((failures + 1))
-    fi
-    if [[ ! -f "${CLAUDE_RULES}/r-python-project.md" ]]; then
-      log "FAIL: missing ${CLAUDE_RULES}/r-python-project.md"
-      failures=$((failures + 1))
-    elif ! rule_body_match "${CLAUDE_RULES}/r-python-project.md" \
-      "${BUNDLE_ROOT}/rules/r-python-project.mdc"; then
-      log "FAIL: claude rule r-python-project.md differs from bundle"
-      failures=$((failures + 1))
-    fi
-  fi
-  for skill in roast-my-chart; do
-    if [[ ! -f "${BUNDLE_ROOT}/skills/${skill}/SKILL.md" ]]; then
-      log "FAIL: bundle skills/${skill}/SKILL.md missing"
-      failures=$((failures + 1))
-    fi
-    if [[ ! -f "${CLAUDE_SKILLS}/${skill}/SKILL.md" ]]; then
-      log "FAIL: missing ${CLAUDE_SKILLS}/${skill}/SKILL.md (run install-user)"
-      failures=$((failures + 1))
-    fi
-    if [[ ! -f "${CURSOR_SKILLS}/${skill}/SKILL.md" ]]; then
-      log "FAIL: missing ${CURSOR_SKILLS}/${skill}/SKILL.md (run install-user)"
-      failures=$((failures + 1))
-    fi
+  local failures=0 name
+  fail() { log "FAIL: $*"; failures=$((failures + 1)); }
+  while IFS= read -r name; do
+    cmp -s "${BUNDLE_ROOT}/rules/${name}.mdc" "${CURSOR_RULES}/${name}.mdc" \
+      || fail "${CURSOR_RULES}/${name}.mdc missing or differs from bundle"
+    cmp -s "${BUNDLE_ROOT}/rules/${name}.mdc" "${CLAUDE_RULES}/${name}.md" \
+      || fail "${CLAUDE_RULES}/${name}.md missing or differs from bundle"
+  done < <(list_bundle_rules)
+  while IFS= read -r name; do
+    [[ -L "${BUNDLE_ROOT}/skills/${name}" ]] && continue
+    diff -rq --exclude __pycache__ --exclude .git --exclude node_modules --exclude "${MANIFEST}" \
+      "${BUNDLE_ROOT}/skills/${name}" "${CLAUDE_SKILLS}/${name}" >/dev/null 2>&1 \
+      || fail "${CLAUDE_SKILLS}/${name} missing or differs (run install-user)"
+    diff -rq --exclude __pycache__ --exclude .git --exclude node_modules --exclude "${MANIFEST}" \
+      "${BUNDLE_ROOT}/skills/${name}" "${CURSOR_SKILLS}/${name}" >/dev/null 2>&1 \
+      || fail "${CURSOR_SKILLS}/${name} missing or differs (run install-user)"
+  done < <(list_vendored_skills)
+  local dir
+  for dir in "${CURSOR_RULES}" "${CLAUDE_RULES}"; do
+    for name in ${LEGACY_RULES}; do
+      [[ -e "${dir}/${name}.mdc" || -e "${dir}/${name}.md" ]] && fail "stale rule ${dir}/${name}"
+    done
   done
-  for ref in chart-chooser.md; do
-    if [[ ! -f "${CLAUDE_SKILLS}/data-visualisation/references/${ref}" ]]; then
-      log "FAIL: missing ${CLAUDE_SKILLS}/data-visualisation/references/${ref}"
-      failures=$((failures + 1))
-    fi
-    if [[ ! -f "${CURSOR_SKILLS}/data-visualisation/references/${ref}" ]]; then
-      log "FAIL: missing ${CURSOR_SKILLS}/data-visualisation/references/${ref}"
-      failures=$((failures + 1))
-    fi
+  for dir in "${CURSOR_SKILLS}" "${CLAUDE_SKILLS}"; do
+    for name in ${LEGACY_SKILLS}; do
+      [[ -d "${dir}/${name}" && ! -L "${dir}/${name}" ]] && fail "stale skill ${dir}/${name}"
+    done
   done
   if [[ -d "${HOME}/.cursor/skills-cursor/data-visualisation" ]]; then
-    log "FAIL: built-in skills-cursor/data-visualisation should not exist"
-    failures=$((failures + 1))
+    fail "built-in skills-cursor/data-visualisation should not exist"
   fi
   local proj_root="${AGENT_PROJECT_ROOT:-}"
   if [[ -z "${proj_root}" ]] && command -v git >/dev/null 2>&1; then
@@ -207,64 +240,80 @@ cmd_verify() {
   log "verify: OK"
 }
 
-read_agents_packs() {
-  # Prints one pack name per line from AGENTS.md fenced yaml block.
-  local agents_md="$1"
-  [[ -f "${agents_md}" ]] || return 0
-  awk '
-    /^```yaml/ {inblock=1; next}
-    inblock && /^```/ {exit}
-    inblock && /^[[:space:]]*-[[:space:]]+/ {
-      gsub(/^[[:space:]]*-[[:space:]]*/, ""); print
+# AGENTS.md carries a fenced ```yaml block:
+#   packs:
+#     - <pack in agent-packs.yaml>
+#   project_rules: copy | symlink
+read_agents_yaml() {
+  awk '/^```yaml/ {b=1; next} b && /^```/ {exit} b {print}' "$1" 2>/dev/null || true
+}
+
+# pack_rules PACK : rule names (no extension) listed by the pack.
+pack_rules() {
+  local pack="$1"
+  local list
+  list="$(awk -v p="  ${pack}:" '
+    $0 == p {inpack=1; next}
+    inpack && /^  [^ ]/ {exit}
+    inpack && /^    rules:/ {
+      if ($0 ~ /all/) {print "ALL"; exit}
+      inrules=1; next
     }
-    inblock && /^packs:/ {getline; if ($0 ~ /^[[:space:]]*-[[:space:]]+/) {
-      gsub(/^[[:space:]]*-[[:space:]]*/, ""); print
-    }}
-  ' "${agents_md}" 2>/dev/null || true
+    inpack && inrules && /^      - / {sub(/^      - /, ""); print; next}
+    inpack && inrules && /^    [^ ]/ {inrules=0}
+  ' "${PACKS_FILE}")"
+  [[ -n "${list}" ]] || die "pack ${pack} not found in ${PACKS_FILE}"
+  if [[ "${list}" == "ALL" ]]; then
+    list_bundle_rules
+  else
+    printf '%s\n' "${list}" | sed 's/\.mdc$//'
+  fi
 }
 
 cmd_install_project() {
   local root="${1:-.}"
   root="$(cd "${root}" && pwd)"
-  local agents="${root}/AGENTS.md"
-  local mode="symlink"
-  if grep -q 'rules: copy' "${agents}" 2>/dev/null; then
-    mode="copy"
-  fi
-  mkdir -p "${root}/.cursor"
-  local packs
-  packs="$(read_agents_packs "${agents}")"
-  if [[ -z "${packs}" ]]; then
-    packs="user-global"
-  fi
-  if [[ "${packs}" == *"user-global"* ]] || [[ -z "$(read_agents_packs "${agents}")" ]]; then
-    if [[ "${mode}" == "symlink" ]]; then
-      local rel_rules rel_skills
-      rel_rules="$(realpath --relative-to="${root}/.cursor" "${BUNDLE_ROOT}/rules" 2>/dev/null || true)"
-      rel_skills="$(realpath --relative-to="${root}/.cursor" "${BUNDLE_ROOT}/skills" 2>/dev/null || true)"
-      if [[ -n "${rel_rules}" ]]; then
-        ln -sfn "${rel_rules}" "${root}/.cursor/rules"
-      else
-        ln -sfn "${BUNDLE_ROOT}/rules" "${root}/.cursor/rules"
-      fi
-      if [[ -n "${rel_skills}" ]]; then
-        ln -sfn "${rel_skills}" "${root}/.cursor/skills"
-      else
-        ln -sfn "${BUNDLE_ROOT}/skills" "${root}/.cursor/skills"
-      fi
-    else
-      rsync -a "${BUNDLE_ROOT}/rules/" "${root}/.cursor/rules/"
-      local name
-      while IFS= read -r name; do
-        [[ -n "${name}" ]] || continue
-        rsync -a "${BUNDLE_ROOT}/skills/${name}/" "${root}/.cursor/skills/${name}/"
-      done < <(list_vendored_skills)
-    fi
-    log "install-project: ${root}/.cursor → bundle (${mode})"
+  local yaml mode packs
+  yaml="$(read_agents_yaml "${root}/AGENTS.md")"
+  mode="$(printf '%s\n' "${yaml}" | sed -n 's/^project_rules:[[:space:]]*//p')"
+  mode="${mode:-symlink}"
+  packs="$(printf '%s\n' "${yaml}" | awk '/^packs:/ {p=1; next} p && /^  - / {sub(/^  - /, ""); print; next} p && /^[^ ]/ {p=0}')"
+  packs="${packs:-user-global}"
+  if [[ "${mode}" == "symlink" ]]; then
+    mkdir -p "${root}/.cursor"
+    ln -sfn "$(realpath --relative-to="${root}/.cursor" "${BUNDLE_ROOT}/rules")" "${root}/.cursor/rules"
+    ln -sfn "$(realpath --relative-to="${root}/.cursor" "${BUNDLE_ROOT}/skills")" "${root}/.cursor/skills"
+    log "install-project: ${root}/.cursor symlinked to the bundle"
     return 0
   fi
-  log "install-project: custom pack lists not fully implemented; use user-global in AGENTS.md"
-  exit 1
+  local cur="${root}/.cursor/rules" cla="${root}/.claude/rules"
+  [[ -L "${cur}" ]] && die "${cur} is a symlink; remove it before copy mode"
+  mkdir -p "${cur}" "${cla}"
+  local -a names=()
+  local pack name
+  while IFS= read -r pack; do
+    while IFS= read -r name; do
+      [[ -n "${name}" ]] || continue
+      [[ -f "${BUNDLE_ROOT}/rules/${name}.mdc" ]] || die "pack ${pack}: no rule ${name}"
+      names+=("${name}")
+    done < <(pack_rules "${pack}")
+  done <<< "${packs}"
+  mapfile -t names < <(printf '%s\n' "${names[@]}" | sort -u)
+  for name in "${names[@]}"; do
+    cp "${BUNDLE_ROOT}/rules/${name}.mdc" "${cur}/${name}.mdc"
+    cp "${BUNDLE_ROOT}/rules/${name}.mdc" "${cla}/${name}.md"
+  done
+  prune_dir "${cur}" mdc "${LEGACY_RULES}" "${names[@]}"
+  prune_dir "${cla}" md "${LEGACY_RULES}" "${names[@]}"
+  # Project-only rules live in .cursor/rules; mirror them for Claude Code.
+  local f base
+  for f in "${cur}/"*.mdc; do
+    base="$(basename "${f}" .mdc)"
+    in_manifest "${cur}" "${base}" && continue
+    cp "${f}" "${cla}/${base}.md"
+    log "install-project: project rule ${base} mirrored to .claude/rules"
+  done
+  log "install-project: ${#names[@]} bundle rules copied into ${root} (packs: $(echo ${packs}))"
 }
 
 cmd_install_remote() {
@@ -295,7 +344,8 @@ Commands:
   install-user       Deploy bundle rules/skills to ~/.cursor and ~/.claude
   publish            Copy vendored home changes back into Config/.cursor
   verify             Smoke test (exit 1 on failure)
-  install-project [ROOT]   Link or copy bundle into ROOT/.cursor
+  install-project [ROOT]   Symlink ROOT/.cursor to the bundle, or copy the
+                     AGENTS.md packs into ROOT/.cursor/rules and .claude/rules
   install-remote     ssh AGENT_SYNC_HOST, git pull, install-user, verify
   after-edit PATH    Hook helper: install-user or publish by path
 

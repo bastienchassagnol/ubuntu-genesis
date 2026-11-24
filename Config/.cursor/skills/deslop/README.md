@@ -1,12 +1,23 @@
 # deslop
 
-A Claude skill for removing AI writing patterns from prose.
+A Claude skill for removing AI writing patterns from scientific manuscripts and package documentation.
+
+Vendored and adapted from [stephenturner/skill-deslop](https://github.com/stephenturner/skill-deslop) (MIT, see `LICENSE`).
 
 ## What it does
 
-When you write, draft, edit, or review text, `deslop` identifies and eliminates predictable AI tells: formulaic sentence structures, filler phrases, false agency, dramatic fragmentation, vague declaratives, and dozens of other patterns that signal machine-generated writing.
+`deslop` identifies and removes predictable AI tells (filler phrases, formulaic
+structures, false agency, vague declaratives, marketing adjectives) in two
+genres only:
 
-The skill works across any prose context. Examples are weighted toward scientific writing and technical blog posts, but the rules apply to any writing where you want a human voice without the AI veneer. For scientific contexts specifically, the skill accounts for conventions like passive voice in methods sections and domain-specific terminology.
+- scientific papers in LaTeX or Quarto (abstract, introduction, methods,
+  results, discussion, captions, responses to reviewers);
+- package documentation (R vignettes, README, pkgdown articles, function-doc
+  prose).
+
+It leaves maths, `\cite{}`, `\ref{}`, code chunks and tables untouched. Active
+voice is the default; passive is acceptable in Methods when the actor is the
+authors or irrelevant.
 
 ## Installation
 
@@ -30,17 +41,10 @@ zip -r deslop.skill SKILL.md references/
 
 ## How to use it
 
-Install as described above, then use it like you normally talk to Claude. The skill triggers automatically when you:
-
-- Ask Claude to write prose (blog posts, essays, articles, memos, newsletters) making it sound natural instead of AI-generated
-- Ask Claude to "deslop", "de-AI" or "make it sound human"
-- Ask Claude to check for "slop" or AI patterns
-
-You can also reference the skill directly:
-
-- "Review this draft using the deslop checklist"
-- "Score this text on the deslop rubric"
-- "Rewrite this paragraph to pass the deslop quick checks"
+The skill triggers when you ask Claude to "deslop", "de-AI" or "make it sound
+human" for a manuscript or package documentation, and automatically when editing
+LaTeX article sources or `vignettes/*.qmd|Rmd`, `README.(R)md`. You can also ask
+for a review against the checklist or a score on the rubric.
 
 ## Scoring rubric
 
@@ -60,20 +64,21 @@ Below 35/50: revise.
 
 ```
 deslop/
-├── SKILL.md              # Core rules, quick checks, scoring rubric
+├── SKILL.md              # Scope, workflow, core rules, quick checks, scoring
 ├── README.md             # This file
+├── LICENSE               # MIT (upstream)
 └── references/
-    ├── phrases.md        # Phrases to remove or replace
-    ├── structures.md     # Structural patterns to avoid
-    ├── tropes.md         # Full catalog of AI writing tropes
-    └── examples.md       # Before/after transformations
+    ├── vocabulary.md     # Words and phrases to cut or replace
+    ├── structures.md     # Sentence and paragraph patterns
+    ├── examples.md       # Manuscript and vignette before/after pairs
+    └── latex.md          # LaTeX and Quarto boundaries
 ```
 
 ## Acknowledgments
 
 This skill was built in part by combining and synthesizing material from two open sources:
 
-- **AI writing tropes catalog** from [tropes.fyi](https://tropes.fyi/) by [Ossama Hassanein](https://ossama.is). The `references/tropes.md` file is adapted from this source, and trope patterns are integrated throughout the other reference files.
+- **AI writing tropes catalog** from [tropes.fyi](https://tropes.fyi/) by [Ossama Hassanein](https://ossama.is). Its patterns are merged and deduplicated into `references/vocabulary.md` and `references/structures.md`.
 - **stop-slop** from [github.com/hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop) by [Hardik Pandya](https://hvpandya.com). The phrase lists, structural patterns, before/after examples, scoring rubric, and quick checks draw from this project.
 
 ## License

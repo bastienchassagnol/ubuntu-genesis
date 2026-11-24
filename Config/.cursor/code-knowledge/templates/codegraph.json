@@ -1,7 +1,6 @@
 {
   "deprioritize": [
     "Config/.cursor/",
-    "scripts/",
-    "optional-skills/"
+    "scripts/"
   ]
 }

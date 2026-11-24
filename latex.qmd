@@ -16,7 +16,8 @@ Useful references:
 For **Nature Methods**-style manuscripts in this lab, prefer TikZ / vector
 figures for model DAGs and equation panels; keep Mermaid for README /
 vignettes unless you export a journal-ready figure. See also the
-scientific-writing rules in `.cursorrules`.
+`scientific-writing` and `latex-scientific`
+[agent rules](software.qmd#sec-agent-bundle).
 
 ## Document structure {#sec-latex-structure}
 

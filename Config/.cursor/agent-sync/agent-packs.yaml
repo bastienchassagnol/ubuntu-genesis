@@ -1,14 +1,39 @@
-# Vendored agent packs (bundle root: ../rules and ../skills).
-# agent-sync.sh reads this file with simple grep/sed — keep the layout stable.
+# Agent packs (bundle root: ../rules and ../skills).
+# agent-sync.sh reads this file with awk: keep two-space pack keys, four-space
+# `rules:`/`skills:` keys and six-space `- name.mdc` items.
+# install-user deploys every rule and skill (user-global); install-project
+# copies the rules of the packs named in a repository's AGENTS.md.
 
 never_sync_skills:
   - firecrawl
 
 packs:
   user-global:
-    description: Full teaching bundle rules and vendored skills
+    description: Full bundle (all rules and vendored skills)
     rules: all
     skills: all
+  r-package-article:
+    description: R package with a LaTeX article, Quarto vignettes and slides (DeCovarT)
+    rules: all
+  quarto-r-analysis:
+    description: Quarto book or site with R analyses and slides, not a package (DeCovarT_reproducibility)
+    rules:
+      - code-intelligence.mdc
+      - token-budget.mdc
+      - r-python-project.mdc
+      - r-development.mdc
+      - python-development.mdc
+      - ponytail.mdc
+      - statistical-modelling.mdc
+      - symbolic-verification.mdc
+      - scientific-writing.mdc
+      - documentation-bibliography.mdc
+      - document-extraction.mdc
+      - quarto-presentations.mdc
+      - data-visualisation.mdc
+      - figure-sources.mdc
+      - graphical-models.mdc
+      - latex-scientific.mdc
   quarto-only:
     description: Quarto website and slides
     rules:
@@ -19,6 +44,7 @@ packs:
       - scientific-writing.mdc
       - token-budget.mdc
       - figure-sources.mdc
+      - data-visualisation.mdc
     skills:
       - quarto-revealjs
       - quarto-website

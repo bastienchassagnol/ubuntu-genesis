@@ -1,11 +1,14 @@
 # Libraries and galleries: the escalation ladder
 
+This file owns the interactive ladder (ggplot2, ggiraph, OJS + Plot, D3, React).
+Plots are R (ggplot2, ggdist, ggiraph) or OJS/D3/React in Quarto only.
+
 Climb only as far as the figure needs. Each step costs more to build,
 maintain and load than the one before.
 
 | Step | Tool | Use when |
 |---|---|---|
-| 1 | `ggplot2` + `theme_slide()`, exported with `ragg` | every static figure (paper, slide, report) |
+| 1 | `ggplot2` + `theme_slide()`, exported with `svglite` (vector) or `ragg` (raster) | every static figure (paper, slide, report) |
 | 2 | `ggiraph` | hover, tooltips or linked hover on a ggplot in an HTML page; keep the static version |
 | 3 | OJS + Observable Plot | reactive statistical graphics driven by sliders or selects, in pages and decks |
 | 4 | OJS + D3 | custom marks, drag, brush, zoom, force layouts, teaching playgrounds |
@@ -15,7 +18,7 @@ maintain and load than the one before.
 
 How-to for steps 3–6: **quarto-revealjs** (`references/ojs-basics.md`,
 `ojs-d3.md`, `react-in-quarto.md`). Step 7: a dedicated React/Next app outside
-Quarto. Test strategy: `references/testing/` in this skill. Never start at 6 or 7.
+Quarto. Never start at 6 or 7.
 
 ## React libraries worth knowing
 
@@ -28,7 +31,6 @@ scientific figures and networks:
 | Recharts (`recharts`) | declarative chart components over D3 | standard line/bar/area charts fast | MIT |
 | react-force-graph | 2D/3D/VR force-directed graphs on canvas/WebGL | large interactive networks | MIT |
 | Semiotic | charts, network graphs, streaming data | mixed chart + network views | Apache-2.0 |
-| react-plotly.js | React wrapper for Plotly.js | 3D surfaces, scientific chart types already in Plotly | MIT |
 | nivo | rich prebuilt components, server rendering | dashboards | MIT |
 
 Non-React equivalents to consider first for networks: `force-graph` (vanilla

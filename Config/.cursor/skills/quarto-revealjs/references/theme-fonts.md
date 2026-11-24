@@ -6,7 +6,7 @@ References:
 
 ## Finding fonts
 
-Use [Google Fonts](https://fonts.google.com/); they're free and need no shipping. Look for a legible font that offers multiple weights and italics if you'll use them. [Font pairing](https://www.figma.com/google-fonts/) sites help choose a heading + body combo.
+Use [Google Fonts](https://fonts.google.com/); they're free. Google Fonts CDN imports fail offline and in PDF export; prefer local font files and match the figure font (data-visualisation skill, `references/fonts.md`). Look for a legible font that offers multiple weights and italics if you'll use them. [Font pairing](https://www.figma.com/google-fonts/) sites help choose a heading + body combo.
 
 ## Applying Google Fonts
 

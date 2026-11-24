@@ -1,146 +1,104 @@
 ---
 name: deslop
 description: >-
-  Removes AI writing patterns from prose (deslop, de-AI, make it sound human).
-  Applies when drafting or editing scientific manuscripts, abstracts, grants,
-  peer-review responses, blogs, or memos. **Auto-apply when editing LaTeX
-  article source** (paths like article/*.tex, manuscript .tex, sn-jnl drafts):
-  deslop prose in \section{} text, abstract, captions, and cover letters while
-  leaving macros, maths, \cite{}, \ref{}, and tables untouched. Upstream:
-  stephenturner/skill-deslop.
+  Removes AI writing patterns (deslop, de-AI, make it sound human) from two
+  genres: scientific manuscripts (LaTeX or Quarto: abstract, introduction,
+  methods, results, discussion, captions, responses to reviewers) and package
+  documentation (R vignettes, README, pkgdown articles, function-doc prose).
+  **Auto-apply when editing LaTeX article source** (article/*.tex, manuscript
+  .tex, sn-jnl drafts) and **vignettes** (vignettes/*.qmd, vignettes/*.Rmd,
+  README.md, README.Rmd): rewrite prose only; leave macros, maths, \cite{},
+  \ref{}, code chunks and tables untouched. Upstream: stephenturner/skill-deslop.
 disable-model-invocation: false
 ---
 
-# Deslop: Remove AI Writing Patterns from Prose
+# Deslop: remove AI writing patterns
 
-IMRaD section order, figure integrity, and venue limits: `scientific-writing` rule
-(`Config/.cursor/rules/scientific-writing.mdc`). This skill is the executable
-deslop procedure only.
+Adapted from [stephenturner/skill-deslop](https://github.com/stephenturner/skill-deslop)
+(MIT, see `LICENSE`). Section order, figure integrity and venue limits belong to
+the `scientific-writing` rule; this skill is the executable prose-cleaning
+procedure. Use British English unless the venue or repository requires American.
 
-Strip predictable AI patterns from writing. Make prose sound like a specific human wrote it, not like a language model generated it.
+## Scope
 
-## When to Apply
+1. Scientific papers: abstract, introduction, methods, results, discussion,
+   captions, peer-review responses to reviewers of the paper.
+2. Package documentation: vignettes, README, pkgdown articles, function-doc
+   prose (roxygen descriptions, details, value sections).
 
-- Any request to "make it sound human" or "deslop" writing
-- Any prose (articles, blog posts, essays, memos, newsletters, reports) or scientific writing (manuscripts, abstracts, cover letters, grant narratives, discussion sections, peer review responses) where the user wants it to sound natural rather than AI-generated
-- Editing or revising existing text where the user wants it to sound natural rather than AI-generated
-- Reviewing text for AI tells
-- **LaTeX manuscripts:** whenever the user (or Agent) edits `.tex` files under
-  `article/` or other paper roots — run deslop on new or changed **prose** before
-  finishing the edit (see [references/latex.md](references/latex.md))
+Other genres (grants, blogs, memos, emails, cover letters, marketing) are out of
+scope; do not apply the rules there.
 
-## Core Rules
+## Auto-apply
 
-### 1. Cut filler phrases
+- LaTeX articles (`article/*.tex`, manuscript `.tex`): deslop new or changed
+  prose before finishing the edit; see [references/latex.md](references/latex.md).
+- Vignettes and READMEs (`vignettes/*.qmd`, `vignettes/*.Rmd`, `README.md`,
+  `README.Rmd`): deslop prose only; leave code chunks, YAML, chunk options,
+  `@fig-`/`@tbl-` keys, links and output untouched.
 
-Remove throat-clearing openers ("Here's the thing:"), emphasis crutches ("Let that sink in."), business jargon ("navigate the landscape"), and meta-commentary ("In this section, we'll explore..."). See [references/phrases.md](references/phrases.md) for the full catalog.
+## Workflow
 
-### 2. Break formulaic structures
+1. **Detect.** Mark prose blocks that carry patterns from the catalogues:
+   [references/vocabulary.md](references/vocabulary.md) (words and phrases) and
+   [references/structures.md](references/structures.md) (sentence and paragraph
+   patterns).
+2. **Rewrite.** Replace each pattern with the specific content: the number,
+   the actor, the source, the reason. If the specific content is not in the text,
+   ask the author or leave a `[CHECK]` marker; never invent facts, numbers or
+   citations. Keep meaning, claims, uncertainty and statistical wording
+   (estimands, intervals, *P*-values) intact. See
+   [references/examples.md](references/examples.md) for before/after pairs.
+3. **Check.** Run the quick checks below and the scoring table; then confirm
+   that maths, cites, labels, code and tables are byte-identical.
 
-Avoid binary contrasts ("Not X. Y."), negative listings ("Not a X. Not a Y. A Z."), dramatic fragmentation ("Speed. That's it. That's the tradeoff."), self-posed rhetorical questions ("The result? Devastating."), and anaphora/tricolon abuse. See [references/structures.md](references/structures.md) for patterns and fixes.
+## Core rules
 
-### 3. Eliminate AI tropes
+- Cut filler openers, announcements and emphasis crutches.
+- Say the point directly; avoid "not X, but Y" contrasts unless X is a real,
+  cited alternative.
+- Be specific: name the quantity, method or source. Domain terms are fine;
+  business buzzwords and AI vocabulary are not.
+- Active voice by default, with "we" for the authors' own work and the
+  package or function as subject in documentation. Passive is acceptable in
+  Methods when the actor is the authors or is irrelevant.
+- Cite named work; no "studies have shown" without a key.
+- Vary sentence length; no em dashes; no bold-first bullets; no unicode arrows.
+- State each point once; no signposted summaries ("In conclusion").
+- Do not anthropomorphise models or data; do not casualise statistical
+  reporting.
 
-Watch for the full catalog of AI writing tells: "quietly" and other magic adverbs, "delve" and its cousins, the "serves as" dodge, false ranges ("from X to Y" where the range is meaningless), superficial participle analyses ("highlighting its importance"), invented concept labels ("the supervision paradox"), grandiose stakes inflation, patronizing analogies, and false vulnerability. See [references/tropes.md](references/tropes.md) for the complete list with examples.
+## Quick checks
 
-### 4. Use active voice with human subjects
-
-Prefer active constructions with named actors. "The complaint becomes a fix" is wrong. "The team fixed it" is right. If no specific person fits, use "we" in scientific prose or "you" in blog posts.
-
-### 5. Be specific
-
-No vague declaratives ("The reasons are structural"). Name the specific thing. No lazy extremes ("every," "always," "never") doing vague work. No vague attributions ("Experts argue..."). If you cannot name the expert, you do not have a source.
-
-In scientific writing, domain terminology is fine and expected. "Weighted interval score" is precise language, not jargon. The problem is business buzzwords ("leverage," "landscape," "ecosystem") and AI vocabulary tells ("delve," "tapestry," "nuanced") leaking into technical prose.
-
-### 6. Match register to context
-
-In blog posts and newsletters, put the reader in the room. "You" beats "People." Specifics beat abstractions. No narrator-from-a-distance voice.
-
-In scientific writing, maintain appropriate formality. Use "we" for your own work, cite specific authors instead of "researchers have shown," and avoid both the distant narrator ("It has long been recognized that...") and the overly casual blog voice. State claims and back them with citations.
-
-### 7. Vary rhythm
-
-Mix sentence lengths. Two items beat three. End paragraphs differently. No em dashes. Do not stack short punchy fragments for manufactured emphasis. Do not write listicles disguised as prose ("The first wall... The second wall...").
-
-### 8. Trust readers
-
-State facts directly. Skip softening, justification, hand-holding. No "Let's break this down." No "Think of it as..." No pedagogical voice unless the audience genuinely needs it. No fractal summaries (telling the reader what you are about to say, saying it, then summarizing what you said).
-
-### 9. Watch formatting tells
-
-No bold-first bullets (every list item starting with a bolded keyword). No unicode arrows. No em dashes. No signposted conclusions ("In conclusion..."). No "Despite these challenges..." formulas. These are strong AI signals.
-
-### 10. Do not dilute
-
-One point per section. Do not restate the same argument in ten different ways across thousands of words. Do not beat a single metaphor to death. Do not stack historical analogies for false authority ("Apple didn't build Uber. Facebook didn't build Spotify...").
-
-## Quick Checks
-
-Run these before delivering any prose:
-
-- Heavy use of adverbs or -ly words? Cut them.
-- Any passive voice? Find the actor, make them the subject. 
-- Inanimate thing doing a human verb? Name the person.
-- Any "here's what/this/that" throat-clearing? Cut to the point.
-- Any "not X, it's Y" contrasts? State Y directly.
-- Any self-posed rhetorical question answered immediately? Fold into a statement.
-- Three consecutive sentences match length? Break one.
-- Paragraph ends with a punchy one-liner? Vary it.
-- Em dash anywhere? Remove it. Use a comma or period or a parenthetical.
-- Vague declarative ("The implications are significant")? Name the specific implication.
-- Any sentence starting with What/When/Where/Which/Who/Why/How as a crutch? Restructure.
-- Meta-joiners ("The rest of this essay...")? Delete.
-- "It's worth noting" or similar filler transitions? Delete.
-- Same metaphor used more than twice? Replace or cut repeats.
-- "Despite these challenges..." formula? Rewrite.
-- Bold-first bullet pattern? Remove bold leads.
-- Tricolon (three-item list)? Use two items or one.
+- Adverbs or intensifiers doing no work? Cut them.
+- Passive voice? Name the actor unless it is Methods and the actor is the
+  authors or irrelevant.
+- Inanimate thing with a human verb ("the data tell us")? Name the actor or
+  restate.
+- Throat-clearing ("It is worth noting", "Here's the thing")? Cut.
+- "Not X, it is Y", or a self-posed question answered at once? State Y.
+- Three similar sentences or exactly three items? Merge or use the true count.
+- Vague declarative ("The implications are significant")? Name the implication.
+- Meta-joiners ("In this section we will...")? Delete.
+- Same claim made in several places? Keep one.
+- Marketing adjectives in documentation ("powerful", "seamless")? Say what the
+  function does.
 
 ## Scoring
 
-When reviewing text, rate 1-10 on each dimension:
+Rate 1 to 10 on each; below 35/50, revise.
 
 | Dimension | Question |
 |-----------|----------|
 | Directness | Statements or announcements? |
 | Rhythm | Varied or metronomic? |
-| Trust | Respects reader intelligence? |
-| Authenticity | Sounds like a specific human wrote it? |
+| Trust | Respects the reader's expertise? |
+| Authenticity | Sounds like a specific author wrote it? |
 | Density | Anything cuttable? |
 
-Below 35/50: revise.
+## Reference files
 
-## Reference Files
-
-Consult these for detailed catalogs when writing or editing:
-
-- [references/phrases.md](references/phrases.md): Phrases to remove or replace (throat-clearing, emphasis crutches, business jargon, adverbs, meta-commentary, vague declaratives)
-- [references/structures.md](references/structures.md): Structural patterns to avoid (binary contrasts, negative listings, dramatic fragmentation, rhetorical setups, false agency, passive voice, rhythm problems)
-- [references/tropes.md](references/tropes.md): Full catalog of AI writing tropes (word choice, sentence structure, paragraph structure, tone, formatting, composition)
-- [references/examples.md](references/examples.md): Before/after transformations showing how to fix common patterns
-- [references/latex.md](references/latex.md): LaTeX manuscript boundaries (`article/*.tex`, cites, maths)
-
-## Examples
-
-See [references/examples.md](references/examples.md) for before/after transformations.
-
-**Quick inline example (scientific writing):**
-
-Before:
-> "It's worth noting that these findings have important implications for how we navigate the challenges of forecast ensembling moving forward. Despite these challenges, this work contributes meaningfully to the growing body of literature, highlighting the need for continued evaluation."
-
-After:
-> "If individual model rankings are unstable across geography and time, ensemble methods that weight models by past performance may not improve on equal-weight approaches."
-
-Changes: Replaced filler transition, vague declarative, "despite these challenges" formula, and superficial participle analysis with the specific implication.
-
-**Quick inline example (blog post):**
-
-Before:
-> "Here's the thing: most bioinformatics pipelines break in production. Not because the code is bad. Because the data is bad. Let that sink in."
-
-After:
-> "Most bioinformatics pipelines break in production. The code runs fine. The data doesn't match the assumptions baked into it."
-
-Changes: Removed opener, binary contrast, and emphasis crutch. Named the specific problem.
+- [references/vocabulary.md](references/vocabulary.md): words and phrases to cut or replace
+- [references/structures.md](references/structures.md): sentence and paragraph patterns
+- [references/examples.md](references/examples.md): manuscript and vignette before/after pairs
+- [references/latex.md](references/latex.md): LaTeX and Quarto boundaries

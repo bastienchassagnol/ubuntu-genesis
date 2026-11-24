@@ -1,92 +1,84 @@
-# Cursor configuration bundle (teaching_material)
+# Agent bundle (rules and skills)
 
-Portable **rules** (`.mdc`) and **skills** (`SKILL.md`) for Cursor Agent,
-split by domain instead of one `.cursorrules` file.
+Git source of truth for the **rules** (`rules/*.mdc`) and **skills**
+(`skills/*/SKILL.md`) used by Cursor and Claude Code. Each repository's root
+`AGENTS.md` says which rules it carries; `agent-sync` deploys them.
+
+![Core rules, grouped by when they load](../../assets/agents/rules-map.svg)
+
+![Skills and their reference files](../../assets/agents/skills-map.svg)
 
 ## Rules (`rules/`)
 
-| File | When it applies |
-|------|-----------------|
-| `r-python-project.mdc` | Always — analysis repos, data, SSH/editor hosts |
-| `statistical-modelling.mdc` | Always — CV, bootstrap, glmPerm, mlr3, review |
-| `documentation-bibliography.mdc` | Always — Zotero, Quarto bib, intake |
-| `scientific-writing.mdc` | Always — voice, figures, integrity |
-| `r-development.mdc` | `*.R` — local layout, style, ggplot2, parallelism |
-| `r-package-development.mdc` | `DESCRIPTION`, tests, CRAN, GHA, pkgdown |
-| `python-development.mdc` | `*.py`, `pyproject.toml` — uv, Ruff, ty |
-| `quarto-presentations.mdc` | `*.qmd`, slides — Mermaid, reveal.js |
-| `latex-scientific.mdc` | `*.tex` — LuaLaTeX, TikZ, minted |
-| `data-visualisation.mdc` | Charts in R, Python, Quarto, LaTeX |
-| `document-extraction.mdc` | anydoc → Markdown; Docling/Chroma `doc-search`; `.qmd` |
-| `figure-sources.mdc` | Always — reuse, draw, then generate a figure |
-| `graphical-models.mdc` | Plate notation in Quarto and LaTeX |
-| `graphify.mdc` | When `graphify-out/` exists: corpus queries (not daily code) |
-| `ponytail.mdc` | Prefer the smallest change that works |
-| `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
-| `token-budget.mdc` | Always — route work so documents are not loaded whole |
-| `code-intelligence.mdc` | Always — CodeGraph vs Graphify routing |
-| `teaching-material-repo.mdc` | This Quarto website layout |
+| Rule | Loads | Role |
+| --- | --- | --- |
+| `r-python-project` | always | Working scope, data layout, laptop vs cluster settings |
+| `scientific-writing` | always | Structure, voice, integrity; invokes the deslop skill |
+| `figure-sources` | always | Reuse a licensed figure, draw it, or generate it |
+| `code-intelligence` | always | CodeGraph for code, Graphify for cross-document questions |
+| `token-budget` | always | Model routing, answer caches, stable prompt prefix |
+| `r-development` | `*.R` | R versions, project root, style, parallelism |
+| `r-package-development` | `DESCRIPTION`, `tests/testthat`, `vignettes`, pkgdown, CI | CRAN, roxygen, testthat, GitHub Actions, pkgdown |
+| `python-development` | `*.py`, `pyproject.toml` | uv, Ruff, ty, library choices |
+| `ponytail` | code files | Smallest complete change |
+| `statistical-modelling` | R, Quarto, LaTeX | Resampling, bootstrap, permutation, model review |
+| `data-visualisation` | R, Quarto, LaTeX | House theme, SVG-first devices, caveats checklist |
+| `quarto-presentations` | `*.qmd`, `_quarto.yml` | Labels, callouts, code display, tables, Mermaid |
+| `documentation-bibliography` | `*.bib`, `*.qmd`, `*.tex`, `CITATION` | Zotero, citation keys, curation scripts, software citations |
+| `latex-scientific` | `*.tex`, `article/` | LuaLaTeX, maths, floats, TikZ figures (SVG first), audit |
+| `graphical-models` | `*.qmd`, `*.tex` | bayesnet plate notation for probabilistic models |
+| `symbolic-verification` | `*.tex`, `*.qmd`, `verification/` | SymPy and Lean checks before "verified" |
+| `document-extraction` | PDF and Office files | doc-search, anydoc, figures, confidentiality |
 
 ## Skills (`skills/`)
 
 | Skill | Role |
-|-------|------|
-| `deslop` | De-AI prose (LaTeX-safe) |
-| `peer-review` | OSP first; Firecrawl report second tier |
-| `quarto-revealjs` | Primary skill for reveal.js decks (incl. OJS/D3/React) |
-| `quarto-website` | Quarto `type: website` layout |
-| `quarto-book` | Quarto `type: book` |
-| `data-visualisation` | Inspiration search, chart choice, ggplot2, caveats |
-| `roast-my-chart` | Pre-publish review against 61 caveats (Holtz, MIT) |
-| `codegraph` | Structural code queries when `.codegraph/` exists |
-| `graphify` | Mixed corpora when `graphify-out/` exists (milestone builds) |
-| `find-skills` | Discover third-party skills |
-| `instagram-carousel` | Carousel copy/layout |
-| `firecrawl` | **Pointer only** — install from [firecrawl/skills](https://github.com/firecrawl/skills) |
+| --- | --- |
+| `data-visualisation` | Gallery search, chart chooser, ggplot2 production and house theme, caveats, colours, fonts, chart modules |
+| `roast-my-chart` | Pre-publication review against the caveats (Holtz, MIT) |
+| `deslop` | Remove AI patterns from manuscripts and package documentation |
+| `peer-review` | Open ScholarPeer first; Firecrawl literature checks second; never uploads the manuscript |
+| `quarto-revealjs` | Reveal.js decks: theme, layout, motion, presenting, OJS/D3/React |
+| `quarto-website` | Quarto websites: navbar, layout, embeds, GitHub corner |
+| `quarto-book` | Quarto books: chapter order, cross-references |
+| `codegraph` | CodeGraph install and queries |
+| `graphify` | Milestone knowledge graph of mixed corpora |
+| `instagram-carousel` | Instagram post to Quarto lightbox gallery (manual only) |
 
-These copies follow `~/.claude/rules` and `~/.claude/skills`. Firecrawl
-sub-skills are symlinks on this machine and are **not** vendored here
-(repo size, API keys). Follow `skills/firecrawl/SKILL.md`.
+Firecrawl skills are installed per machine from
+[firecrawl/skills](https://github.com/firecrawl/skills) (API key needed) and
+are never vendored or touched by `agent-sync`.
 
-## Installation (user home)
-
-Git source of truth: this folder. Deploy with **agent-sync** (laptop and MMG cluster):
+## agent-sync
 
 ```bash
 export AGENT_BUNDLE_ROOT="/path/to/ubuntu-genesis/Config/.cursor"
-"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-user
-"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" verify
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-user      # ~/.cursor and ~/.claude
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" verify            # every rule and skill identical
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" install-project R # packs from R/AGENTS.md
+"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" publish           # home edits back into the bundle
 ```
 
-After editing `~/.cursor` or `~/.claude`, copy changes back before commit:
-
-```bash
-"$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" publish
-```
-
-Automatic sync: merge hooks from
-[`agent-sync/hooks/claude-settings-hooks.snippet.json`](agent-sync/hooks/claude-settings-hooks.snippet.json)
-into `~/.claude/settings.json` — **`PreToolUse`** (`dataviz-nudge-claude.sh`, inspiration before ggplot/OJS code) and **`PostToolUse`** (agent-sync after bundle edits). Disable nudge with `DATAVIZ_NUDGE=off`. An edit of a rule or skill redeploys to
-`~/.claude` and `~/.cursor`; run
-`git config core.hooksPath Config/.cursor/agent-sync/git/hooks` once per clone
-(`git pull` from GitHub redeploys).
-
-See [`agent-sync/CLUSTER.md`](agent-sync/CLUSTER.md) for the **`bastienc`** cluster account and
-[`../../AGENTS.md`](../../AGENTS.md) for project hooks and packs.
-
-Optional **User Rules** one-liner (Cursor → Settings → Rules):
-
-> Apply `~/.cursor/rules/*.mdc` unless the project overrides in `.cursor/rules/`.
-
-Optional repo root **`AGENTS.md`**: onboarding only (commands, data paths);
-does not replace `.mdc` rules.
+- `install-user` copies every rule and skill and records them in
+  `.agent-sync-manifest`; a rule or skill removed from the bundle is removed
+  from both homes on the next run. Unmanaged entries (Firecrawl symlinks,
+  `synced/`, your own files) are never touched.
+- `install-project` reads the `yaml` block of the repository's `AGENTS.md`
+  (`packs:` from `agent-sync/agent-packs.yaml`, `project_rules: copy` or
+  `symlink`). Copy mode writes `.cursor/rules/*.mdc` and `.claude/rules/*.md`,
+  prunes stale bundle copies, and mirrors project-only `.cursor/rules` files
+  to `.claude/rules`.
+- Hooks (merge once per machine):
+  [`claude-settings-hooks.snippet.json`](agent-sync/hooks/claude-settings-hooks.snippet.json)
+  into `~/.claude/settings.json` (SessionStart `verify`, PostToolUse
+  redeploy after an edit, PreToolUse `dataviz-nudge`);
+  [`cursor-hooks.json.example`](agent-sync/hooks/cursor-hooks.json.example)
+  into `~/.cursor/hooks.json`; and
+  `git config core.hooksPath Config/.cursor/agent-sync/git/hooks` so a
+  `git pull` redeploys. Cluster setup: [`agent-sync/CLUSTER.md`](agent-sync/CLUSTER.md).
 
 ## Also in this folder
 
-- `Code/User/` — VS Code / Cursor settings and keybindings templates
-- `extensions/list.txt` — extension IDs
-- `archive/.cursorrules.decovart-monolith` — retired single-file rules
-
-## Diagram
-
-![Rules and skills layout](cursorrules-map.png)
+- `code-knowledge/`: CodeGraph template and Graphify milestone scripts.
+- `Code/User/`: VS Code / Cursor settings and keybindings templates.
+- `extensions/list.txt`: editor extension IDs.

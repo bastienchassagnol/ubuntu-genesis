@@ -1,5 +1,5 @@
 ---
-description: Local R layout, coding style, viz, parallelism (not package CRAN/CI)
+description: R versions, project root, coding style, performance, parallelism (not package CRAN/CI)
 globs: "**/*.{R,r}"
 alwaysApply: false
 paths:
@@ -7,24 +7,21 @@ paths:
 ---
 # R and statistical computing
 
-For **R packages** (`DESCRIPTION`, tests, CRAN, GHA, pkgdown), see
-**r-package-development.mdc**.
+Packages add `r-package-development`. Follow the repository first; the
+defaults below apply when it is silent.
 
-## Local R layout
+## R versions
 
-This laptop runs Ubuntu 26.04 (Resolute). The system interpreter is the official CRAN apt build, not the Ubuntu archive package and not a copy under `/usr/local`.
-
-- Repository: `resolute-cran40` from `https://cloud.r-project.org/bin/linux/ubuntu`, signed with the Michael Rutter key (`E298A3A825C0D65DFD57CBB651716619E084DAB9`).
-- Binary: `/usr/bin/R` and `/usr/bin/Rscript` (R 4.6). Cursor `r.rpath.linux` stays on that binary so the language server uses GNU R.
-
-`rig` is installed in user mode (`~/.local/bin/rig`) for extra R versions. It does not replace `/usr/bin/R`. Use `rig add` and `R-x.y.z` when an `renv.lock` records another R version. Do not run `rig default` over the apt R.
-
-`renv` freezes the package list. Switch to the intended R version before `renv::init()` or `renv::snapshot()`. After a minor-version upgrade, do not reuse the previous user library (for example `~/R/x86_64-pc-linux-gnu-library/4.5`).
-
-The local Cursor terminal is radian at `~/.local/bin/radian`, installed with `uv tool` for this user. Remote SSH sessions keep their own R terminal. On the system R, the editor packages are `languageserver`, `httpgd`, and `jsonlite`.
-
-When R is primary, follow the repository first. Defaults below apply when the repo
-is silent.
+- Keep the host's system R (CRAN apt build on the laptop, see `software.qmd`;
+  the cluster module or build there). Extra versions come from `rig` in user
+  mode (`rig add`, `R-x.y.z`) when an `renv.lock` asks for one; never
+  `rig default` over the system R.
+- `renv`: switch to the intended R version before `renv::init()` or
+  `renv::snapshot()`; after a minor upgrade, do not reuse the old user
+  library.
+- Editor: `r.rpath.linux` points to the host's R binary (User or Remote
+  settings, `r-python-project`); the editor needs `languageserver`, `httpgd`
+  and `jsonlite`.
 
 ## Project root
 
@@ -61,14 +58,7 @@ it; `targets` for heavy pipelines when justified.
 
 ## Visualisation
 
-Follow the data-visualisation rule (`~/.claude/rules/data-visualisation.md`;
-Cursor: `~/.cursor/rules/data-visualisation.mdc`): house theme `theme_slide()`,
-colour roles, export, and the caveats checklist. When the repository defines a
-theme, use it.
-
-R: `ggplot2` for static figures; `ragg` for PNG; `scales`, `forcats`, `ggrepel`,
-`ggdist`, `ggiraph` when appropriate; `ComplexHeatmap` for richly annotated
-heatmaps; `grid` for multi-panel layout.
+`data-visualisation` (house theme, devices, caveats); a repository theme wins.
 
 ## Parallelism and Shiny
 
@@ -80,7 +70,6 @@ Shiny: modules; no globals; testable domain logic.
 
 ## Preferred tools (when justified by repo)
 
-`dplyr`/`tidyr`, `purrr`, `fs`/`here`, `ggplot2`, `tinytable` for static HTML
-tables, `checkmate`, `cli`, `glue`/`stringr`, `jsonlite`, `devtools` stack.
+`dplyr`/`tidyr`, `purrr`, `fs`/`here`, `checkmate`, `cli`, `glue`/`stringr`, `jsonlite`, `devtools` stack.
 
 Resampling/tuning: **`mlr3`** ecosystem (see statistical-modelling rule).

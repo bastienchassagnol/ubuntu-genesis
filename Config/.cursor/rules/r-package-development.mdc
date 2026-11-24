@@ -1,21 +1,23 @@
 ---
 description: R package layout, CRAN incoming, roxygen, testthat, GHA deps, pkgdown
-globs: "**/DESCRIPTION,**/NAMESPACE,**/R/**/*,**/tests/**/*,**/vignettes/**/*,**/.github/workflows/*pkgdown*,**/.github/workflows/*R-CMD*,**/_pkgdown.yml,**/pkgdown/**"
+globs: "**/DESCRIPTION,**/NAMESPACE,**/man/**,**/tests/testthat/**,**/vignettes/**,**/.github/workflows/*pkgdown*,**/.github/workflows/*R-CMD*,**/.github/workflows/*coverage*,**/_pkgdown.yml,**/pkgdown/**"
 alwaysApply: false
 paths:
   - "**/DESCRIPTION"
   - "**/NAMESPACE"
-  - "**/R/**/*"
-  - "**/tests/**/*"
-  - "**/vignettes/**/*"
-  - "**/.github/workflows/**"
+  - "**/man/**"
+  - "**/tests/testthat/**"
+  - "**/vignettes/**"
+  - "**/.github/workflows/*pkgdown*"
+  - "**/.github/workflows/*R-CMD*"
+  - "**/.github/workflows/*coverage*"
   - "**/_pkgdown.yml"
   - "**/pkgdown/**"
 ---
 # R package development
 
-Applies when the repo is an R package (`DESCRIPTION`). For laptop R layout,
-coding style, and general ggplot2 tooling, see **r-development.mdc**.
+Applies when the repo is an R package (`DESCRIPTION`); `R/` code also follows
+`r-development`.
 
 Follow the repository's own checks first. Encode
 [CRAN Cookbook code issues](https://contributor.r-project.org/cran-cookbook/code_issues.html)

@@ -1,52 +1,33 @@
-# Transparent plot backgrounds
+# Plot backgrounds on slides
 
 References:
 - https://slidecrafting-book.com/elements
+- `data-visualisation/references/ggplot2-production.md` (`theme_slide()`)
 
-Most plotting libraries default to a white background that sticks out on a non-white slide. Make the plot background transparent (`#FFFFFF00`) so it blends into any slide background, solid or not.
+Static R figures use `ragg` (raster) on a white background, or `svglite` (vector), with `theme_slide()`. Do not use base `dev = "png"` with a transparent background: its anti-aliasing leaves halos on coloured slides.
 
-## base R and ggplot2
-
-No code change — set chunk options:
-
-````markdown
-```{r, dev = "png", dev.args=list(bg="transparent")}
-library(ggplot2)
-ggplot(mtcars, aes(disp, mpg, color = factor(am))) +
-  geom_point() +
-  theme_minimal()
-```
-````
-
-Or globally in YAML:
+## ggplot2
 
 ```yaml
 knitr:
   opts_chunk:
-    dev: png
-    dev.args: { bg: "transparent" }
+    dev: ragg_png
+    dev.args: { bg: "white" }
 ```
 
-## matplotlib
-
-Set both the axes and figure facecolor:
-
-```python
-fig = plt.figure()
-plt.axes().set_facecolor("#FFFFFF00")   # inside the plotting area
-plt.scatter(x, y, c=colors)
-fig.patch.set_facecolor("#FFFFFF00")    # outside the plotting area
+````markdown
+```{r}
+#| echo: false
+library(ggplot2)
+ggplot(mtcars, aes(disp, mpg, colour = factor(am))) +
+  geom_point() +
+  theme_slide()
 ```
+````
 
-## seaborn
-
-```python
-sns.set_style(rc={'axes.facecolor':'#FFFFFF00',
-                  'figure.facecolor':'#FFFFFF00'})
-```
+Vector alternative: `dev: svglite`.
 
 ## Gotchas
 
-- Prefer transparent (`#FFFFFF00`) over matching the slide color: one value, works across differently-colored or non-solid backgrounds.
-- Transparency needs a format that supports alpha (`png`, `svg`), not `jpeg`.
-- For auto-animate figures that live inside a colored element, theme the plot panel to that element's color instead (`animation-auto-animate.md`).
+- On a non-white slide, set the slide background to white for that slide (`{background-color="white"}`) or put the figure in a white card, rather than making the plot transparent.
+- For auto-animate figures that live inside a coloured element, theme the plot panel to that element's colour instead (`animation-auto-animate.md`).

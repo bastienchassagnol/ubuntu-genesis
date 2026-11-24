@@ -9,11 +9,12 @@ A single, router-style skill for building, theming, and presenting [reveal.js](h
 - **core-** — new deck setup, slide syntax, title slide, backgrounds, footer/logo, overflow
 - **theme-** — the 10-minute theme, fonts, colors, sizes, advanced SCSS, variants, syntax highlighting, menu button
 - **layout-** — columns, `r-fit-text`, absolute positioning, images, overlay text boxes, `.spread`, paper cards
-- **content-** — code highlighting, unexecuted blocks, hand-styled code, asciicast, transparent plot backgrounds, figure sizing
+- **content-** — code highlighting, unexecuted blocks, hand-styled code, asciicast, plot backgrounds (`ragg`, white), figure sizing
 - **animation-** — fragments, custom fragments, auto-animate, transitions
 - **present-** — speaker notes, speaker view, chalkboard, PDF export, multiplex, navigation, slide numbers
 - **extension-** — editable, codewindow
 - **misc-** — hiding slides, includes, editor snippets
+- **Interactive** — `ojs-basics`, `ojs-d3`, `d3-animation-ojs`, `react-in-quarto`, `new-interactive-deck`
 
 Custom fragments and auto-animate persistent elements are documented under
 `references/animation-fragments-custom.md` and `references/animation-auto-animate.md`.

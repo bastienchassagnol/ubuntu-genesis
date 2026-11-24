@@ -78,6 +78,5 @@ format:
 
 ## Gotchas
 
-- **Inside this repo's `examples/`, do NOT use `self-contained`/`embed-resources`.** Examples share a common `libs/` directory and must be rendered before the book (two-pass build): `quarto render examples/` then `quarto render`.
 - A `#` heading makes a section divider slide; `##` makes a content slide. Mixing them structures the deck.
 - The title slide is auto-generated from YAML metadata; see `core-title-slide.md` to customize or disable it.

@@ -1,5 +1,5 @@
 ---
-description: LuaLaTeX, preamble layout, maths, floats, TikZ, curve2e, minted
+description: LuaLaTeX articles — preamble, maths, floats, TikZ figures (SVG first), curve2e, minted, audit
 globs: "**/*.{tex,cls,sty,bib},**/article/**/*"
 alwaysApply: false
 paths:
@@ -10,10 +10,8 @@ paths:
 
 Semantic markup, modular sources, maintainable packages. References:
 [latex-advice](https://github.com/dspinellis/latex-advice),
-[TeXtidote](http://kohm.de.tf/markus/texidate.html).
-
-For prose tone in `\section{}` text, use the **deslop** skill; keep maths and
-citations intact.
+[TeXtidote](https://github.com/sylvainhalle/textidote). Prose tone:
+`scientific-writing` (deslop skill).
 
 ## Engine and preamble layout
 
@@ -118,8 +116,8 @@ TikZ, pgfplots, and `curve2e`. Do not use PSTricks. Its pictures need
   for DAGs, pipelines, and box diagrams.
 - **`pgfplots`** (`\pgfplotsset{compat=1.18}`) for function and data plots
   that must live in TeX.
-- Analytic plots from R: **`ggplot2::ggsave(..., device = cairo_pdf)`**
-  (or PDF) via `\includegraphics`.
+- Data plots from R: SVG from `svglite`, converted to PDF, then
+  `\includegraphics` (`data-visualisation`).
 - **`curve2e`** (Beccari; extends `pict2e`; `texdoc curve2e-manual`) for
   stroked or filled outlines and Bézier curves in the same LuaLaTeX run.
   Load **`xcolor` before `curve2e`**.
@@ -161,15 +159,21 @@ installed as system fonts, so Inkscape can edit Heros text.
 \usepackage{fontspec}
 \usepackage{unicode-math}          % no amssymb or bm; use \symbf
 \setmathfont{STIX Two Math}
-\setmainfont{TeX Gyre Heros}       % standalone figure sources only
+\setmainfont{TeX Gyre Heros}[Ligatures=CommonOff] % figure sources only
 ```
 
 In a figure source, set Heros as the main font: a TikZ `font=\footnotesize`
 key replaces `\sffamily`, so a sans-serif style alone leaves Latin Modern in
-some labels. In a manuscript, keep the body font and use
+some labels. `Ligatures=CommonOff` keeps "fi" and "fl" as two letters: ligature
+glyphs carry no Unicode, so Inkscape drops them from the SVG text. In a
+manuscript, keep the body font and use
 `\setsansfont{TeX Gyre Heros}` with `font=\sffamily` in TikZ styles.
 
-### Default figure workflow: SVG first, PDF last
+### TikZ figures: SVG first, PDF last
+
+Scope: scientific figures drawn in TikZ (diagrams, DAGs, plates,
+schematics). R plots follow `data-visualisation`; Quarto `{.tikz}` blocks
+get the portable SVG only (`graphical-models`).
 
 Inkscape is the vector target. Each figure gets an **editable** SVG (labels
 as live Heros text, maths as exact outlines or TexText objects) and a
@@ -241,9 +245,9 @@ hand-maintained table.
 
 ## Bibliography
 
-Clean `.bib` from **Zotero + Better BibTeX / native keys** (see
-documentation-bibliography rule). `cleveref` for `\cref{eq:...}` / `\Cref{...}`.
-Validate with BibTeX Tidy; never invent entries.
+`.bib` exported from Zotero with native citation keys
+(`documentation-bibliography`), tidied with `bibtex-tidy`. `cleveref` for
+`\cref{eq:...}` / `\Cref{...}`.
 
 ## Anti-patterns
 
@@ -262,9 +266,9 @@ against this rule and produce a short report:
 3. Floats: `[tbp]`; `\centering` in floats; flag habitual `[H]`.
 4. References: `cleveref` preferred over manual `Eq.~\ref`.
 5. Code: `minted` + `-shell-escape`; if `listings`, UTF-8 `literate` or accent risk.
-6. Graphics: vector PDF/SVG for plots; TikZ/pgfplots/curve2e; figures
-   SVG-first (editable + portable SVG, PDF from the portable SVG); STIX Two
-   Math for maths, TeX Gyre Heros for labels.
+6. Graphics: R plots as SVG-derived PDF; TikZ figures SVG-first (editable +
+   portable SVG, PDF from the portable one); STIX Two Math for maths, TeX
+   Gyre Heros for labels; no PSTricks.
 7. Packages: `siunitx`, `booktabs`, `tcolorbox[most]` callouts when used.
 8. Bibliography: citekeys resolvable; no invented `\cite{}`.
 9. Glossaries: `\gls` used consistently when `glossaries` is loaded.
@@ -287,7 +291,5 @@ Output template:
 - Engine: LuaLaTeX; shell-escape for minted; makeglossaries / latexmk …
 ```
 
-Prioritise compilation, portability, and journal markup. For narrative prose
-only, mention **deslop**; leave maths and citations untouched unless asked.
-Optional: [TeXtidote](http://kohm.de.tf/markus/texidate.html) or `chktex` if
-installed.
+Prioritise compilation, portability and journal markup. Optional: TeXtidote
+or `chktex` if installed.

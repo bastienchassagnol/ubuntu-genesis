@@ -7,7 +7,7 @@ References:
 - qreacto: https://github.com/clearmatics/qreacto (MIT)
 - quarto-svelte: https://github.com/jimjam-slam/quarto-svelte (MIT)
 
-Start with OJS + Plot or D3 (`ojs-basics.md`, `ojs-d3.md`). D3 and Plot run
+Tool choice: `data-visualisation/references/libraries.md`. D3 and Plot run
 natively in Quarto pages and reveal.js decks; React needs an integration
 layer. Most react-graph-gallery examples use React only to render and D3
 modules (`d3-scale`, `d3-shape`, `d3-array`) for the maths, so they port to
@@ -121,7 +121,6 @@ only for a self-contained widget; prefer route 1.
   Quarto OJS; cells do not port unchanged); reveal.js can be driven from React
   outside Quarto. Both leave the Quarto workflow, so use them only when the
   output is an application.
-- Standalone apps: chart test strategy in **data-visualisation** `references/testing/`.
 
 ## Gotchas
 

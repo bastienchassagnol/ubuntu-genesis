@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="766.26935"
+   height="614.93732"
+   viewBox="0 0 766.26935 614.93732"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g1">
+    <path
+       id="path1"
+       d="M 431.13841,32.99957 H -84.84715 c -3.30142,0 -5.97766,-2.67625 -5.97766,-5.97766 V -80.80164 c 0,-3.30142 2.67624,-5.97766 5.97766,-5.97766 h 515.98556 c 3.30141,0 5.97766,2.67624 5.97766,5.97766 V 27.02191 c 0,3.30141 -2.67625,5.97766 -5.97766,5.97766 z"
+       style="fill:#f6f3ee;fill-opacity:1;fill-rule:nonzero;stroke:#d9d3c7;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <path
+       id="path2"
+       d="m 84.84715,-105.88486 h -169.6943 c -3.30142,0 -5.97766,-2.67625 -5.97766,-5.97766 V -316.8803 c 0,-3.3014 2.67624,-5.97766 5.97766,-5.97766 h 169.6943 c 3.30142,0 5.97766,2.67626 5.97766,5.97766 v 205.01778 c 0,3.30141 -2.67624,5.97766 -5.97766,5.97766 z"
+       style="fill:#f6f3ee;fill-opacity:1;fill-rule:nonzero;stroke:#d9d3c7;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <path
+       id="path3"
+       d="M 275.00089,-105.81313 H 105.30655 c -3.30142,0 -5.97766,-2.67623 -5.97766,-5.97766 v -172.70578 c 0,-3.3014 2.67624,-5.97766 5.97766,-5.97766 h 169.69434 c 3.3014,0 5.97766,2.67626 5.97766,5.97766 v 172.70578 c 0,3.30143 -2.67626,5.97766 -5.97766,5.97766 z"
+       style="fill:#f6f3ee;fill-opacity:1;fill-rule:nonzero;stroke:#d9d3c7;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <path
+       id="path4"
+       d="M 465.1546,-106.09605 H 295.46027 c -3.30143,0 -5.97767,-2.67626 -5.97767,-5.97767 v -258.9768 c 0,-3.30141 2.67624,-5.97766 5.97767,-5.97766 H 465.1546 c 3.30141,0 5.97766,2.67625 5.97766,5.97766 v 258.9768 c 0,3.30141 -2.67625,5.97767 -5.97766,5.97767 z"
+       style="fill:#f6f3ee;fill-opacity:1;fill-rule:nonzero;stroke:#d9d3c7;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <path
+       id="path5"
+       d="M 77.51611,22.67969 H -77.51611 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.38172 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.38172 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#c45c26;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text5"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,60.656)"><tspan
+         id="tspan5"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.31382331 0 -0.17932761"
+         y="0">r-python-project</tspan></text>
+    <text
+       id="text6"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,77.157333)"><tspan
+         id="tspan6"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 2.9887912 0 0 0 2.9808211 0 -0.19128264 -0.15940221 0 0 0 2.9808211 0 0 -0.031880438 -0.079701103 0 2.9808211 -0.071730994 2.9808211 0 0 0 -0.031880438 -0.11955165"
+         y="0">Scope,datalayout,laptopvscluster</tspan></text>
+    <text
+       id="text7"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,91.769333)"><tspan
+         id="tspan7"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.079701103"
+         y="0">settings</tspan></text>
+    <path
+       id="path7"
+       d="M 250.66173,22.65976 H 95.6295 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.34186 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 h 155.03223 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.34186 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#c45c26;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text8"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,60.682667)"><tspan
+         id="tspan8"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">scientific-writing</tspan></text>
+    <text
+       id="text9"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,77.184)"><tspan
+         id="tspan9"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.039850552 0 0 0 0 0 0 -0.079701103 0 2.9887912 -0.11955165 0 0 0 0 2.9887912 0 0 -0.11955165 0 0 0 0 0 -0.19925275 2.9808211 0 0 0 0 2.9887912 -0.031880438"
+         y="0">Structure,voice,integrity;callsthe</tspan></text>
+    <text
+       id="text10"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,91.796)"><tspan
+         id="tspan10"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">deslop</tspan></text>
+    <text
+       id="text11"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,297.48133,91.796)"><tspan
+         id="tspan11"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">skill</tspan></text>
+    <path
+       id="path11"
+       d="M 423.80736,22.67969 H 268.77512 c -1.6507,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.38172 c 0,-1.65071 1.33813,-2.98883 2.98883,-2.98883 h 155.03224 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.38172 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#c45c26;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text12"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,493.048,60.656)"><tspan
+         id="tspan12"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0.044831902"
+         y="0">figure-sources</tspan></text>
+    <text
+       id="text13"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,493.048,77.157333)"><tspan
+         id="tspan13"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.079701103 0 0 0 2.9808211 2.9887912 0 0 0 0 0 0 0 2.9887912 0 0 0 0 -0.071730994 0 2.9808211 0 -0.031880438 -0.11955165 2.9808211 0 0 2.9887912"
+         y="0">Reusealicensedfigure,drawit,or</tspan></text>
+    <text
+       id="text14"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,493.048,91.769333)"><tspan
+         id="tspan14"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 -0.039850552 0 -0.11955165 2.9808211"
+         y="0">generateit</tspan></text>
+    <path
+       id="path14"
+       d="M 77.51611,-31.98073 H -77.51611 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -37.76378 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 37.76378 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#c45c26;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text15"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,133.536)"><tspan
+         id="tspan15"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 -0.044831902 0 0 0 0 0.089663804"
+         y="0">code-intelligence</tspan></text>
+    <text
+       id="text16"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,150.03733)"><tspan
+         id="tspan16"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 -0.039850552 0 0 2.9887912 -0.079701103 0 2.9808211 0 0 0 0 2.9887912 0 -0.031880438 0 0 0 0 0 2.9808211 -0.071730994"
+         y="0">CodeGraphforcode,Graphifyfor</tspan></text>
+    <text
+       id="text17"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,164.64933)"><tspan
+         id="tspan17"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">documents</tspan></text>
+    <path
+       id="path17"
+       d="M 250.66173,-31.24348 H 95.6295 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98884 V -73.4706 c 0,-1.65069 1.33812,-2.98883 2.98883,-2.98883 h 155.03223 c 1.65071,0 2.98883,1.33814 2.98883,2.98883 v 39.23828 c 0,1.65072 -1.33812,2.98884 -2.98883,2.98884 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#c45c26;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text18"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,132.36133)"><tspan
+         id="tspan18"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.089663804 0 -0.13449571 0 0 0 0 0 0 0.089663804 -0.044831902"
+         y="0">token-budget</tspan></text>
+    <text
+       id="text19"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,148.86267)"><tspan
+         id="tspan19"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 2.9887912 -0.039850552 0 0 0 0 0 0 2.9887912 0 0 0 -0.079701103 0 2.9808211 0 0 0 0 0 0 2.9887912 -0.031880438"
+         y="0">Modelrouting,answercaches,stable</tspan></text>
+    <text
+       id="text20"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,262.18933,163.47467)"><tspan
+         id="tspan20"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.039850552 0 0.039850552 -0.039850552"
+         y="0">prompt</tspan></text>
+    <text
+       id="text21"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,12.014667,21.433333)"><tspan
+         id="tspan21"
+         style="font-variant:normal;font-weight:700;font-size:9.96264px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#0e4d3a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 -0.0498132 -0.1494396 -0.1494396 2.769614"
+         y="0">Alwaysloaded</tspan></text>
+    <text
+       id="text22"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,578.21067,22.026667)"><tspan
+         id="tspan22"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.19925275 -0.2391033 0 0.11955165 2.2156906 0 0 0 0 0 0 0 2.2156906 -0.19925275 -0.2391033 0 0.11955165 2.2156906 0 -0.11955165"
+         y="0">everysession,everyproject</tspan></text>
+    <path
+       id="path22"
+       d="M 77.51611,-116.20473 H -77.51611 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.23828 c 0,-1.65069 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33814 2.98883,2.98883 v 39.23828 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text23"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,245.64133)"><tspan
+         id="tspan23"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.31382331 0 0 -0.17932761 -0.13449571"
+         y="0">r-development</tspan></text>
+    <text
+       id="text24"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,262.144)"><tspan
+         id="tspan24"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 2.9887912 -0.15940221 0 0.039850552 0 0 0 0 0 2.9808211 0 -0.031880438 0 0 0 0 2.9808211 -0.031880438 0 -0.079701103 0 2.9808211 -0.031880438 0 -0.039850552"
+         y="0">Rversions,projectroot,style,</tspan></text>
+    <text
+       id="text25"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,276.75467)"><tspan
+         id="tspan25"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 -0.039850552"
+         y="0">parallelism</tspan></text>
+    <path
+       id="path25"
+       d="M 77.51611,-170.72171 H -77.51611 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.23828 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.23828 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text26"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,318.33067)"><tspan
+         id="tspan26"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.31382331 0 0 0 0.044831902 0 0 0.089663804 0 0 0 -0.17932761 -0.13449571"
+         y="0">r-package-development</tspan></text>
+    <text
+       id="text27"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,334.832)"><tspan
+         id="tspan27"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 -0.039850552 2.9887912 -0.039850552 -0.19925275 0 -0.11955165 0 0 0 2.9808211 -0.11158154 0 -0.039850552 0 -0.039850552 0 0 0 2.9808211"
+         y="0">CRAN,roxygen,testthat,GitHub</tspan></text>
+    <text
+       id="text28"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,349.444)"><tspan
+         id="tspan28"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.079701103 0 0 0 0 0 0 2.9887912 0 -0.11955165 0 0 -0.079701103"
+         y="0">Actions,pkgdown</tspan></text>
+    <path
+       id="path28"
+       d="M 77.51611,-225.2387 H -77.51611 c -1.65071,0 -2.98883,-1.33811 -2.98883,-2.98882 v -28.27924 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 28.27924 c 0,1.65071 -1.33812,2.98882 -2.98883,2.98882 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text29"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,391.01867)"><tspan
+         id="tspan29"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.17932761 0 0 0 0 0 0 0 -0.17932761 -0.13449571"
+         y="0">python-development</tspan></text>
+    <text
+       id="text30"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,407.52)"><tspan
+         id="tspan30"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.5579077 2.9887912 -0.079701103 0 0.15940221 0 2.9808211 0 -0.54993761 2.9808211 0 0 0 -0.031880438 0 0.19128264 2.9887912"
+         y="0">uv,Ruff,ty,librarychoices</tspan></text>
+    <path
+       id="path30"
+       d="M 77.51611,-268.79663 H -77.51611 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -37.76378 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 H 77.51611 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 37.76378 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text31"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,449.28667)"><tspan
+         id="tspan31"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 -0.17932761 0 0.044831902"
+         y="0">ponytail</tspan></text>
+    <text
+       id="text32"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,465.788)"><tspan
+         id="tspan32"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 -0.039850552 2.9887912 0 0 0.039850552 0 0 -0.079701103 -0.11955165 2.9808211 0 0 0 0 0 0 2.9887912 0 0 2.9887912"
+         y="0">Smallestcompletechange;onesmall</tspan></text>
+    <text
+       id="text33"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,31.332,480.4)"><tspan
+         id="tspan33"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.11955165 0 -0.039850552"
+         y="0">test</tspan></text>
+    <text
+       id="text34"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,12.014667,209.36)"><tspan
+         id="tspan34"
+         style="font-variant:normal;font-weight:700;font-size:9.96264px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#0e4d3a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">Code</tspan></text>
+    <text
+       id="text35"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,152.01067,207.096)"><tspan
+         id="tspan35"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'Latin Modern Mono';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 2.2156906 0 0 2.2156906"
+         y="0">.R.pyDESCRIPTION</tspan></text>
+    <path
+       id="path35"
+       d="M 267.66983,-116.133 H 112.63759 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -39.38173 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 h 155.03224 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.38173 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text36"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,245.73733)"><tspan
+         id="tspan36"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0.044831902"
+         y="0">statistical-modelling</tspan></text>
+    <text
+       id="text37"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,262.23867)"><tspan
+         id="tspan37"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.039850552 0 0 0 0 0 0 2.9887912 -0.079701103 0 0 0 0.039850552 0 0 0 0 2.9808211 0 0 0 0 2.9887912 0 0 -0.071730994 0 -0.039850552 0 -0.039850552"
+         y="0">Estimand,resamplingunit,bootstrap,</tspan></text>
+    <text
+       id="text38"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,276.85067)"><tspan
+         id="tspan38"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 0 0 0 0 2.9887912 -0.079701103 -0.11955165 0 0 -0.079701103"
+         y="0">permutation,review</tspan></text>
+    <path
+       id="path38"
+       d="M 267.66983,-170.79343 H 112.63759 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -50.34077 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 h 155.03224 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 50.34077 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text39"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,318.61733)"><tspan
+         id="tspan39"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0.044831902"
+         y="0">data-visualisation</tspan></text>
+    <text
+       id="text40"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,335.11867)"><tspan
+         id="tspan40"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 2.9887912 -0.039850552 0 0 0 0 2.9808211 -0.31083429 -0.31880441 2.9808211 0 0 0.039850552 -0.031880438 0 2.9808211 0 -0.1514321 -0.15940221"
+         y="0">Housetheme,SVGfirst,caveats</tspan></text>
+    <text
+       id="text41"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,349.73067)"><tspan
+         id="tspan41"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0.039850552 0 0 0 -0.039850552 -0.2391033"
+         y="0">checklist;</tspan></text>
+    <text
+       id="text42"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,332.23067,349.73067)"><tspan
+         id="tspan42"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 -0.079701103"
+         y="0">data-visualisation</tspan></text>
+    <text
+       id="text43"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,418.20133,349.73067)"><tspan
+         id="tspan43"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">and</tspan></text>
+    <text
+       id="text44"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,364.34267)"><tspan
+         id="tspan44"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.11955165 0 0 -0.11955165 0 0 -0.2391033 -0.19925275 0 -0.039850552 0 0 0.15940221"
+         y="0">roast-my-chart</tspan></text>
+    <text
+       id="text45"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,357.21333,364.34267)"><tspan
+         id="tspan45"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">skills</tspan></text>
+    <path
+       id="path45"
+       d="M 267.66983,-236.4129 H 112.63759 c -1.65071,0 -2.98883,-1.33812 -2.98883,-2.98883 v -37.76378 c 0,-1.65071 1.33812,-2.98883 2.98883,-2.98883 h 155.03224 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 37.76378 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text46"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,406.108)"><tspan
+         id="tspan46"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0.044831902"
+         y="0">graphical-models</tspan></text>
+    <text
+       id="text47"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,422.61067)"><tspan
+         id="tspan47"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.19925275 -0.19925275 0 0 0 -0.079701103 2.9887912 0 0 0 -0.11955165 2.9808211 0 -0.071730994 0 0 0 0 0 2.9808211 -0.071730994 0 2.9808211 0 -0.031880438 0 0 0 0 0 0 0 -0.039850552"
+         y="0">bayesnetplatenotationforprobabilistic</tspan></text>
+    <text
+       id="text48"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,284.86667,437.22267)"><tspan
+         id="tspan48"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">models</tspan></text>
+    <text
+       id="text49"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,265.55067,206.51467)"><tspan
+         id="tspan49"
+         style="font-variant:normal;font-weight:700;font-size:9.96264px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#0e4d3a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 -0.1494396 0 0 2.769614 0 0 2.769614 0 0 0 0 0.0498132"
+         y="0">Analysisandfigures</tspan></text>
+    <text
+       id="text50"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,439.02,207.06533)"><tspan
+         id="tspan50"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'Latin Modern Mono';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 2.2156906 0 0 0 2.2156906"
+         y="0">.R.qmd.tex</tspan></text>
+    <path
+       id="path50"
+       d="M 457.82355,-116.41594 H 302.7913 c -1.65069,0 -2.98883,-1.33812 -2.98883,-2.98883 v -38.81584 c 0,-1.65071 1.33814,-2.98883 2.98883,-2.98883 h 155.03225 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 38.81584 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text51"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,246.11467)"><tspan
+         id="tspan51"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0.044831902 0 0 0.17932761 -0.080697417 -0.0089663798 0 0 0.044831902 0 0 0 0 0.044831902"
+         y="0">quarto-presentations</tspan></text>
+    <text
+       id="text52"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,262.616)"><tspan
+         id="tspan52"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 2.9887912 0 0 0 0 0 0 0 0 2.9887912 0 0 0 2.9808211 0 0 0 0 0 -0.19128264 -0.5579077 2.9808211"
+         y="0">Labels,callouts,codedisplay,tables,</tspan></text>
+    <text
+       id="text53"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,277.228)"><tspan
+         id="tspan53"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 2.9887912 0 0 0 0.2391033 -0.079701103 2.9887912"
+         y="0">Mermaid;Quartoskills</tspan></text>
+    <path
+       id="path53"
+       d="M 457.82355,-170.51048 H 302.7913 c -1.65069,0 -2.98883,-1.33814 -2.98883,-2.98883 v -37.76379 c 0,-1.6507 1.33814,-2.98884 2.98883,-2.98884 h 155.03225 c 1.65071,0 2.98883,1.33814 2.98883,2.98884 v 37.76379 c 0,1.65069 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text54"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,318.24)"><tspan
+         id="tspan54"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 0.044831902 0 0 0 0 0 0 0 0 0 0 0 0 0 0.044831902 0 0 -0.17932761"
+         y="0">documentation-bibliography</tspan></text>
+    <text
+       id="text55"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,334.74133)"><tspan
+         id="tspan55"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.071730994 -0.11955165 0 -0.039850552 2.9808211 -0.15940221 -0.15940221 -0.079701103 0 2.9887912 0 0 -0.039850552 0 0 0 0 2.9808211 0 0 0 0 -0.031880438 0 0 2.9808211 0 0 0.19925275 0 -0.11158154 0 -0.079701103"
+         y="0">Zoterokeys,curationscripts,software</tspan></text>
+    <text
+       id="text56"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,349.35333)"><tspan
+         id="tspan56"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">citations</tspan></text>
+    <path
+       id="path56"
+       d="M 457.82355,-223.55298 H 302.7913 c -1.65069,0 -2.98883,-1.33812 -2.98883,-2.98883 v -38.81584 c 0,-1.65071 1.33814,-2.98883 2.98883,-2.98883 h 155.03225 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 38.81584 c 0,1.65071 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text57"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,388.96267)"><tspan
+         id="tspan57"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 -0.035865519 -0.17932761 0 0 0 0 -0.0089663798"
+         y="0">latex-scientific</tspan></text>
+    <text
+       id="text58"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,405.464)"><tspan
+         id="tspan58"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.031880438 0 0 0 0 -0.75716043 0 0 2.9808211 0 0 -0.039850552 0 0 2.9887912 -0.039850552 0 0 0 0 0 2.9808211 0 0 0 2.9887912 0 0 0 0 -0.071730994"
+         y="0">LuaLaTeX,maths,floats,TikZfigures</tspan></text>
+    <text
+       id="text59"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,420.076)"><tspan
+         id="tspan59"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 -0.31083429 -0.31880441 2.9808211 0 0 0.039850552 -0.039850552 0 2.9887912"
+         y="0">SVGfirst,audit</tspan></text>
+    <path
+       id="path59"
+       d="M 457.82355,-277.64752 H 302.7913 c -1.65069,0 -2.98883,-1.33814 -2.98883,-2.98883 v -28.42269 c 0,-1.65071 1.33814,-2.98883 2.98883,-2.98883 h 155.03225 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 28.42269 c 0,1.65069 -1.33812,2.98883 -2.98883,2.98883 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text60"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,461.088)"><tspan
+         id="tspan60"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 0 0 -0.13449571"
+         y="0">symbolic-verification</tspan></text>
+    <text
+       id="text61"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,477.58933)"><tspan
+         id="tspan61"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 2.9887912 0 0 2.9887912 0 0 0 2.9808211 0 0 -0.071730994 0 -0.079701103 2.9808211 0 -0.1514321"
+         y="0">SymPyandLeanbefore“verified”</tspan></text>
+    <path
+       id="path61"
+       d="M 457.82355,-321.3489 H 302.7913 c -1.65069,0 -2.98883,-1.33814 -2.98883,-2.98884 v -39.38173 c 0,-1.65071 1.33814,-2.98883 2.98883,-2.98883 h 155.03225 c 1.65071,0 2.98883,1.33812 2.98883,2.98883 v 39.38173 c 0,1.6507 -1.33812,2.98884 -2.98883,2.98884 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#1d4e89;stroke-width:0.79701;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.3333333,0,0,-1.3333333,129.6,72.918667)" />
+    <text
+       id="text62"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,519.35467)"><tspan
+         id="tspan62"
+         style="font-variant:normal;font-weight:700;font-size:8.96638px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 0 0 0 0 0 0 -0.17932761 0 0 0.044831902"
+         y="0">document-extraction</tspan></text>
+    <text
+       id="text63"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,535.85733)"><tspan
+         id="tspan63"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 2.9887912 0 0 2.9887912 0 0.15940221 0 0 0 2.9808211 0 0 0 0 0 4.4871721 0 0 0 0 0 0 0 -0.031880438"
+         y="0">PDFandOfficefiles:doc-search,</tspan></text>
+    <text
+       id="text64"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,538.40133,550.468)"><tspan
+         id="tspan64"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#1c2b24;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.1514321 0 0 0 0 2.9808211 0 0 0 0 -0.079701103"
+         y="0">anydoc,figures</tspan></text>
+    <text
+       id="text65"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,519.08533,209.68133)"><tspan
+         id="tspan65"
+         style="font-variant:normal;font-weight:700;font-size:9.96264px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#0e4d3a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">Documents</tspan></text>
+    <text
+       id="text66"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,656.12667,207.37867)"><tspan
+         id="tspan66"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'Latin Modern Mono';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 0 0 2.2077205 0 0 0 2.2156906 0 0 0 2.2156906"
+         y="0">.qmd.bib.tex.pdf</tspan></text>
+    <text
+       id="text67"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,12.662667,600.11733)"><tspan
+         id="tspan67"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 0 -0.039850552 0 0 0 0 2.9489408 0 0 -0.11158154 -0.19925275 -0.079701103 2.2077205 0 0 0 0 0 0 2.9569108 0 0 0 0 2.9569108 0 0 0 0 0 2.2156906 0 0 0 2.2156906 2.2156906 0 0 0 0 0 0 0 2.2156906 0 0 0 2.2156906 0 2.2156906 0 0 0 0 2.9489408 0 0 0 -0.031880438"
+         y="0">Orange:alwaysloaded.Blue:loadedwhenamatchingfileisopen.Source:</tspan></text>
+    <text
+       id="text68"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,373.128,600.11733)"><tspan
+         id="tspan68"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'Latin Modern Mono';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">Config/.cursor/rules/*.mdc</tspan></text>
+    <text
+       id="text69"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,519.84267,600.11733)"><tspan
+         id="tspan69"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         dx="0 2.2077205 0 0 0 0 -0.1514321 -0.19925275 0 2.2077205 -0.11158154"
+         y="0">,deployedby</tspan></text>
+    <text
+       id="text70"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,585.36667,600.11733)"><tspan
+         id="tspan70"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'Latin Modern Mono';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">agent-sync</tspan></text>
+    <text
+       id="text71"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,641.796,600.11733)"><tspan
+         id="tspan71"
+         style="font-variant:normal;font-weight:normal;font-size:7.97011px;font-family:'TeX Gyre Heros';writing-mode:lr-tb;fill:#606b66;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0"
+         y="0">.</tspan></text>
+  </g>
+</svg>

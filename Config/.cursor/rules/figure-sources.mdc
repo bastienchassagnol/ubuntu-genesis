@@ -13,29 +13,19 @@ Creative Commons (CC BY or CC BY-SA). Prefer Wikimedia Commons, or an
 open-access paper that states the licence on the article. Skip paywalled
 journal figures and any image with no stated licence.
 
-For each candidate, give:
-
-- the page URL
-- the direct image URL
-- the licence
-- the author
-- a one-line attribution
-
-Do not download anything until the user picks one.
+For each candidate, give the page URL, the direct image URL, the licence, the
+author and a one-line attribution. Do not download anything until the user
+picks one.
 
 ## 2. Draw it (code)
 
-If no licensed image exists, draw the figure when code can produce it. Follow the
-repository's figure scripts and seeds.
+Follow the repository's figure scripts and seeds.
 
-- **R / Python:** plots and teaching sketches (`ggplot2`, matplotlib, etc.).
-  Manuscripts: prefer **`ggplot2::ggsave(..., device = cairo_pdf)`** (or PDF) and
-  `\includegraphics` when the figure does not need to live in TeX.
-- **LaTeX (LuaLaTeX):** **`latex-scientific`** rule — **TikZ** (DAGs, pipelines,
-  boxes), **`pgfplots`** (`compat=1.18`) for plots that must compile in TeX, **`curve2e`**
-  for Bézier outlines (load **`xcolor` before `curve2e`**; flip SVG *y*; trace with
-  pict2e `\curveto`, not `\Curve` on fixed control points). No PSTricks. Very long
-  paths: split paths or include SVG/PDF; `standalone` for transparent exports.
+- **Data plots:** R (`ggplot2`) or OJS/D3 in Quarto, per `data-visualisation`
+  (SVG first; a PDF for LaTeX is made from the SVG).
+- **Diagrams, DAGs, plates, schematics, outlines:** TikZ, `pgfplots` or
+  `curve2e` under LuaLaTeX, per `latex-scientific` (and `graphical-models`
+  for probabilistic models). No PSTricks.
 
 ## 3. Generate it
 

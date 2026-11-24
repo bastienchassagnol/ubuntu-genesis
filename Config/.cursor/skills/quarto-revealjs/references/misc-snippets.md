@@ -23,7 +23,7 @@ Create `.vscode/<name>.code-snippets` at the project root. Each snippet triggers
 }
 ```
 
-The book's miscellaneous chapter ships a full snippets file covering every compatible reveal.js Sass variable (colors, fonts, headings, code blocks, layout, callouts) — copy it wholesale from <https://slidecrafting-book.com/miscellaneous>.
+Slidecrafting's miscellaneous chapter ships a full snippets file covering every compatible reveal.js Sass variable (colors, fonts, headings, code blocks, layout, callouts) — copy it wholesale from <https://slidecrafting-book.com/miscellaneous>.
 
 ## Gotchas
 

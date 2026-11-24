@@ -107,8 +107,8 @@ ggsave(
 )
 ```
 
-Do not open `pdf()` or `cairo_pdf` to draw the figure. If a venue wants PDF,
-convert the SVG afterwards. An SVG may name the font without embedding its
+Do not draw with a PDF device. If a venue or LaTeX wants PDF, convert the SVG
+afterwards: `inkscape f.svg --export-text-to-path --export-type=pdf`. An SVG may name the font without embedding its
 bytes. A later machine needs the same `fonts/` files, or a conversion that
 outlines the text.
 

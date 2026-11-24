@@ -57,7 +57,7 @@ are in the `data-visualisation` rule. Reference implementation:
   `column_split` = group of the cell, `cluster_*_slices = FALSE`,
   subsample cells per group with a seed, top annotation with group and
   batch colours, `use_raster = TRUE`, italic row names. Save with
-  `cairo_pdf()` and `ragg::agg_png()` around `draw()`, and save the gene
+  `svglite::svglite()` and `ragg::agg_png()` around `draw()`, and save the gene
   list as `.rds`.
 - **UpSet.** `ComplexUpset::upset(min_size = 5, n_intersections = 25)`;
   a Venn only for two or three sets.
