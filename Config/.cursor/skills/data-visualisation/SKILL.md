@@ -1,6 +1,6 @@
 ---
 name: "data-visualisation"
-description: "Choose and design charts in R, Python, Quarto, LaTeX or slides: pick the chart from the data type (data-to-viz decision tree), apply the dataviz caveats with ggplot2 before/after snippets, follow a step-by-step line-chart makeover, build HCL palettes with colorspace, set project fonts with systemfonts, ragg, svglite, and marquee, and pick the right library level (ggplot2, ggiraph, Observable Plot, D3, Mosaic, React). Use with the data-visualisation rule, which holds the house theme and checklist. Routes to focused files in references/."
+description: "Choose and design charts in R, Quarto, LaTeX or slides: dataviz-inspiration gallery search before code, data-to-viz chart chooser, ggplot2-production idioms, caveats, house theme, colours, fonts, ggdist rainclouds, interactive ladder to quarto-revealjs. Pair with roast-my-chart before publish. Routes to references/."
 ---
 
 # Data visualisation: references
@@ -11,7 +11,9 @@ checklist. This skill holds the long material; read only the file you need.
 
 | Task | Reference |
 |---|---|
+| Before any plot: search 3–5 gallery references (bilingual query, `--family`) | `references/dataviz-inspiration.md` (`scripts/search_viz.py`) |
 | Which chart for this data? (numeric, categoric, mixed, relational, map, time series) | `references/chart-chooser.md` |
+| Idiomatic ggplot2 code (scales, facets, export) — after house theme | `references/ggplot2-production.md` |
 | Caveats with ggplot2 `# avoid` / `# prefer` code (scales, bars, scatter, lines, colour, labels, layout, panels, heatmaps) | `references/caveats.md` |
 | Redesign a line chart step by step (direct labels, story title, highlight) | `references/line-chart-makeover.md` |
 | Which library: static, ggiraph, Plot, D3, Mosaic, React; galleries to search | `references/libraries.md` |
@@ -42,6 +44,7 @@ Interactive slides (OJS, D3, React in reveal.js): **quarto-revealjs** skill.
 
 ## Workflow
 
+0. **Inspiration:** run `scripts/search_viz.py`; cite 3–5 references (`dataviz-inspiration.md`).
 1. Write the question the figure answers; it becomes the title's finding.
 2. Identify the data type and purpose; pick candidates in `chart-chooser.md`.
 3. Classify the mapped variable and build the palette (`colour-palettes.md`) before writing scales.
@@ -49,3 +52,4 @@ Interactive slides (OJS, D3, React in reveal.js): **quarto-revealjs** skill.
 5. Draw it in `ggplot2` with `theme_slide()`. Raster with `ragg`, vector with `svglite`.
 6. Check the relevant caveats, then run the rule's checklist.
 7. Only if the reader must explore, climb the ladder in `libraries.md`.
+8. Before publish, run **roast-my-chart** on the render or code.

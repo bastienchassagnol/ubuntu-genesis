@@ -159,6 +159,20 @@ cmd_verify() {
       failures=$((failures + 1))
     fi
   fi
+  for skill in roast-my-chart; do
+    if [[ ! -f "${BUNDLE_ROOT}/skills/${skill}/SKILL.md" ]]; then
+      log "FAIL: bundle skills/${skill}/SKILL.md missing"
+      failures=$((failures + 1))
+    fi
+    if [[ ! -f "${CLAUDE_SKILLS}/${skill}/SKILL.md" ]]; then
+      log "FAIL: missing ${CLAUDE_SKILLS}/${skill}/SKILL.md (run install-user)"
+      failures=$((failures + 1))
+    fi
+    if [[ ! -f "${CURSOR_SKILLS}/${skill}/SKILL.md" ]]; then
+      log "FAIL: missing ${CURSOR_SKILLS}/${skill}/SKILL.md (run install-user)"
+      failures=$((failures + 1))
+    fi
+  done
   for ref in chart-chooser.md; do
     if [[ ! -f "${CLAUDE_SKILLS}/data-visualisation/references/${ref}" ]]; then
       log "FAIL: missing ${CLAUDE_SKILLS}/data-visualisation/references/${ref}"

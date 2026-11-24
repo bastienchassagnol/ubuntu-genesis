@@ -17,9 +17,9 @@ Holds the long dataviz material so the path-loaded rule
 | `references/treemap.md` | area = absolute count, label = share of parent | Theodosiou, `20251125_treemap.R`; r-graph-gallery treemap |
 | `references/ternary.md` | exactly three parts that sum to 1 | Theodosiou, `20250401_pokemon.R` (TidyTuesday 2025-04-01) |
 | `references/waterfall-clinical.md` | best percent change per patient, coloured by best overall response | Oncoflash, “How to Read a Waterfall Plot” (Stat Saturday) |
+| `references/dataviz-inspiration.md` | gallery search before plotting | [holtzy/dataviz-skills/inspiration](https://github.com/holtzy/dataviz-skills) (MIT); `scripts/search_viz.py` |
+| `references/ggplot2-production.md` | idiomatic ggplot2 | holtzy/dataviz-skills ggplot2 + house `theme_slide()` |
 
-Related: **quarto-revealjs** (OJS, D3, React in decks); chart testing under
-`references/testing/`.
-(`~/.agents/vendor/openai-build-web-data-visualization/`, MIT).
+Related: **roast-my-chart** skill (review via `caveats.md`); **quarto-revealjs** (OJS/D3/React); `references/testing/`.
 
 `~/.cursor/skills/data-visualisation` is a symlink to this folder.

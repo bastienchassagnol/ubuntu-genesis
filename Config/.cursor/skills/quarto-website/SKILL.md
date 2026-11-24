@@ -10,6 +10,7 @@ Index for `type: website` projects. Slides (`format: revealjs`) → **quarto-rev
 | Task | Reference |
 |---|---|
 | Full-width figures, margin notes, folded `sessionInfo()`, GitHub corner | `references/web-layout.md` |
+| New site: static ggplot, OJS embed, Sphinx static assets | `references/interactive-embed.md` |
 
 ## `_quarto.yml` checklist
 

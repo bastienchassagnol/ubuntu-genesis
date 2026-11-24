@@ -36,7 +36,8 @@ split by domain instead of one `.cursorrules` file.
 | `quarto-revealjs` | Primary skill for reveal.js decks (incl. OJS/D3/React) |
 | `quarto-website` | Quarto `type: website` layout |
 | `quarto-book` | Quarto `type: book` |
-| `data-visualisation` | Chart choice, caveats, chart testing refs |
+| `data-visualisation` | Inspiration search, chart choice, ggplot2, caveats |
+| `roast-my-chart` | Pre-publish review against 61 caveats (Holtz, MIT) |
 | `codegraph` | Structural code queries when `.codegraph/` exists |
 | `graphify` | Mixed corpora when `graphify-out/` exists (milestone builds) |
 | `find-skills` | Discover third-party skills |
@@ -63,10 +64,10 @@ After editing `~/.cursor` or `~/.claude`, copy changes back before commit:
 "$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" publish
 ```
 
-Automatic sync: merge the `PostToolUse` hook from
+Automatic sync: merge hooks from
 [`agent-sync/hooks/claude-settings-hooks.snippet.json`](agent-sync/hooks/claude-settings-hooks.snippet.json)
-into `~/.claude/settings.json` (an edit of a rule or skill redeploys to
-`~/.claude` and `~/.cursor`), and run
+into `~/.claude/settings.json` — **`PreToolUse`** (`dataviz-nudge-claude.sh`, inspiration before ggplot/OJS code) and **`PostToolUse`** (agent-sync after bundle edits). Disable nudge with `DATAVIZ_NUDGE=off`. An edit of a rule or skill redeploys to
+`~/.claude` and `~/.cursor`; run
 `git config core.hooksPath Config/.cursor/agent-sync/git/hooks` once per clone
 (`git pull` from GitHub redeploys).
 

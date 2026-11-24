@@ -14,12 +14,16 @@ Code is R/`ggplot2`; the principles hold in any language.
 
 Long material lives in the `data-visualisation` skill
 (`~/.claude/skills/data-visualisation/references/` after
-`agent-sync install-user`; same under `~/.cursor/skills/`): `chart-chooser.md`
-(decision tree), `caveats.md` (avoid/prefer snippets), `line-chart-makeover.md`,
-`libraries.md` (static → interactive ladder), `colour-palettes.md`,
-`fonts.md`, and one file per chart module (`annotated-scatter.md`,
-`latent-projection.md`, `treemap.md`, `ternary.md`,
-`waterfall-clinical.md`). Read the one you need.
+`agent-sync install-user`; same under `~/.cursor/skills/`): **`dataviz-inspiration.md`**
+(gallery search before code), `chart-chooser.md`, `ggplot2-production.md`,
+`caveats.md`, `line-chart-makeover.md`, `libraries.md`, `colour-palettes.md`,
+`fonts.md`, chart modules (`annotated-scatter.md`, …), `references/testing/`.
+Read the one you need.
+
+**Workflow order:** inspiration → chart choice → ggplot2 with `theme_slide()` →
+checklist → **roast-my-chart** skill before publish. In Cursor, follow this order
+on every new figure; Claude Code may enforce inspiration via `dataviz-nudge`
+(`DATAVIZ_NUDGE=off` to disable).
 
 ## House style
 
@@ -129,3 +133,8 @@ in `caveats.md`.
 8. Several panels: same colours (#46), shared axes (#47), margins (#48),
    linked hover when interactive (#49); UpSet beyond three sets (#56).
 9. Heatmaps: clustered order (#60), diverging palette for centred values.
+
+## Review
+
+Finished figures (image or ggplot2 code): invoke the **`roast-my-chart`** skill
+against `caveats.md` and this checklist before publication.

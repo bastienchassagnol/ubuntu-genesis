@@ -156,6 +156,8 @@ Read these first for most tasks.
 |---|---|
 | OJS cells, Plot, inputs, data flow | `references/ojs-basics.md` |
 | Custom D3 marks, brushes, playgrounds | `references/ojs-d3.md` |
+| D3 transitions and fragment-driven animation | `references/d3-animation-ojs.md` |
+| New deck checklist (inspiration → static → OJS) | `references/new-interactive-deck.md` |
 | React bundle in a deck (visx template under `assets/`) | `references/react-in-quarto.md` |
 
 Full React/Next.js applications live outside Quarto; see **data-visualisation**

@@ -8,7 +8,8 @@ References:
 - Dashboards with OJS and Mosaic: https://github.com/cscheid/quarto-dashboard-ojs-examples
 
 Read `ojs-basics.md` first. Reach for D3 when Plot cannot express the chart:
-custom marks, drag, brush, zoom, force layouts, animated transitions.
+custom marks, drag, brush, zoom, force layouts, animated transitions
+(`d3-animation-ojs.md`).
 
 ## Porting a d3-graph-gallery example
 

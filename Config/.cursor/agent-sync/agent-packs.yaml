@@ -24,6 +24,7 @@ packs:
       - quarto-website
       - quarto-book
       - data-visualisation
+      - roast-my-chart
       - codegraph
       - graphify
   r-stats-only:
@@ -39,6 +40,7 @@ packs:
       - token-budget.mdc
     skills:
       - data-visualisation
+      - roast-my-chart
       - deslop
       - codegraph
       - graphify

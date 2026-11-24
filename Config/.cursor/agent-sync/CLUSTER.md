@@ -11,6 +11,7 @@ git config core.hooksPath Config/.cursor/agent-sync/git/hooks
 chmod +x Config/.cursor/agent-sync/git/hooks/*
 chmod +x Config/.cursor/agent-sync/agent-sync.sh
 AGENT_BUNDLE_ROOT="$PWD/Config/.cursor" ./Config/.cursor/agent-sync/agent-sync.sh install-user
+# Claude Code: merge PreToolUse + PostToolUse from Config/.cursor/agent-sync/hooks/claude-settings-hooks.snippet.json into ~/.claude/settings.json (dataviz-nudge + agent-sync)
 AGENT_BUNDLE_ROOT="$PWD/Config/.cursor" AGENT_PROJECT_ROOT="$PWD" \
   ./Config/.cursor/agent-sync/agent-sync.sh verify
 ```

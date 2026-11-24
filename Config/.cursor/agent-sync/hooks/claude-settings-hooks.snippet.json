@@ -10,6 +10,18 @@
         ]
       }
     ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc 'for R in \"${AGENT_BUNDLE_ROOT:-}\" \"$HOME/repos/ubuntu-genesis/Config/.cursor\" \"$HOME/OneDrive/04. BNCL (Post Doc)/ubuntu-genesis/Config/.cursor\"; do [ -x \"$R/agent-sync/hooks/dataviz-nudge-claude.sh\" ] && exec \"$R/agent-sync/hooks/dataviz-nudge-claude.sh\"; done; exit 0'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
