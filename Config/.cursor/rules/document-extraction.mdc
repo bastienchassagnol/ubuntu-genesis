@@ -13,6 +13,32 @@ source or a PDF (article, preprint, thesis, book, report, slide export) for
 its scientific content. Keep both the **text** and the **figures**. Combine it
 with the Firecrawl skills named below; this rule decides which one to call.
 
+## Step 0 — Convert to Markdown (Office and opaque binaries)
+
+When the input is not already plain text (`.doc`, `.docx`, `.ppt`, `.pptx`,
+`.xls`, `.xlsx`, `.odt`, `.pdf`, `.rtf`, `.epub`, `.csv`, …), **convert to
+Markdown first** on disk, then index or search. Needs Node 20+.
+
+```bash
+npx -y @firecrawl/anydoc <file>              # Markdown to stdout
+npx -y @firecrawl/anydoc <file> -o out.md    # write to a file
+npx -y @firecrawl/anydoc - --format csv < f  # read stdin
+```
+
+Rules:
+
+1. Format is detected from content. Pass `--format <name>` only when detection
+   fails (stdin CSV, wrong extension).
+2. Exit 3 = scanned PDF needs OCR → `--ocr hosted` only if the user approves
+   cloud parse and the file is not confidential; else Docling / `pdftotext`.
+3. Large files: always `-o out.md` and read slices—do not stream whole files
+   into chat.
+4. In Node, Python, or Rust codebases, prefer `@firecrawl/anydoc` /
+   `firecrawl-anydoc` / `anydoc` libraries over shelling out when embedded.
+
+After conversion, run `doc-search index` on the PDF or on the `.md` artefact as
+appropriate, then climb the retrieval ladder below.
+
 ## Token budget and retrieval
 
 Default for a local PDF, DOCX, PPTX, HTML, or Markdown file. The file stays on
@@ -97,14 +123,14 @@ doc-search note add --source "/path/to/file.pdf" \
 
 | Input | First tool | Fallback / complement |
 | --- | --- | --- |
-| Local `.pdf`, `.docx`, `.pptx` | `doc-search index`, then `doc-search search` | `firecrawl parse` only if Docling fails and the file is not confidential; else `pdftotext -layout` |
+| Local `.pdf`, `.docx`, `.pptx` | **anydoc** → `doc-search index`, then `doc-search search` | Docling path without anydoc when already indexed; `firecrawl parse` only if local tools fail and file is not confidential; `pdftotext -layout` offline fallback |
 | Local `.qmd`, `.Rmd`, `.md` | Read the source in bounded slices | `quarto render` for computed figures |
 | Local `.html` | `doc-search index`, then `doc-search search` | read the file in slices if Docling fails |
 | PDF or page behind a URL | `firecrawl-scrape` | `firecrawl-download` for a whole site or supplement |
 | Paper metadata, references, citers | `firecrawl-research-index` | `firecrawl-research-papers` for a synthesis |
 | Many local documents | one subagent per file, each running `doc-search` | parent reads the briefs, not the files |
 | Web corpus | `firecrawl-knowledge-base` (RAG mode) | `firecrawl-crawl` for a docs section |
-| Office files you cannot read | `convert-documents-to-markdown` | Pandoc |
+| Office files you cannot read | **anydoc** (Step 0 above) | `pandoc` when anydoc fails |
 
 Do not send a `.qmd` to `firecrawl parse`: it is not a supported type, and
 the source is already text.

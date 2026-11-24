@@ -150,6 +150,25 @@ TikZ, pgfplots, and `curve2e`. Do not use PSTricks. Its pictures need
   full-canvas white rectangle. After `pdftocairo -svg` or `dvisvgm`,
   delete a converter-added white page rectangle.
 
+## Acronyms and glossaries
+
+Minimise acronyms in prose. When a manuscript needs recurring abbreviations, use
+the [`glossaries`](https://ctan.org/pkg/glossaries) package rather than a
+hand-maintained table.
+
+- Preamble: `\usepackage[acronym,toc]{glossaries}` then `\makeglossaries`.
+- Terms: `\newglossaryentry{alr}{name=additive log-ratio, description={…}}`
+  (lowercase singular `name`).
+- Acronyms: `\newacronym{alr}{ALR}{additive log-ratio}`.
+- Cite in prose with `\gls{}` / `\Gls{}` / `\glspl{}`; `\acrshort{}`,
+  `\acrlong{}`, `\acrfull{}` for acronym forms.
+- Print with `\printglossary[type=\acronymtype]` and `\printglossaries`;
+  retitle with `\printglossary[title=…, toctitle=…]` when the journal requires.
+- **LuaLaTeX builds:** run `makeglossaries` (or configure `latexmk` custom
+  dependency) so acronym lists stay current—not a single-pass compile.
+- Keep entries consistent with `inst/WORDLIST` (R packages) and notation in
+  TikZ figures.
+
 ## Bibliography
 
 Clean `.bib` from **Zotero + Better BibTeX / native keys** (see
@@ -161,4 +180,42 @@ Validate with BibTeX Tidy; never invent entries.
 `$$` in `.tex` sources, `eqnarray`, deprecated font switches, hard-coded visual
 spacing, decorative `\\`, unlabelled maths, floats without `\centering`.
 
-Run the **latex-modern-audit** skill before treating a manuscript as complete.
+## Pre-submission audit
+
+Before treating a manuscript as complete, review `.tex` and `preamble/*.tex`
+against this rule and produce a short report:
+
+1. Engine: LuaLaTeX or XeLaTeX; `fontspec`; no `inputenc`/`fontenc` unless
+   pdfLaTeX is intentional (error).
+2. Maths: no `eqnarray`; numbered `equation`/`align` with labels; flag bare
+   `$$` in `.tex` sources (not Quarto exports).
+3. Floats: `[tbp]`; `\centering` in floats; flag habitual `[H]`.
+4. References: `cleveref` preferred over manual `Eq.~\ref`.
+5. Code: `minted` + `-shell-escape`; if `listings`, UTF-8 `literate` or accent risk.
+6. Graphics: vector PDF/SVG for plots; TikZ/pgfplots/curve2e in-document.
+7. Packages: `siunitx`, `booktabs`, `tcolorbox[most]` callouts when used.
+8. Bibliography: citekeys resolvable; no invented `\cite{}`.
+9. Glossaries: `\gls` used consistently when `glossaries` is loaded.
+
+Output template:
+
+```markdown
+## LaTeX modern audit — <main.tex>
+
+### Pass
+- …
+
+### Should fix (methodology / portability)
+- [file:line] issue → recommended change
+
+### Optional polish
+- …
+
+### Build notes
+- Engine: LuaLaTeX; shell-escape for minted; makeglossaries / latexmk …
+```
+
+Prioritise compilation, portability, and journal markup. For narrative prose
+only, mention **deslop**; leave maths and citations untouched unless asked.
+Optional: [TeXtidote](http://kohm.de.tf/markus/texidate.html) or `chktex` if
+installed.

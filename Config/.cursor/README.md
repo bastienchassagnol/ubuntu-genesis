@@ -11,15 +11,16 @@ split by domain instead of one `.cursorrules` file.
 | `statistical-modelling.mdc` | Always — CV, bootstrap, glmPerm, mlr3, review |
 | `documentation-bibliography.mdc` | Always — Zotero, Quarto bib, intake |
 | `scientific-writing.mdc` | Always — voice, figures, integrity |
-| `r-development.mdc` | `*.R`, R packages — Air, pre-commit, ggplot2 |
+| `r-development.mdc` | `*.R` — local layout, style, ggplot2, parallelism |
+| `r-package-development.mdc` | `DESCRIPTION`, tests, CRAN, GHA, pkgdown |
 | `python-development.mdc` | `*.py`, `pyproject.toml` — uv, Ruff, ty |
 | `quarto-presentations.mdc` | `*.qmd`, slides — Mermaid, reveal.js |
 | `latex-scientific.mdc` | `*.tex` — LuaLaTeX, TikZ, minted |
 | `data-visualisation.mdc` | Charts in R, Python, Quarto, LaTeX |
-| `document-extraction.mdc` | Local PDFs via Docling and Chroma; `.qmd` as text |
+| `document-extraction.mdc` | anydoc → Markdown; Docling/Chroma `doc-search`; `.qmd` |
 | `figure-sources.mdc` | Always — reuse, draw, then generate a figure |
 | `graphical-models.mdc` | Plate notation in Quarto and LaTeX |
-| `graphify.mdc` | Always, when `graphify-out/` exists: query the graph before exploring |
+| `graphify.mdc` | When `graphify-out/` exists: corpus queries (not daily code) |
 | `ponytail.mdc` | Prefer the smallest change that works |
 | `symbolic-verification.mdc` | Check rearranged equations before calling them verified |
 | `token-budget.mdc` | Always — route work so documents are not loaded whole |
@@ -31,15 +32,12 @@ split by domain instead of one `.cursorrules` file.
 | Skill | Role |
 |-------|------|
 | `deslop` | De-AI prose (LaTeX-safe) |
-| `peer-review` | Open ScholarPeer review in the paper folder |
-| `peer-review-assistant` | Structured manuscript review with literature checks |
-| `latex-modern-audit` | Modern LaTeX compliance check |
+| `peer-review` | OSP first; Firecrawl report second tier |
 | `quarto` | Slides, websites, and Observable JS |
 | `quarto-revealjs` (+ fragment, auto-animate) | Slide decks |
 | `data-visualisation` | Chart choice and the dataviz caveats |
 | `codegraph` | Structural code queries when `.codegraph/` exists |
 | `graphify` | Mixed corpora when `graphify-out/` exists (milestone builds) |
-| `convert-documents-to-markdown` | Office/PDF → Markdown |
 | `find-skills` | Discover third-party skills |
 | `instagram-carousel` | Carousel copy/layout |
 | `react-and-nextjs-data-visualization` | Charts inside React and Next.js |

@@ -33,6 +33,7 @@ packs:
       - scope-workspace.mdc
       - code-intelligence.mdc
       - r-development.mdc
+      - r-package-development.mdc
       - statistical-modelling.mdc
       - data-visualisation.mdc
       - scientific-writing.mdc

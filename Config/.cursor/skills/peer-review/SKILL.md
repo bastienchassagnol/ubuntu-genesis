@@ -1,17 +1,30 @@
 ---
-name: "peer-review"
-description: "Set up a keyless peer review of a manuscript with Open ScholarPeer (OSP) in the paper's folder, for Cursor. Use when the user wants to review, critique or peer-review a paper (PDF, DOCX, .tex, .md) or asks how to install or run Open ScholarPeer. Installs OSP into the given folder, then hands over to OSP's slash commands."
+name: peer-review
+description: >-
+  Peer-review a manuscript (PDF, DOCX, .tex, .md). **Path A:** Open ScholarPeer
+  in the paper folder (default). **Path B:** Firecrawl Research report only if
+  Path A is insufficient. Not for systematic literature reviews.
 ---
 
-# Peer review with Open ScholarPeer
+# Peer review (tiered)
 
-OSP (https://github.com/amirkiarafiei/open-scholar-peer, MIT) runs the
-7-step ScholarPeer review protocol inside the paper's folder, searching open
-databases with no API key. A clone lives at `~/tools/open-scholar-peer`.
+| Use | Do not use |
+|-----|------------|
+| Review, critique, or peer-review a supplied manuscript | Systematic reviews, topic surveys, grant brainstorming |
+| Missing citations, methods currency, intro claims | Generic web search with no manuscript |
 
-## Install in a paper folder
+Shared rules: cite only papers returned by searches in the session; never invent
+references; no identifiable patient data to web tools; flag author-name conflicts.
 
-Ask for the folder holding the manuscript if not given, then run:
+---
+
+## Path A — Open ScholarPeer (do this first)
+
+OSP ([open-scholar-peer](https://github.com/amirkiarafiei/open-scholar-peer), MIT)
+runs the 7-step ScholarPeer protocol in the paper folder with keyless open
+databases. Clone at `~/tools/open-scholar-peer`.
+
+### Install in a paper folder
 
 ```bash
 test -d ~/tools/open-scholar-peer || \
@@ -20,45 +33,79 @@ bash ~/tools/open-scholar-peer/install.sh --dir /path/to/paper --tool cursor \
   --sources arxiv,semantic_scholar,google_scholar,europepmc,openalex
 ```
 
-Needs `python3` with venv. If the installer reports it missing, ask the user
-to run `sudo apt install python3.X-venv` (X from `python3 --version`).
+Needs `python3` with venv (`sudo apt install python3.X-venv` if missing).
 
-Check the result: `.cursor/mcp.json` (servers `osp`, `markitdown`),
-`.cursor/commands/` (8 commands), `.open-scholar-peer/mcp/.venv`, `.brain/`.
-The installer adds `.brain/`, `.open-scholar-peer/` and `.env` to `.gitignore`.
+Expect: `.cursor/mcp.json` (`osp`, `markitdown`), `.cursor/commands/`, `.brain/`
+(gitignored).
 
-## Run the review (user, in Cursor)
+### Run (user in Cursor)
 
-1. Reload the window (Ctrl+Shift+P → "Reload Window").
-2. Allow the `osp` and `markitdown` MCP servers if asked.
-3. Type `/open-scholar-peer`; it names the next step:
-   `/0-osp-onboarding` (venue, guidelines) → `/1-osp-summary` →
-   `/2-osp-literature` → `/3-osp-historian` → `/4-osp-baseline-scout` →
-   `/5-osp-qa` → `/6-osp-review`.
-4. Draft review: `.brain/review/`. Every claim traces to a file in `.brain/`;
-   it is a draft for the reviewer to edit.
-
-## Databases without keys (tested 2026-11-15)
+1. Reload window; allow MCP servers.
+2. `/open-scholar-peer` → `/0-osp-onboarding` … `/6-osp-review`.
+3. Draft in `.brain/review/` (traceable to `.brain/` sources).
 
 | Source | Status |
-|---|---|
-| arXiv, Europe PMC, OpenAlex | work (OpenAlex ≈100 calls/day) |
-| Semantic Scholar | often HTTP 429; a free key in `.env` fixes it |
-| Google Scholar | scraping, often blocked (returns nothing) |
+|--------|--------|
+| arXiv, Europe PMC, OpenAlex | usually works |
+| Semantic Scholar | often 429 without free key in `.env` |
+| Google Scholar | often blocked |
 
-Search from a terminal without an MCP client:
-`.open-scholar-peer/mcp/.venv/bin/python .open-scholar-peer/mcp/osp_cli.py list`
-then `... call search_openalex '{"query":"...","limit":5}'` (argument names
-differ per tool: `osp_cli.py schema <tool>`).
+CLI: `.open-scholar-peer/mcp/.venv/bin/python .open-scholar-peer/mcp/osp_cli.py`
 
-## Rules
+Update: `git -C ~/tools/open-scholar-peer pull`, rerun installer.
 
-- Cite only papers the searches returned; never invent references.
-- Do not send identifiable patient data to search tools.
-- If hits repeatedly name a manuscript author, flag a possible conflict of
-  interest.
-- Update OSP: `git -C ~/tools/open-scholar-peer pull`, then rerun the installer
-  in the paper folder.
+**Stop here** if OSP literature and review steps meet the user's goal.
 
-Optional keyless add-ons for Cursor: cyanheads/crossref-mcp-server (DOI,
-retraction checks), cyanheads/pubmed-mcp-server (MeSH, citation metrics).
+---
+
+## Path B — Firecrawl assistant (second tier only)
+
+Use **only when**:
+
+- Path A finished but literature is too sparse or blocked, **or**
+- The user explicitly wants one Markdown report with Firecrawl Research checks.
+
+Requires `user-firecrawl` MCP and `FIRECRAWL_API_KEY` when using cloud search.
+
+### Phase 1 — Parse
+
+Read PDF/DOCX via `firecrawl_parse`, **document-extraction** rule (anydoc → md),
+or pasted text. Extract title, question, 2–4 load-bearing intro claims, methods,
+findings. Flag **abstract-only** limits.
+
+### Phase 2 — Literature (4–6 sequential searches)
+
+`firecrawl_research_*` one at a time; ~1 s between calls. On failure: retry once;
+after three failures, partial report with `[Search failed]`.
+
+| # | Purpose |
+|---|---------|
+| 1 | Field consensus on central question |
+| 2 | Verify one key intro claim |
+| 3 | Citation completeness (recent years) |
+| 4 | Methods currency |
+| 5–6 | Optional extra claim or adjacent field |
+
+**Integrity:** only cite papers from tool output; tag model memory as
+`[Not from search — verify]`; zero hits = sparse coverage, not author vindication.
+
+### Phase 3–4 — Report
+
+Write `output/peer-review-<slug>.md`:
+
+1. Summary  
+2. Background and claims (quote, search, verdict)  
+3. Missing citations (from searches only)  
+4. Methods assessment  
+5. Major / minor concerns  
+6. Recommendation (Accept / Minor / Major / Reject)  
+7. Audit log (queries, counts, failures)
+
+Optional `pandoc` → DOCX. Pair **deslop** for `.tex` prose edits if asked.
+
+### Phase 5 — Deliver
+
+Short chat summary + path to report.
+
+**Upstream for Path B:**
+[stephenturner/skill-peer-review-assistant](https://github.com/stephenturner/skill-peer-review-assistant).
