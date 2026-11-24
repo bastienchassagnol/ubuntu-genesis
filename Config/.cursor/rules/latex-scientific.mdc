@@ -147,8 +147,78 @@ TikZ, pgfplots, and `curve2e`. Do not use PSTricks. Its pictures need
     of thousands of segments; include the SVG or PDF instead. Hobby
     splines are TikZ-only; `curve2e` has no Hobby interface.
 - Transparent page: class `standalone`, and no `\pagecolor`. Delete a
-  full-canvas white rectangle. After `pdftocairo -svg` or `dvisvgm`,
-  delete a converter-added white page rectangle.
+  full-canvas white rectangle. After any PDF-to-SVG conversion, delete a
+  converter-added white page rectangle.
+
+### Fonts (default)
+
+STIX Two Math for equations, TeX Gyre Heros for diagram labels (including
+`bayesnet` figures, see `graphical-models`). Both ship with TeX Live and are
+installed as system fonts, so Inkscape can edit Heros text.
+
+```latex
+\usepackage{amsmath}               % before unicode-math
+\usepackage{fontspec}
+\usepackage{unicode-math}          % no amssymb or bm; use \symbf
+\setmathfont{STIX Two Math}
+\setmainfont{TeX Gyre Heros}       % standalone figure sources only
+```
+
+In a figure source, set Heros as the main font: a TikZ `font=\footnotesize`
+key replaces `\sffamily`, so a sans-serif style alone leaves Latin Modern in
+some labels. In a manuscript, keep the body font and use
+`\setsansfont{TeX Gyre Heros}` with `font=\sffamily` in TikZ styles.
+
+### Default figure workflow: SVG first, PDF last
+
+Inkscape is the vector target. Each figure gets an **editable** SVG (labels
+as live Heros text, maths as exact outlines or TexText objects) and a
+**portable** SVG (all glyphs as outlines). The PDF is rendered from the
+portable SVG, never from the editable one.
+
+1. Write the figure as its own `standalone` source, `figures/name.tex`, with
+   the font block. The `.tex` file stays authoritative for layout.
+2. Compile once: `lualatex -interaction=nonstopmode -halt-on-error name.tex`.
+3. Rename the maths font in the PDF to a same-length name that is not
+   installed, so Inkscape outlines maths and keeps labels as text:
+
+   ```bash
+   qpdf --qdf --object-streams=disable name.pdf name-qdf.pdf
+   sed 's/STIXTwoMath-Regular/STIXTwoMathOutlined/g' name-qdf.pdf > name-src.pdf
+   ```
+
+4. Editable SVG:
+   `inkscape name-src.pdf --pages=1 --pdf-font-strategy=draw-missing --export-plain-svg -o name-edit.svg`.
+   Heros labels are `<text>`; maths glyphs are paths with the TeX shapes.
+5. Equations you expect to rewrite: in Inkscape, replace them with
+   **TexText** objects (Extensions → Text → TexText; LuaLaTeX; preamble file
+   `figures/textext-preamble.tex` holding the font block, with
+   `\setmainfont` swapped for `\setsansfont`). Put them on their own layer.
+   TikZ output never becomes TexText by itself.
+6. Portable SVG:
+   `inkscape name-edit.svg --export-text-to-path --export-plain-svg -o name.svg`.
+7. Final PDF from the portable SVG:
+   `inkscape name.svg --export-type=pdf -o name-final.pdf`. Check with
+   `pdffonts name-final.pdf` (no fonts listed), then
+   `\includegraphics{figures/name-final.pdf}` in the manuscript.
+8. Commit `name.tex`, `name-edit.svg` and `name.svg`. The PDFs are build
+   products. Regenerating step 4 overwrites manual edits, so make lasting
+   changes in the `.tex` file or on the TexText layer.
+
+Why not `dvisvgm`: tested with dvisvgm 3.6 and Inkscape 1.4, Inkscape ignores
+the embedded WOFF2 fonts, and unicode-math glyphs land on wrong code points.
+Why not keep maths as text (`--pdf-font-strategy=keep`): glyphs are mapped
+through ToUnicode and some are wrong (σ became ς). `pdftocairo -svg` and
+`pdf2svg` outline everything, so nothing stays editable.
+
+TexText, per user, no sudo (Inkscape runs extensions with `/usr/bin/python3`):
+
+```bash
+# from the unpacked TexText-Linux-<version>.tar.gz release
+uv run --no-project --python /usr/bin/python3 \
+  python setup.py --inkscape-executable /usr/bin/inkscape
+# installs into ~/.config/inkscape/extensions/textext/
+```
 
 ## Acronyms and glossaries
 
@@ -192,7 +262,9 @@ against this rule and produce a short report:
 3. Floats: `[tbp]`; `\centering` in floats; flag habitual `[H]`.
 4. References: `cleveref` preferred over manual `Eq.~\ref`.
 5. Code: `minted` + `-shell-escape`; if `listings`, UTF-8 `literate` or accent risk.
-6. Graphics: vector PDF/SVG for plots; TikZ/pgfplots/curve2e in-document.
+6. Graphics: vector PDF/SVG for plots; TikZ/pgfplots/curve2e; figures
+   SVG-first (editable + portable SVG, PDF from the portable SVG); STIX Two
+   Math for maths, TeX Gyre Heros for labels.
 7. Packages: `siunitx`, `booktabs`, `tcolorbox[most]` callouts when used.
 8. Bibliography: citekeys resolvable; no invented `\cite{}`.
 9. Glossaries: `\gls` used consistently when `glossaries` is loaded.

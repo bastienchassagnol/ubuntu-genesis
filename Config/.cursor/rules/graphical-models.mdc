@@ -45,10 +45,17 @@ latents, observations inside inner plates; minimal crossings; consistent
 ## Shared TikZ preamble
 
 Quarto: `diagram.engine.tikz.header-includes` in `_quarto.yml`. LaTeX: macros
-preamble once. Load `amsmath`, `amssymb`, `amsfonts`, `bm` for math in labels
-([quarto-cli#13113](https://github.com/quarto-dev/quarto-cli/issues/13113)).
+preamble once. Load `amsmath` and `unicode-math` for maths in labels
+([quarto-cli#13113](https://github.com/quarto-dev/quarto-cli/issues/13113));
+fonts follow `latex-scientific`: STIX Two Math for maths, TeX Gyre Heros for
+labels (no `amssymb`/`bm` with `unicode-math`; use `\symbf`).
 
 ```latex
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmathfont{STIX Two Math}
+\setmainfont{TeX Gyre Heros}   % standalone figures; \setsansfont in a manuscript
 \usepackage{tikz}
 \usetikzlibrary{bayesnet,positioning,fit,calc,arrows.meta}
 \tikzset{
@@ -108,5 +115,6 @@ after preamble edits.
 
 ## LaTeX articles
 
-Embed the same `tikzpicture` in the manuscript; compile with **LuaLaTeX**
-(`latex-scientific` rule). No Ghostscript step unless exporting SVG separately.
+Keep each `tikzpicture` in its own `standalone` source and follow the
+SVG-first workflow in `latex-scientific` (editable SVG, portable SVG, PDF from
+the portable SVG). Compile with **LuaLaTeX**.

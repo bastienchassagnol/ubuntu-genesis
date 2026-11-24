@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -lc 'ROOT=\"${AGENT_BUNDLE_ROOT:-$HOME/repos/ubuntu-genesis/Config/.cursor}\"; test -x \"$ROOT/agent-sync/agent-sync.sh\" && \"$ROOT/agent-sync/agent-sync.sh\" verify || true'"
+            "command": "bash -lc 'for R in \"${AGENT_BUNDLE_ROOT:-}\" \"$HOME/repos/ubuntu-genesis/Config/.cursor\" \"$HOME/OneDrive/04. BNCL (Post Doc)/ubuntu-genesis/Config/.cursor\"; do [ -x \"$R/agent-sync/agent-sync.sh\" ] && { \"$R/agent-sync/agent-sync.sh\" verify || true; exit 0; }; done; exit 0'"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -lc 'ROOT=\"${AGENT_BUNDLE_ROOT:-$HOME/repos/ubuntu-genesis/Config/.cursor}\"; test -x \"$ROOT/agent-sync/agent-sync.sh\" && \"$ROOT/agent-sync/agent-sync.sh\" after-edit || true'"
+            "command": "bash -lc 'for R in \"${AGENT_BUNDLE_ROOT:-}\" \"$HOME/repos/ubuntu-genesis/Config/.cursor\" \"$HOME/OneDrive/04. BNCL (Post Doc)/ubuntu-genesis/Config/.cursor\"; do [ -x \"$R/agent-sync/hooks/agent-sync-after-edit.sh\" ] && exec \"$R/agent-sync/hooks/agent-sync-after-edit.sh\"; done; exit 0'"
           }
         ]
       }

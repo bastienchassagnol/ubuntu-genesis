@@ -19,7 +19,7 @@ path="${1:-}"
 if [[ -z "${path}" ]] && [[ ! -t 0 ]]; then
   input="$(cat)" || true
   if command -v jq >/dev/null 2>&1 && [[ -n "${input}" ]]; then
-    path="$(printf '%s' "${input}" | jq -r '.file_path // .path // empty' 2>/dev/null || true)"
+    path="$(printf '%s' "${input}" | jq -r '.tool_input.file_path // .file_path // .path // empty' 2>/dev/null || true)"
   fi
 fi
 

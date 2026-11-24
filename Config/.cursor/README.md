@@ -63,6 +63,13 @@ After editing `~/.cursor` or `~/.claude`, copy changes back before commit:
 "$AGENT_BUNDLE_ROOT/agent-sync/agent-sync.sh" publish
 ```
 
+Automatic sync: merge the `PostToolUse` hook from
+[`agent-sync/hooks/claude-settings-hooks.snippet.json`](agent-sync/hooks/claude-settings-hooks.snippet.json)
+into `~/.claude/settings.json` (an edit of a rule or skill redeploys to
+`~/.claude` and `~/.cursor`), and run
+`git config core.hooksPath Config/.cursor/agent-sync/git/hooks` once per clone
+(`git pull` from GitHub redeploys).
+
 See [`agent-sync/CLUSTER.md`](agent-sync/CLUSTER.md) for the **`bastienc`** cluster account and
 [`../../AGENTS.md`](../../AGENTS.md) for project hooks and packs.
 
