@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8ae3b164bbafd7c9828a74cf75b60eb1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6ec81665544d097cf56323b1ab3505e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -265,7 +265,7 @@ octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80
 <li><a href="https://quarto.org/">Quarto documentation</a></li>
 <li><a href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a></li>
 </ul>
-<p>For <strong>Nature Methods</strong>-style manuscripts in this lab, prefer TikZ / vector figures for model DAGs and equation panels; keep Mermaid for README / vignettes unless you export a journal-ready figure. See also the scientific-writing rules in <code>.cursorrules</code>.</p>
+<p>For <strong>Nature Methods</strong>-style manuscripts in this lab, prefer TikZ / vector figures for model DAGs and equation panels; keep Mermaid for README / vignettes unless you export a journal-ready figure. See also the <code>scientific-writing</code> and <code>latex-scientific</code> <a href="./software.html#sec-agent-bundle">agent rules</a>.</p>
 <section id="sec-latex-structure" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="sec-latex-structure"><span class="header-section-number">1</span> Document structure</h2>
 <p>For theses and large papers use <code>\frontmatter</code>, <code>\mainmatter</code>, and <code>\backmatter</code>, with a master file and modular folders:</p>
@@ -942,120 +942,121 @@ Chassagnol, Benjamin Loire, Morgane, Philippe, Marielle, Bastien. n.d.
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>For **Nature Methods**-style manuscripts in this lab, prefer TikZ / vector</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>figures for model DAGs and equation panels; keep Mermaid for README /</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>vignettes unless you export a journal-ready figure. See also the</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>scientific-writing rules in <span class="in">`.cursorrules`</span>.</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Document structure {#sec-latex-structure}</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>For theses and large papers use <span class="in">`\frontmatter`</span>, <span class="in">`\mainmatter`</span>, and</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="in">`\backmatter`</span>, with a master file and modular folders:</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="in">``` text</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="in">project/</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="in">├── main.tex</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="in">├── preamble/</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="in">├── chapters/</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="in">├── figures/</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="in">├── bibliography/</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="in">└── appendices/</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`\include{...}`</span> for chapters; <span class="in">`\input{...}`</span> for preamble snippets.</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`\includeonly{...}`</span> while debugging to compile a subset of chapters.</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spacing and paragraphs {#sec-latex-spacing}</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>Prefer semantic spacing (<span class="in">`\medskip`</span>, <span class="in">`\bigskip`</span>) or a global</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="in">`\setlength{\parskip}{1ex}`</span> over scattered <span class="in">`\\`</span>. Set</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="in">`\setlength{\parindent}{1em}`</span> (or local <span class="in">`\noindent`</span>) rather than absolute</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>hacks when relative lengths suffice.</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mathematical typesetting {#sec-latex-math}</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>Avoid <span class="in">`$$ ... $$`</span> in pure LaTeX documents. Prefer <span class="in">`amsmath`</span> environments:</span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="in">`equation`</span>, <span class="in">`align`</span>, <span class="in">`split`</span>, <span class="in">`multline`</span>, <span class="in">`gather`</span>, <span class="in">`cases`</span>. Do **not**</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>use obsolete <span class="in">`eqnarray`</span>, or <span class="in">`array`</span> merely to fake multiline displays.</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>Operators: never fake them with <span class="in">`\text{var}(X)`</span>. Use</span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="in">`\operatorname{var}(X)`</span> or declare them globally:</span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\cov}{cov}</span></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\cor}{cor}</span></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\varop}{var}</span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>Multi-character identifiers: <span class="in">`\mathit{Delta}`</span> / <span class="in">`\mathrm{Delta}`</span>.</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>Descriptive subscripts upright: <span class="in">`x_{\mathrm{max}}`</span>. Split long lines with</span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="in">`align`</span> and indentation; stack indices with <span class="in">`\substack`</span>. Upright Greek</span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>where appropriate via <span class="in">`upgreek`</span>.</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="fu">## Text formatting {#sec-latex-text}</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Deprecated <span class="pp">|</span> Preferred <span class="pp">|</span></span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------|-----------|</span></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\bf`</span> <span class="pp">|</span> <span class="in">`\textbf{}`</span> <span class="pp">|</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\it`</span> <span class="pp">|</span> <span class="in">`\textit{}`</span> <span class="pp">|</span></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\em`</span> <span class="pp">|</span> <span class="in">`\emph{}`</span> <span class="pp">|</span></span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>Small caps: <span class="in">`\textsc{sql}`</span>. Typography: <span class="in">`---`</span> (em dash), <span class="in">`--`</span> (en dash);</span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>place footnotes after punctuation; emphasise with <span class="in">`\emph{}`</span>.</span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figures and tables {#sec-latex-floats}</span></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>Prefer float placement <span class="in">`[tbp]`</span> over aggressive <span class="in">`[h!]`</span> / <span class="in">`[H]`</span>. Inside</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>floats use <span class="in">`\centering`</span>, not a nested <span class="in">`center`</span> environment. Captions:</span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="in">`caption`</span> with <span class="in">`singlelinecheck=off`</span> when lists appear in captions.</span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>Tables: <span class="in">`booktabs`</span>, <span class="in">`longtable`</span>, <span class="in">`tabularx`</span>. See also</span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Generating better LaTeX tables</span><span class="co">](http://www.tug.org/pracjourn/2007-1/mori/mori.pdf)</span></span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>and <span class="co">[</span><span class="ot">LaTeX Tables generator</span><span class="co">](https://www.latex-tables.com/)</span>. In Quarto /</span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>HTML workflows, <span class="in">`kableExtra`</span> / paged tables are often enough.</span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bibliography and citations {#sec-latex-bib}</span></span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>Prefer a **clean `.bib` maintained from Zotero + Better BibTeX** (see the</span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>software chapter) and Quarto / Pandoc citation syntax in teaching</span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>materials. For classic LaTeX manuscripts, stick to a simple BibTeX /</span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="in">`natbib`</span> workflow — keep the bibliography file hygienic (allowed fields</span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>only) and validate with tools such as</span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">BibTeX Tidy</span><span class="co">](https://flamingtempura.github.io/)</span> and</span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">DBLP</span><span class="co">](https://dblp.uni-trier.de/)</span>.</span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`csquotes`</span> and <span class="in">`\enquote{...}`</span> for quotations. Page-aware cites remain</span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>useful (<span class="in">`\cite[p.~8]{LR89}`</span> or the equivalent in your chosen package).</span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cross-references {#sec-latex-xref}</span></span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a><span class="in">\usepackage{cleveref}</span></span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>Prefer <span class="in">`\cref{eq:model}`</span> / <span class="in">`\Cref{...}`</span> / <span class="in">`\crefrange{...}`</span> over manual</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a><span class="in">`Eq.~(\ref{...})`</span>.</span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lists {#sec-latex-lists}</span></span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a><span class="in">\usepackage{enumitem}</span></span>
-<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a><span class="in">\begin{enumerate}[label=(\alph*)]</span></span>
-<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recommended packages {#sec-latex-packages}</span></span>
-<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Domain <span class="pp">|</span> Packages <span class="pp">|</span></span>
-<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|----------------------------------|</span></span>
-<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Mathematics <span class="pp">|</span> <span class="in">`amsmath`</span>, <span class="in">`amssymb`</span>, <span class="in">`mathtools`</span> (+ <span class="in">`systeme`</span> / domain packs if needed) <span class="pp">|</span></span>
-<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Theorems <span class="pp">|</span> <span class="in">`amsthm`</span> or <span class="in">`ntheorem`</span>; boxes via <span class="in">`tcolorbox`</span> / <span class="in">`mdframed`</span> <span class="pp">|</span></span>
-<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Units <span class="pp">|</span> **`siunitx`** (<span class="in">`\num{1e6}`</span>, <span class="in">`\unit{\micro\meter}`</span>, …) <span class="pp">|</span></span>
-<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Graphics <span class="pp">|</span> <span class="in">`tikz`</span>, <span class="in">`pgfplots`</span> (and TikZ for Nature Methods DAGs) <span class="pp">|</span></span>
-<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Code <span class="pp">|</span> <span class="in">`listings`</span> or <span class="in">`minted`</span> (needs Pygments) <span class="pp">|</span></span>
-<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Anti-patterns {#sec-latex-antipatterns}</span></span>
-<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>Avoid <span class="in">`$$…$$`</span> in classic LaTeX sources, <span class="in">`eqnarray`</span>, decorative <span class="in">`\\`</span>,</span>
-<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>deprecated font switches, hardcoded visual markup, and habitual <span class="in">`[H]`</span></span>
-<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>floats. Prefer semantic structure, modular files, modern packages, and</span>
-<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>Quarto-compatible syntax when the deliverable is a website or vignette.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="in">`scientific-writing`</span> and <span class="in">`latex-scientific`</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">agent rules</span><span class="co">](software.qmd#sec-agent-bundle)</span>.</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Document structure {#sec-latex-structure}</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>For theses and large papers use <span class="in">`\frontmatter`</span>, <span class="in">`\mainmatter`</span>, and</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="in">`\backmatter`</span>, with a master file and modular folders:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="in">``` text</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="in">project/</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="in">├── main.tex</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="in">├── preamble/</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="in">├── chapters/</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="in">├── figures/</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="in">├── bibliography/</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="in">└── appendices/</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`\include{...}`</span> for chapters; <span class="in">`\input{...}`</span> for preamble snippets.</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`\includeonly{...}`</span> while debugging to compile a subset of chapters.</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spacing and paragraphs {#sec-latex-spacing}</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>Prefer semantic spacing (<span class="in">`\medskip`</span>, <span class="in">`\bigskip`</span>) or a global</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="in">`\setlength{\parskip}{1ex}`</span> over scattered <span class="in">`\\`</span>. Set</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="in">`\setlength{\parindent}{1em}`</span> (or local <span class="in">`\noindent`</span>) rather than absolute</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>hacks when relative lengths suffice.</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mathematical typesetting {#sec-latex-math}</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>Avoid <span class="in">`$$ ... $$`</span> in pure LaTeX documents. Prefer <span class="in">`amsmath`</span> environments:</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="in">`equation`</span>, <span class="in">`align`</span>, <span class="in">`split`</span>, <span class="in">`multline`</span>, <span class="in">`gather`</span>, <span class="in">`cases`</span>. Do **not**</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>use obsolete <span class="in">`eqnarray`</span>, or <span class="in">`array`</span> merely to fake multiline displays.</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>Operators: never fake them with <span class="in">`\text{var}(X)`</span>. Use</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="in">`\operatorname{var}(X)`</span> or declare them globally:</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\cov}{cov}</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\cor}{cor}</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="in">\DeclareMathOperator{\varop}{var}</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>Multi-character identifiers: <span class="in">`\mathit{Delta}`</span> / <span class="in">`\mathrm{Delta}`</span>.</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>Descriptive subscripts upright: <span class="in">`x_{\mathrm{max}}`</span>. Split long lines with</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="in">`align`</span> and indentation; stack indices with <span class="in">`\substack`</span>. Upright Greek</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>where appropriate via <span class="in">`upgreek`</span>.</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## Text formatting {#sec-latex-text}</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Deprecated <span class="pp">|</span> Preferred <span class="pp">|</span></span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------|-----------|</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\bf`</span> <span class="pp">|</span> <span class="in">`\textbf{}`</span> <span class="pp">|</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\it`</span> <span class="pp">|</span> <span class="in">`\textit{}`</span> <span class="pp">|</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`\em`</span> <span class="pp">|</span> <span class="in">`\emph{}`</span> <span class="pp">|</span></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>Small caps: <span class="in">`\textsc{sql}`</span>. Typography: <span class="in">`---`</span> (em dash), <span class="in">`--`</span> (en dash);</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>place footnotes after punctuation; emphasise with <span class="in">`\emph{}`</span>.</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figures and tables {#sec-latex-floats}</span></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>Prefer float placement <span class="in">`[tbp]`</span> over aggressive <span class="in">`[h!]`</span> / <span class="in">`[H]`</span>. Inside</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>floats use <span class="in">`\centering`</span>, not a nested <span class="in">`center`</span> environment. Captions:</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="in">`caption`</span> with <span class="in">`singlelinecheck=off`</span> when lists appear in captions.</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>Tables: <span class="in">`booktabs`</span>, <span class="in">`longtable`</span>, <span class="in">`tabularx`</span>. See also</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Generating better LaTeX tables</span><span class="co">](http://www.tug.org/pracjourn/2007-1/mori/mori.pdf)</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>and <span class="co">[</span><span class="ot">LaTeX Tables generator</span><span class="co">](https://www.latex-tables.com/)</span>. In Quarto /</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>HTML workflows, <span class="in">`kableExtra`</span> / paged tables are often enough.</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bibliography and citations {#sec-latex-bib}</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>Prefer a **clean `.bib` maintained from Zotero + Better BibTeX** (see the</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>software chapter) and Quarto / Pandoc citation syntax in teaching</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>materials. For classic LaTeX manuscripts, stick to a simple BibTeX /</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="in">`natbib`</span> workflow — keep the bibliography file hygienic (allowed fields</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>only) and validate with tools such as</span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">BibTeX Tidy</span><span class="co">](https://flamingtempura.github.io/)</span> and</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">DBLP</span><span class="co">](https://dblp.uni-trier.de/)</span>.</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`csquotes`</span> and <span class="in">`\enquote{...}`</span> for quotations. Page-aware cites remain</span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>useful (<span class="in">`\cite[p.~8]{LR89}`</span> or the equivalent in your chosen package).</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cross-references {#sec-latex-xref}</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a><span class="in">\usepackage{cleveref}</span></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>Prefer <span class="in">`\cref{eq:model}`</span> / <span class="in">`\Cref{...}`</span> / <span class="in">`\crefrange{...}`</span> over manual</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a><span class="in">`Eq.~(\ref{...})`</span>.</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lists {#sec-latex-lists}</span></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a><span class="in">``` latex</span></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a><span class="in">\usepackage{enumitem}</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="in">\begin{enumerate}[label=(\alph*)]</span></span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recommended packages {#sec-latex-packages}</span></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Domain <span class="pp">|</span> Packages <span class="pp">|</span></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|----------------------------------|</span></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Mathematics <span class="pp">|</span> <span class="in">`amsmath`</span>, <span class="in">`amssymb`</span>, <span class="in">`mathtools`</span> (+ <span class="in">`systeme`</span> / domain packs if needed) <span class="pp">|</span></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Theorems <span class="pp">|</span> <span class="in">`amsthm`</span> or <span class="in">`ntheorem`</span>; boxes via <span class="in">`tcolorbox`</span> / <span class="in">`mdframed`</span> <span class="pp">|</span></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Units <span class="pp">|</span> **`siunitx`** (<span class="in">`\num{1e6}`</span>, <span class="in">`\unit{\micro\meter}`</span>, …) <span class="pp">|</span></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Graphics <span class="pp">|</span> <span class="in">`tikz`</span>, <span class="in">`pgfplots`</span> (and TikZ for Nature Methods DAGs) <span class="pp">|</span></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Code <span class="pp">|</span> <span class="in">`listings`</span> or <span class="in">`minted`</span> (needs Pygments) <span class="pp">|</span></span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Anti-patterns {#sec-latex-antipatterns}</span></span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>Avoid <span class="in">`$$…$$`</span> in classic LaTeX sources, <span class="in">`eqnarray`</span>, decorative <span class="in">`\\`</span>,</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>deprecated font switches, hardcoded visual markup, and habitual <span class="in">`[H]`</span></span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>floats. Prefer semantic structure, modular files, modern packages, and</span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>Quarto-compatible syntax when the deliverable is a website or vignette.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
