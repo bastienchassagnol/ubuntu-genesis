@@ -66,6 +66,7 @@ slide_family <- function(preferred = NULL) {
       )
       return(families[1])
     }
+    if ("Noto Sans" %in% fonts$family) return("Noto Sans")
   } else if (preferred %in% fonts$family) {
     return(preferred)
   }
@@ -98,11 +99,16 @@ ggsave(
 )
 ```
 
-Vector is SVG:
+Vector is SVG. Name the resolved sans in `system_fonts` so Inkscape does not
+substitute Arial when the theme used the `"sans"` keyword:
 
 ```r
+family <- slide_family()
+svg_device <- function(filename, ...) {
+  svglite::svglite(filename, ..., system_fonts = list(sans = family))
+}
 ggsave(
-  "figure.svg", plot = p, device = svglite::svglite,
+  "figure.svg", plot = p, device = svg_device,
   width = 8, height = 5, units = "in", bg = "white"
 )
 ```
