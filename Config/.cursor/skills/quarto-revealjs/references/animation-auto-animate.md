@@ -78,4 +78,4 @@ Don't hand-tune every coordinate — use [quarto-revealjs-editable](https://gith
 - A non-auto-animate slide between two auto-animate slides breaks the tween; mark the "quiet" slide `auto-animate=true` too and park the element as a marker.
 - Book examples never use `self-contained`; `examples/` builds before the book.
 
-Full worked decks: `examples/auto-animate/` (basics, agenda, hero-shape, colored-panels, figure-in-element) and the standalone `auto-animate-elements` skill.
+Full worked decks: `examples/auto-animate/` in repos that ship them (basics, agenda, hero-shape, colored-panels, figure-in-element).

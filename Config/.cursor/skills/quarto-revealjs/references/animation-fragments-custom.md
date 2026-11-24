@@ -82,7 +82,7 @@ item._state = 'done';       // finished
 - **Libraries**: load e.g. anime.js via a `<script src>` in the include file.
 - **Boot guard** if your script may run before Reveal: poll `Reveal.isReady()` before calling `Reveal.on`.
 
-The full worked "falling letters" example (keyframes + complete state-tracking JS) is in the book's fragments chapter and the standalone `quarto-revealjs-fragment` skill.
+The full worked "falling letters" example (keyframes + complete state-tracking JS) is in the book's fragments chapter; keep the complete JS in this reference file when extending it.
 
 ## Gotchas
 

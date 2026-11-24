@@ -29,7 +29,7 @@ Use this when the regression risk is visual: overlap, clipping, label collision,
 ## Adjacent Skills
 
 - `../SKILL.md`
-- `../../react-and-nextjs-data-visualization/SKILL.md`
+- `../../../quarto-revealjs/SKILL.md` (React-in-slide bundles)
 - `../../reports-pdfs-and-slide-automation/SKILL.md`
 - `../../../references/foundations/mobile-first-responsive-visualization.md`
 

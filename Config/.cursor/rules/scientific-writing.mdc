@@ -55,5 +55,11 @@ Never fabricate literature, data, p-values, intervals, benchmarks, or software
 behaviour. Distinguish published evidence, this repo's results, assumptions, and
 speculation. Surface weak baselines and leakage rather than hiding them.
 
-When editing LaTeX prose, apply the **deslop** skill to narrative text; leave maths,
-`\cite{}`, `\ref{}`, and tables untouched unless asked.
+## Prose revision
+
+For narrative in `.qmd`, `.tex`, grants, reviews, and memos, **invoke the
+`deslop` skill** (`Config/.cursor/skills/deslop/SKILL.md`) by name after
+substantive drafting or editing — not an informal paraphrase of the same rules.
+Section structure and venue limits stay in this rule; phrase-level cleanup and
+LaTeX-safe passes use deslop's references (`phrases.md`, `structures.md`,
+`tropes.md`). Leave maths, `\cite{}`, `\ref{}`, and tables untouched unless asked.

@@ -61,7 +61,7 @@ The poster colours each chart by its purpose: **distribution**,
 
 | Shape | Candidates |
 |---|---|
-| Network (edges between nodes) | heatmap (adjacency matrix), hive, arc, chord, network, Sankey **→ adjacency heatmap past ~100 nodes; WebGL layout for thousands (`quarto/references/react-in-quarto.md`)** |
+| Network (edges between nodes) | heatmap (adjacency matrix), hive, arc, chord, network, Sankey **→ adjacency heatmap past ~100 nodes; WebGL layout for thousands (`quarto-revealjs/references/react-in-quarto.md`)** |
 | Hierarchy, no value or value on leaves | circular packing, dendrogram, sunburst, treemap, Sankey **→ treemap when the leaf value is a count (`treemap.md`)** |
 | Hierarchy, value on edges | dendrogram, chord, Sankey |
 | Hierarchy + extra connections | edge bundling |

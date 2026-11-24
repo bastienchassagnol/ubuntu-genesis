@@ -19,3 +19,7 @@ docs/*
 # CodeGraph / Graphify (local indexes)
 .codegraph/
 graphify-out/
+
+# Bibliography curation (uv project)
+scripts/curate_bibliography/.venv/
+scripts/curate_bibliography/bib-enrichment.json

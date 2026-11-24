@@ -26,7 +26,7 @@ Use this when a chart test suite is slow, constantly red for low-signal reasons,
 ## Adjacent Skills
 
 - `../SKILL.md`
-- `../../react-and-nextjs-data-visualization/SKILL.md`
+- `../../../quarto-revealjs/SKILL.md`
 - `../../typescript-data-visualization-engineering/SKILL.md`
 
 ## Source Links

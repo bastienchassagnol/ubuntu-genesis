@@ -137,25 +137,25 @@ rule_body_match() {
 
 cmd_verify() {
   local failures=0
-  [[ -f "${BUNDLE_ROOT}/rules/scope-workspace.mdc" ]] || {
-    log "FAIL: bundle scope-workspace.mdc missing"
+  [[ -f "${BUNDLE_ROOT}/rules/r-python-project.mdc" ]] || {
+    log "FAIL: bundle r-python-project.mdc missing"
     failures=$((failures + 1))
   }
-  if [[ -f "${BUNDLE_ROOT}/rules/scope-workspace.mdc" ]]; then
-    if [[ ! -f "${CURSOR_RULES}/scope-workspace.mdc" ]]; then
-      log "FAIL: missing ${CURSOR_RULES}/scope-workspace.mdc"
+  if [[ -f "${BUNDLE_ROOT}/rules/r-python-project.mdc" ]]; then
+    if [[ ! -f "${CURSOR_RULES}/r-python-project.mdc" ]]; then
+      log "FAIL: missing ${CURSOR_RULES}/r-python-project.mdc"
       failures=$((failures + 1))
-    elif ! rule_body_match "${CURSOR_RULES}/scope-workspace.mdc" \
-      "${BUNDLE_ROOT}/rules/scope-workspace.mdc"; then
-      log "FAIL: cursor rule scope-workspace.mdc differs from bundle"
+    elif ! rule_body_match "${CURSOR_RULES}/r-python-project.mdc" \
+      "${BUNDLE_ROOT}/rules/r-python-project.mdc"; then
+      log "FAIL: cursor rule r-python-project.mdc differs from bundle"
       failures=$((failures + 1))
     fi
-    if [[ ! -f "${CLAUDE_RULES}/scope-workspace.md" ]]; then
-      log "FAIL: missing ${CLAUDE_RULES}/scope-workspace.md"
+    if [[ ! -f "${CLAUDE_RULES}/r-python-project.md" ]]; then
+      log "FAIL: missing ${CLAUDE_RULES}/r-python-project.md"
       failures=$((failures + 1))
-    elif ! rule_body_match "${CLAUDE_RULES}/scope-workspace.md" \
-      "${BUNDLE_ROOT}/rules/scope-workspace.mdc"; then
-      log "FAIL: claude rule scope-workspace.md differs from bundle"
+    elif ! rule_body_match "${CLAUDE_RULES}/r-python-project.md" \
+      "${BUNDLE_ROOT}/rules/r-python-project.mdc"; then
+      log "FAIL: claude rule r-python-project.md differs from bundle"
       failures=$((failures + 1))
     fi
   fi

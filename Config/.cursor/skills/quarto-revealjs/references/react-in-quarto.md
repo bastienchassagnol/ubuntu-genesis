@@ -22,7 +22,7 @@ OJS + D3 directly.
 | Large network (thousands of nodes) needing canvas/WebGL | React: `react-force-graph`; or `force-graph` / Sigma.js without React |
 | Composable scientific figure from typed primitives (axes, glyphs, brushes, annotations) reused across many pages | React: visx |
 | Quick standard charts inside an existing React component library | React: Recharts |
-| A full app (routing, URL state, Next.js) rather than a page or deck | React/Next.js outside Quarto: `react-and-nextjs-data-visualization` skill |
+| A full app (routing, URL state, auth) rather than a page or deck | Dedicated React/Next app — not this skill |
 
 React does not make the maths faster. It pays off when a library supplies a
 feature (WebGL network layout, visx primitives) or when you reuse components
@@ -36,7 +36,7 @@ re-rendered without remounting. Template:
 `assets/react-visx-bundle/` (`src/qviz.jsx`, `package.json`).
 
 ```bash
-cp -r ~/.claude/skills/quarto/assets/react-visx-bundle viz && cd viz
+cp -r ~/.claude/skills/quarto-revealjs/assets/react-visx-bundle viz && cd viz
 npm install && npm run build            # writes qviz.js next to package.json
 cp qviz.js ../                           # next to the .qmd
 ```
@@ -121,9 +121,7 @@ only for a self-contained widget; prefer route 1.
   Quarto OJS; cells do not port unchanged); reveal.js can be driven from React
   outside Quarto. Both leave the Quarto workflow, so use them only when the
   output is an application.
-- Real React/Next.js apps: the `react-and-nextjs-data-visualization` and
-  `testing-data-visualizations` skills (OpenAI build-web-data-visualization
-  plugin, MIT, vendored in `~/.agents/vendor/openai-build-web-data-visualization/`).
+- Standalone apps: chart test strategy in **data-visualisation** `references/testing/`.
 
 ## Gotchas
 

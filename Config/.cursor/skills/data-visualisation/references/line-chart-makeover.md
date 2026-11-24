@@ -85,7 +85,7 @@ writing it.
 
 ## Interactive version
 
-Same steps in OJS + D3: `quarto/references/ojs-d3.md` (direct labels with
+Same steps in OJS + D3: `quarto-revealjs/references/ojs-d3.md` (direct labels with
 `svg.append("text")` at the last point, `d3.axisLeft(y).tickFormat(d => d + "%")`,
 grey context lines drawn first, highlight series on top, hover to bring a grey
 series forward).

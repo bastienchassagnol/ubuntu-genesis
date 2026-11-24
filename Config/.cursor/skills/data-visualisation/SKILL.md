@@ -25,9 +25,20 @@ checklist. This skill holds the long material; read only the file you need.
 | Differential expression: null calibration, p-value histograms, gate, volcano, heatmap, UpSet, bimodality | `references/differential-expression.md` |
 | Enrichment (ORA, GSEA): summary lollipop, Manhattan, GSEA volcano, semantic map, dot plot | `references/enrichment-plots.md` |
 | Mathematical notation in a figure (`latex2exp::TeX()`) | `references/differential-expression.md` |
+| Test strategy for charts and dashboards (regression, mocks, E2E, brittle tests) | `references/testing/` (see table below) |
 
-Interactive implementation (OJS, D3, React in Quarto): the `quarto` skill,
-`references/ojs-*.md` and `references/react-in-quarto.md`.
+### Testing charts (`references/testing/`)
+
+| Task | File |
+|---|---|
+| Choose unit vs component vs E2E | `testing/test-level-selection.md` |
+| Visual regression and screenshots | `testing/visual-regression-and-image-testing.md` |
+| Mocked or synthetic chart data | `testing/data-mocking-and-fixtures.md` |
+| Component and unit tests | `testing/unit-and-component-tests.md` |
+| Dashboard QA and exports | `testing/e2e-dashboard-and-export-strategies.md` |
+| Trim overgrown suites | `testing/avoiding-brittle-over-testing.md` |
+
+Interactive slides (OJS, D3, React in reveal.js): **quarto-revealjs** skill.
 
 ## Workflow
 

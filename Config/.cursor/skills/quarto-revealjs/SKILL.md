@@ -1,6 +1,6 @@
 ---
 name: "quarto-revealjs"
-description: "Build, theme, and present reveal.js slide decks authored in Quarto. Use this skill whenever the user is working on Quarto reveal.js slides (a `.qmd` with `format: revealjs`) - starting a new deck, restyling it (fonts, colors, sizes, SCSS themes), positioning content (columns, absolute positioning, background images, overlays, cards), showing code or plots well, adding fragment or auto-animate motion, or presenting and exporting (speaker notes, speaker view, PDF, chalkboard, multiplex). Routes to focused reference files under references/."
+description: "Primary skill for all Quarto reveal.js work (`format: revealjs`): theme, layout, code, plots, fragments, auto-animate, presenting/export, and OJS (Plot, D3, React bundles in decks). Websites → quarto-website; books → quarto-book. Routes to references/."
 ---
 
 # Quarto Reveal.js — beautiful slides
@@ -149,6 +149,17 @@ Read these first for most tasks.
 | Hiding slides | `references/misc-hiding-slides.md` |
 | Reusing content with includes | `references/misc-includes.md` |
 | VS Code / Positron Sass-variable snippets | `references/misc-snippets.md` |
+
+## Interactive slides (OJS, D3, React)
+
+| Topic | Reference |
+|---|---|
+| OJS cells, Plot, inputs, data flow | `references/ojs-basics.md` |
+| Custom D3 marks, brushes, playgrounds | `references/ojs-d3.md` |
+| React bundle in a deck (visx template under `assets/`) | `references/react-in-quarto.md` |
+
+Full React/Next.js applications live outside Quarto; see **data-visualisation**
+`references/libraries.md` step 7.
 
 ## Rules of thumb
 

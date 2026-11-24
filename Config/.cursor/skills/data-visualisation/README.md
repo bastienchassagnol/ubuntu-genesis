@@ -18,8 +18,8 @@ Holds the long dataviz material so the path-loaded rule
 | `references/ternary.md` | exactly three parts that sum to 1 | Theodosiou, `20250401_pokemon.R` (TidyTuesday 2025-04-01) |
 | `references/waterfall-clinical.md` | best percent change per patient, coloured by best overall response | Oncoflash, “How to Read a Waterfall Plot” (Stat Saturday) |
 
-Related: the `quarto` skill (OJS, D3, React in Quarto) and the vendored OpenAI
-skills `react-and-nextjs-data-visualization` and `testing-data-visualizations`
+Related: **quarto-revealjs** (OJS, D3, React in decks); chart testing under
+`references/testing/`.
 (`~/.agents/vendor/openai-build-web-data-visualization/`, MIT).
 
 `~/.cursor/skills/data-visualisation` is a symlink to this folder.

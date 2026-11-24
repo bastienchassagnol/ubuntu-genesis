@@ -50,23 +50,67 @@ do not duplicate parent+child.
 
 **Workflow:**
 
-1. Zotero → export → repo hygiene script if present (e.g.
-   `check_bibliography.py --clean`).
+1. Zotero → export → repo hygiene (`check_bibliography.py --clean` on
+   DeCovarT-style layouts; otherwise `bib_enrich.py` + `bibtex-tidy` on the
+   exported `.bib`).
 2. Git/docs → Zotero: `zotc keys extract`, then `collection add|create`
    (dry-run first).
 3. Software tools → `packages.bib` (or repo equivalent), **not** Zotero literature.
+
+**Curation scripts** (vendored from DeCovarT; sync updates from
+`DeCovarT/scripts/curate_bibliography/`):
+
+```bash
+cd scripts/curate_bibliography && uv sync
+uv run --project scripts/curate_bibliography python scripts/curate_bibliography/bib_enrich.py --help
+```
 
 **Metadata enrichment** (missing fields only, never overwrite verified fields
 without review):
 
 ```bash
-python3 scripts/curate_bibliography/bib_enrich.py PATH.bib --write --backup \
+uv run --project scripts/curate_bibliography \
+  python scripts/curate_bibliography/bib_enrich.py PATH.bib --write --backup \
   --min-score 92 --report scripts/curate_bibliography/bib-enrichment.json
+npx bibtex-tidy@1.14.0 PATH.bib --modify --curly --numeric --sort=key
 ```
 
-One-off Zotero Web API inserts (one leaf collection per item) are
-`scripts/curate_bibliography/add_zotero_perspectives.py` (stdlib only;
-credentials in `~/.zotc/`). The enrichment report above is gitignored.
+`check_bibliography.py` enforces field whitelist, DOI dedupe, and paired
+`.bib` copies for the DeCovarT package tree (`article/`, `inst/`). Run from a
+repo root that has that layout:
+
+```bash
+uv run --project scripts/curate_bibliography \
+  python scripts/curate_bibliography/check_bibliography.py --clean
+```
+
+One-off Zotero Web API inserts (one leaf collection per item):
+`scripts/curate_bibliography/add_zotero_perspectives.py` (credentials in
+`~/.zotc/`). The enrichment report above is gitignored.
+
+### Two streams (literature vs software)
+
+Do not mix streams. Do not invent BibTeX entries, citekeys, or DOIs.
+
+Required literature fields by type match `check_bibliography.py`
+(`@article`: title, author, year, journal; `@book`: title, year, publisher, and
+author or editor; and so on).
+
+**ubuntu-genesis** (`project.type: website` in `_quarto.yml`): literature under
+`bibliography/REFERENCES.bib` when added; software under `bibliography/packages.bib`
+or page-local `packages.bib`. Site YAML:
+
+```yaml
+bibliography:
+  - bibliography/packages.bib
+  - bibliography/REFERENCES.bib
+link-citations: true
+```
+
+Until a site-wide `.bib` is committed, page-level bibliographies stay as today.
+For this teaching site, prefer `bib_enrich.py` on exported literature `.bib`
+files rather than `check_bibliography.py --clean` (checker paths are
+package-oriented).
 
 User-level tooling (when no repo script):
 

@@ -11,10 +11,12 @@ paths:
 
 British English; reproducible execution; cite at point of use.
 
-For slides, websites and interactive OJS/D3, use the `quarto` skill
-(`~/.claude/skills/quarto/SKILL.md`): it routes to one reference per task
-(deck setup, themes, layout, fragments, auto-animate, full-width figures,
-session info, OJS, D3, React). Read it before major deck or site edits.
+Route by output type before major edits:
+
+- **Slides** (`format: revealjs`): **quarto-revealjs** (theme, layout, motion,
+  export, OJS/D3/React in decks).
+- **Website** (`project.type: website`): **quarto-website**.
+- **Book** (`project.type: book`): **quarto-book**.
 
 ## Code display
 
@@ -58,5 +60,5 @@ otherwise.
 
 ## Pages that run R
 
-End each page with `sessionInfo()` in a collapsed callout (`web-layout.md` in
-the `quarto` skill).
+End each page with `sessionInfo()` in a collapsed callout
+(**quarto-website** `references/web-layout.md`).

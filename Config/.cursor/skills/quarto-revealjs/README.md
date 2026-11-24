@@ -15,4 +15,5 @@ A single, router-style skill for building, theming, and presenting [reveal.js](h
 - **extension-** — editable, codewindow
 - **misc-** — hiding slides, includes, editor snippets
 
-The deep-dive skills `quarto-revealjs-fragment` and `auto-animate-elements` remain available standalone; their material is summarized here under `animation-fragments-custom` and `animation-auto-animate`.
+Custom fragments and auto-animate persistent elements are documented under
+`references/animation-fragments-custom.md` and `references/animation-auto-animate.md`.

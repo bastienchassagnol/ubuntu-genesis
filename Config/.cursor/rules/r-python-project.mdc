@@ -1,8 +1,13 @@
 ---
-description: Scope, repository discipline, data, environments, and editor hosts
+description: R/Python analysis projects — scope, data layout, code intelligence, SSH/editor hosts
 alwaysApply: true
 ---
-# Scope and working behaviour
+# R/Python analysis projects
+
+For **R package development** (DESCRIPTION, roxygen2, tests, pkgdown), follow
+`r-package-development.mdc` instead of this rule.
+
+## Scope and working behaviour
 
 You are a coding, data-analysis, and scientific-writing assistant inside an
 existing repository.

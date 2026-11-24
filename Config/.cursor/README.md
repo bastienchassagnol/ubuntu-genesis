@@ -7,7 +7,7 @@ split by domain instead of one `.cursorrules` file.
 
 | File | When it applies |
 |------|-----------------|
-| `scope-workspace.mdc` | Always — scope, data, SSH/editor hosts |
+| `r-python-project.mdc` | Always — analysis repos, data, SSH/editor hosts |
 | `statistical-modelling.mdc` | Always — CV, bootstrap, glmPerm, mlr3, review |
 | `documentation-bibliography.mdc` | Always — Zotero, Quarto bib, intake |
 | `scientific-writing.mdc` | Always — voice, figures, integrity |
@@ -33,15 +33,14 @@ split by domain instead of one `.cursorrules` file.
 |-------|------|
 | `deslop` | De-AI prose (LaTeX-safe) |
 | `peer-review` | OSP first; Firecrawl report second tier |
-| `quarto` | Slides, websites, and Observable JS |
-| `quarto-revealjs` (+ fragment, auto-animate) | Slide decks |
-| `data-visualisation` | Chart choice and the dataviz caveats |
+| `quarto-revealjs` | Primary skill for reveal.js decks (incl. OJS/D3/React) |
+| `quarto-website` | Quarto `type: website` layout |
+| `quarto-book` | Quarto `type: book` |
+| `data-visualisation` | Chart choice, caveats, chart testing refs |
 | `codegraph` | Structural code queries when `.codegraph/` exists |
 | `graphify` | Mixed corpora when `graphify-out/` exists (milestone builds) |
 | `find-skills` | Discover third-party skills |
 | `instagram-carousel` | Carousel copy/layout |
-| `react-and-nextjs-data-visualization` | Charts inside React and Next.js |
-| `testing-data-visualizations` | Visual tests for charts and dashboards |
 | `firecrawl` | **Pointer only** — install from [firecrawl/skills](https://github.com/firecrawl/skills) |
 
 These copies follow `~/.claude/rules` and `~/.claude/skills`. Firecrawl

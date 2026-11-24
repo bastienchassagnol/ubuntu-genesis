@@ -624,7 +624,8 @@ the Zotero connection
 keys in `.qmd` / `.bib` / `.tex` and Zotero **collections**. Project
 `.cursorrules` (Bibliography section) encode the hygiene rules: leaf-only
 collection membership, allowed BibTeX fields, and
-`check_bibliography.py --clean` after every export.
+`bib_enrich.py` (and `check_bibliography.py --clean` on DeCovarT-style package
+repos) after every export — see `scripts/curate_bibliography/`.
 
 ```{mermaid}
 %%| label: fig-zotero-flow
@@ -632,7 +633,7 @@ collection membership, allowed BibTeX fields, and
 %%{init: {'theme': 'neutral'}}%%
 flowchart LR
   Z[Zotero + Better BibTeX<br/>local ~/Zotero] -->|export .bib| G[Git literature .bib]
-  G -->|check_bibliography --clean| G
+  G -->|bib_enrich / check_bibliography| G
   Q[Quarto / Cursor<br/>visual citations] -->|[@keys]| G
   G -->|zotc keys extract| C[zotcurate]
   C -->|collection add leaf-only| Z
@@ -643,7 +644,9 @@ flowchart LR
 
 **Both directions (as used in lab projects):**
 
-1.  **Zotero → Git:** export → `python3 scripts/check_bibliography.py --clean`.
+1.  **Zotero → Git:** export →
+    `uv run --project scripts/curate_bibliography python scripts/curate_bibliography/bib_enrich.py PATH.bib --write --backup --min-score 92`
+    (package repos: `check_bibliography.py --clean` with the same `uv run --project` prefix).
 2.  **Git / docs → Zotero:** `zotc keys extract` then
     `collection add|create` (dry-run first); assign each item to
     **exactly one leaf collection**.

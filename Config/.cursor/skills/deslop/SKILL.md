@@ -13,6 +13,10 @@ disable-model-invocation: false
 
 # Deslop: Remove AI Writing Patterns from Prose
 
+IMRaD section order, figure integrity, and venue limits: `scientific-writing` rule
+(`Config/.cursor/rules/scientific-writing.mdc`). This skill is the executable
+deslop procedure only.
+
 Strip predictable AI patterns from writing. Make prose sound like a specific human wrote it, not like a language model generated it.
 
 ## When to Apply

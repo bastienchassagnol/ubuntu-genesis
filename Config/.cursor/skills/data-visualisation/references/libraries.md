@@ -13,11 +13,9 @@ maintain and load than the one before.
 | 6 | React library inside Quarto (visx, Recharts, react-force-graph) | a feature or a canvas/WebGL speed-up that D3/Plot lack, or reuse of existing components |
 | 7 | React/Next.js application | the output is an app (routing, URL state, auth), not a page or deck |
 
-How-to for steps 3–6: the `quarto` skill (`references/ojs-basics.md`,
-`ojs-d3.md`, `react-in-quarto.md`). Step 7: the
-`react-and-nextjs-data-visualization` skill (OpenAI build-web-data-visualization
-plugin, MIT), with `testing-data-visualizations` for test strategy. Never
-start at 6 or 7.
+How-to for steps 3–6: **quarto-revealjs** (`references/ojs-basics.md`,
+`ojs-d3.md`, `react-in-quarto.md`). Step 7: a dedicated React/Next app outside
+Quarto. Test strategy: `references/testing/` in this skill. Never start at 6 or 7.
 
 ## React libraries worth knowing
 

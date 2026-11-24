@@ -71,9 +71,9 @@ add `{{< include _session-info.qmd >}}` at the end of each page.
 ## GitHub corner
 
 An animated octocat linking to the repository, top-right of every page.
-Asset: `assets/github-corner.html` (Tim Holman's github-corners, MIT). Copy it
-next to `_quarto.yml`, replace `OWNER/REPO`, and change `fill:#69b3a2` to the
-site colour.
+Asset: **quarto-revealjs** `assets/github-corner.html` (Tim Holman's
+github-corners, MIT). Copy it next to `_quarto.yml`, replace `OWNER/REPO`, and
+change `fill:#69b3a2` to the site colour.
 
 ```yaml
 format:

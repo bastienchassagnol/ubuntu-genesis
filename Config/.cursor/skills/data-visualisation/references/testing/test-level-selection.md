@@ -25,7 +25,7 @@ Use this when the user is starting a test strategy, auditing an existing suite, 
 ## Adjacent Skills
 
 - `../SKILL.md`
-- `../../react-and-nextjs-data-visualization/SKILL.md`
+- `../../../quarto-revealjs/SKILL.md` (interactive slide charts)
 - `../../dashboards-and-real-time-visualization/SKILL.md`
 
 ## Source Links
