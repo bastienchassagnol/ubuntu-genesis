@@ -1053,7 +1053,7 @@ Figure&nbsp;4: Core Zotero configuration: keep the SQLite library and stored PDF
 </section>
 <section id="two-way-sync-with-zotcurate-zotc-and-project-rules" class="level3" data-number="10.4">
 <h3 data-number="10.4" class="anchored" data-anchor-id="two-way-sync-with-zotcurate-zotc-and-project-rules"><span class="header-section-number">10.4</span> Two-way sync with zotcurate (<code>zotc</code>) and project rules</h3>
-<p><a href="https://github.com/jeetsukumaran/zotcurate">zotcurate</a> bridges citation keys in <code>.qmd</code> / <code>.bib</code> / <code>.tex</code> and Zotero <strong>collections</strong>. Project <code>.cursorrules</code> (Bibliography section) encode the hygiene rules: leaf-only collection membership, allowed BibTeX fields, and <code>check_bibliography.py --clean</code> after every export.</p>
+<p><a href="https://github.com/jeetsukumaran/zotcurate">zotcurate</a> bridges citation keys in <code>.qmd</code> / <code>.bib</code> / <code>.tex</code> and Zotero <strong>collections</strong>. Project <code>.cursorrules</code> (Bibliography section) encode the hygiene rules: leaf-only collection membership, allowed BibTeX fields, and <code>bib_enrich.py</code> (and <code>check_bibliography.py --clean</code> on DeCovarT-style package repos) after every export — see <code>scripts/curate_bibliography/</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-zotero-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1064,7 +1064,7 @@ Figure&nbsp;4: Core Zotero configuration: keep the SQLite library and stored PDF
 <pre class="mermaid mermaid-js" data-label="fig-zotero-flow">%%{init: {'theme': 'neutral'}}%%
 flowchart LR
   Z[Zotero + Better BibTeX&lt;br/&gt;local ~/Zotero] --&gt;|export .bib| G[Git literature .bib]
-  G --&gt;|check_bibliography --clean| G
+  G --&gt;|bib_enrich / check_bibliography| G
   Q[Quarto / Cursor&lt;br/&gt;visual citations] --&gt;|[@keys]| G
   G --&gt;|zotc keys extract| C[zotcurate]
   C --&gt;|collection add leaf-only| Z
@@ -1091,7 +1091,7 @@ Figure&nbsp;6: How <code>.cursorrules</code> + zotcurate keep Zotero collections
 </div>
 <p><strong>Both directions (as used in lab projects):</strong></p>
 <ol type="1">
-<li><strong>Zotero → Git:</strong> export → <code>python3 scripts/check_bibliography.py --clean</code>.</li>
+<li><strong>Zotero → Git:</strong> export → <code>uv run --project scripts/curate_bibliography python scripts/curate_bibliography/bib_enrich.py PATH.bib --write --backup --min-score 92</code> (package repos: <code>check_bibliography.py --clean</code> with the same <code>uv run --project</code> prefix).</li>
 <li><strong>Git / docs → Zotero:</strong> <code>zotc keys extract</code> then <code>collection add|create</code> (dry-run first); assign each item to <strong>exactly one leaf collection</strong>.</li>
 <li>Software tools → <code>packages.bib</code>, not the Zotero literature library.</li>
 </ol>
@@ -3062,512 +3062,515 @@ Chassagnol, Benjamin Loire, Morgane, Philippe, Marielle, Bastien. n.d.
 <span id="cb45-624"><a href="#cb45-624" aria-hidden="true" tabindex="-1"></a>keys in <span class="in">`.qmd`</span> / <span class="in">`.bib`</span> / <span class="in">`.tex`</span> and Zotero **collections**. Project</span>
 <span id="cb45-625"><a href="#cb45-625" aria-hidden="true" tabindex="-1"></a><span class="in">`.cursorrules`</span> (Bibliography section) encode the hygiene rules: leaf-only</span>
 <span id="cb45-626"><a href="#cb45-626" aria-hidden="true" tabindex="-1"></a>collection membership, allowed BibTeX fields, and</span>
-<span id="cb45-627"><a href="#cb45-627" aria-hidden="true" tabindex="-1"></a><span class="in">`check_bibliography.py --clean`</span> after every export.</span>
-<span id="cb45-628"><a href="#cb45-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-631"><a href="#cb45-631" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
-<span id="cb45-632"><a href="#cb45-632" aria-hidden="true" tabindex="-1"></a>%%| label: fig-zotero-flow</span>
-<span id="cb45-633"><a href="#cb45-633" aria-hidden="true" tabindex="-1"></a>%%| fig-cap: <span class="ot">"</span><span class="st">Bidirectional literature workflow (summary)</span><span class="ot">"</span></span>
-<span id="cb45-634"><a href="#cb45-634" aria-hidden="true" tabindex="-1"></a>%<span class="dt">%</span>{init: {<span class="ot">'</span><span class="ss">theme</span><span class="ot">'</span>: <span class="ot">'</span><span class="ss">neutral</span><span class="ot">'</span>}}%%</span>
-<span id="cb45-635"><a href="#cb45-635" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb45-636"><a href="#cb45-636" aria-hidden="true" tabindex="-1"></a>  Z[Zotero + Better BibTeX&lt;br/&gt;<span class="kw">local</span> ~<span class="ot">/Zotero] --&gt;</span><span class="ch">|</span><span class="ot">export .bib</span><span class="ch">|</span><span class="ot"> G</span><span class="ch">[</span><span class="bn">Git literature .bib</span><span class="ch">]</span></span>
-<span id="cb45-637"><a href="#cb45-637" aria-hidden="true" tabindex="-1"></a><span class="ot">  G --&gt;</span><span class="ch">|</span><span class="ot">check_bibliography --clean</span><span class="ch">|</span><span class="ot"> G</span></span>
-<span id="cb45-638"><a href="#cb45-638" aria-hidden="true" tabindex="-1"></a><span class="ot">  Q</span><span class="ch">[</span><span class="bn">Quarto / Cursor&lt;br/&gt;visual citations</span><span class="ch">]</span><span class="ot"> --&gt;</span><span class="ch">|[</span><span class="bn">@keys</span><span class="ch">]|</span><span class="ot"> G</span></span>
-<span id="cb45-639"><a href="#cb45-639" aria-hidden="true" tabindex="-1"></a><span class="ot">  G --&gt;</span><span class="ch">|</span><span class="ot">zotc keys extract</span><span class="ch">|</span><span class="ot"> C</span><span class="ch">[</span><span class="bn">zotcurate</span><span class="ch">]</span></span>
-<span id="cb45-640"><a href="#cb45-640" aria-hidden="true" tabindex="-1"></a><span class="ot">  C --&gt;</span><span class="ch">|</span><span class="ot">collection add leaf-only</span><span class="ch">|</span><span class="ot"> Z</span></span>
-<span id="cb45-641"><a href="#cb45-641" aria-hidden="true" tabindex="-1"></a><span class="ot">  P</span><span class="ch">[</span><span class="bn">packages.bib</span><span class="ch">]</span><span class="ot"> -.-&gt;</span><span class="ch">|</span><span class="ot">software only</span><span class="ch">|</span><span class="ot"> Q</span></span>
-<span id="cb45-642"><a href="#cb45-642" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-643"><a href="#cb45-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-644"><a href="#cb45-644" aria-hidden="true" tabindex="-1"></a><span class="ot">!</span><span class="ch">[</span><span class="bn">How `.cursorrules` + zotcurate keep Zotero collections and document citekeys aligned across formats</span><span class="ch">](</span><span class="ot">assets/</span>zotero/zotero-zotcurate-sync.png){<span class="co">#fig-zotero-zotcurate-sync}</span></span>
-<span id="cb45-645"><a href="#cb45-645" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-646"><a href="#cb45-646" aria-hidden="true" tabindex="-1"></a>*<span class="dt">*Both</span> directions (as used in lab projects):**</span>
-<span id="cb45-647"><a href="#cb45-647" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-648"><a href="#cb45-648" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  *<span class="dt">*Zotero</span> → Git:*<span class="ot">*</span> export → <span class="ot">`</span><span class="st">python3 scripts/check_bibliography.py --clean</span><span class="ot">`</span>.</span>
-<span id="cb45-649"><a href="#cb45-649" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  *<span class="dt">*Git</span> / docs → Zotero:*<span class="ot">*</span> <span class="ot">`</span><span class="st">zotc keys extract</span><span class="ot">`</span> then</span>
-<span id="cb45-650"><a href="#cb45-650" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`</span><span class="st">collection add|create</span><span class="ot">`</span> (dry-run first); assign <span class="cf">each</span> item to</span>
-<span id="cb45-651"><a href="#cb45-651" aria-hidden="true" tabindex="-1"></a>    *<span class="dt">*exactly</span> one leaf collection*<span class="wa">*.</span></span>
-<span id="cb45-652"><a href="#cb45-652" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  Software tools → <span class="ot">`</span><span class="st">packages.bib</span><span class="ot">`</span>, <span class="ot">not</span> the Zotero literature library.</span>
-<span id="cb45-653"><a href="#cb45-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-654"><a href="#cb45-654" aria-hidden="true" tabindex="-1"></a><span class="co">### Shortcuts and power options</span></span>
-<span id="cb45-655"><a href="#cb45-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-656"><a href="#cb45-656" aria-hidden="true" tabindex="-1"></a>![Zotero shortcut preferences (restart required after changes)](assets/zotero/zotero-shortcuts.png){<span class="co">#fig-zotero-shortcuts}</span></span>
-<span id="cb45-657"><a href="#cb45-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-658"><a href="#cb45-658" aria-hidden="true" tabindex="-1"></a>Useful defaults (Linux; change under *<span class="dt">*Edit</span> → Settings → Shortcuts*<span class="ot">*</span>):</span>
-<span id="cb45-659"><a href="#cb45-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-660"><a href="#cb45-660" aria-hidden="true" tabindex="-1"></a>| Action | Typical shortcut |</span>
-<span id="cb45-661"><a href="#cb45-661" aria-hidden="true" tabindex="-1"></a>|--------------------------------------|------------------|</span>
-<span id="cb45-662"><a href="#cb45-662" aria-hidden="true" tabindex="-1"></a>| New item | {{&lt; kbd Ctrl-Shift-N &gt;}} |</span>
-<span id="cb45-663"><a href="#cb45-663" aria-hidden="true" tabindex="-1"></a>| New note | {{&lt; kbd Ctrl-Shift<span class="ot">-O</span> &gt;}} |</span>
-<span id="cb45-664"><a href="#cb45-664" aria-hidden="true" tabindex="-1"></a>| Focus libraries pane | {{&lt; kbd Ctrl-Shift-L &gt;}} |</span>
-<span id="cb45-665"><a href="#cb45-665" aria-hidden="true" tabindex="-1"></a>| Quick search | {{&lt; kbd Ctrl-Shift-K &gt;}} |</span>
-<span id="cb45-666"><a href="#cb45-666" aria-hidden="true" tabindex="-1"></a>| Copy citations | {{&lt; kbd Ctrl-Shift<span class="ot">-A</span> &gt;}} |</span>
-<span id="cb45-667"><a href="#cb45-667" aria-hidden="true" tabindex="-1"></a>| Copy items | {{&lt; kbd Ctrl-Shift<span class="ot">-C</span> &gt;}} |</span>
-<span id="cb45-668"><a href="#cb45-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-669"><a href="#cb45-669" aria-hidden="true" tabindex="-1"></a>Additional habits:</span>
-<span id="cb45-670"><a href="#cb45-670" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-671"><a href="#cb45-671" aria-hidden="true" tabindex="-1"></a>-   In *<span class="dt">*Advanced</span> search*<span class="ot">*</span> results, hold {{&lt; kbd Ctrl &gt;}} <span class="cf">while</span> clicking</span>
-<span id="cb45-672"><a href="#cb45-672" aria-hidden="true" tabindex="-1"></a>    an item to reveal / jump to its location in the library tree.</span>
-<span id="cb45-673"><a href="#cb45-673" aria-hidden="true" tabindex="-1"></a>-   Hold {{&lt; kbd Shift &gt;}} to multi-<span class="fu">select</span> a contiguous block of items,</span>
-<span id="cb45-674"><a href="#cb45-674" aria-hidden="true" tabindex="-1"></a>    then batch-update Better BibTeX citekeys (right-click → Better BibTeX</span>
-<span id="cb45-675"><a href="#cb45-675" aria-hidden="true" tabindex="-1"></a>    → generate / refresh <span class="fu">keys</span>).</span>
-<span id="cb45-676"><a href="#cb45-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-677"><a href="#cb45-677" aria-hidden="true" tabindex="-1"></a><span class="co">## Quarto, R and Cursor {#sec-r-quarto-cursor}</span></span>
-<span id="cb45-678"><a href="#cb45-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-679"><a href="#cb45-679" aria-hidden="true" tabindex="-1"></a><span class="co">### R and recommended packages {#sec-r}</span></span>
-<span id="cb45-680"><a href="#cb45-680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-681"><a href="#cb45-681" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  To get recent R builds, add the CRAN signing key <span class="ot">and</span> repository</span>
-<span id="cb45-682"><a href="#cb45-682" aria-hidden="true" tabindex="-1"></a>    (<span class="dt">@lst</span><span class="ot">-r</span>-repo). Adjust the Ubuntu codename (<span class="ot">`</span><span class="st">jammy</span><span class="ot">`</span>, <span class="ot">`</span><span class="st">noble</span><span class="ot">`</span>, …) to</span>
-<span id="cb45-683"><a href="#cb45-683" aria-hidden="true" tabindex="-1"></a>    match your release:</span>
-<span id="cb45-684"><a href="#cb45-684" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-685"><a href="#cb45-685" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-r-repo .bash lst-cap="Add CRAN APT repository for R"}</span></span>
-<span id="cb45-686"><a href="#cb45-686" aria-hidden="true" tabindex="-1"></a><span class="st">sudo mkdir -p /etc/apt/keyrings</span></span>
-<span id="cb45-687"><a href="#cb45-687" aria-hidden="true" tabindex="-1"></a><span class="st">sudo wget -O /etc/apt/keyrings/cran.gpg \</span></span>
-<span id="cb45-688"><a href="#cb45-688" aria-hidden="true" tabindex="-1"></a><span class="st">  https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc</span></span>
-<span id="cb45-689"><a href="#cb45-689" aria-hidden="true" tabindex="-1"></a><span class="st">echo "deb [signed-by=/etc/apt/keyrings/cran.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" \</span></span>
-<span id="cb45-690"><a href="#cb45-690" aria-hidden="true" tabindex="-1"></a><span class="st">  | sudo tee /etc/apt/sources.list.d/cran.list</span></span>
-<span id="cb45-691"><a href="#cb45-691" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-692"><a href="#cb45-692" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-693"><a href="#cb45-693" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  Install R:</span>
-<span id="cb45-694"><a href="#cb45-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-627"><a href="#cb45-627" aria-hidden="true" tabindex="-1"></a><span class="in">`bib_enrich.py`</span> (and <span class="in">`check_bibliography.py --clean`</span> on DeCovarT-style package</span>
+<span id="cb45-628"><a href="#cb45-628" aria-hidden="true" tabindex="-1"></a>repos) after every export — see <span class="in">`scripts/curate_bibliography/`</span>.</span>
+<span id="cb45-629"><a href="#cb45-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-632"><a href="#cb45-632" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb45-633"><a href="#cb45-633" aria-hidden="true" tabindex="-1"></a>%%| label: fig-zotero-flow</span>
+<span id="cb45-634"><a href="#cb45-634" aria-hidden="true" tabindex="-1"></a>%%| fig-cap: <span class="ot">"</span><span class="st">Bidirectional literature workflow (summary)</span><span class="ot">"</span></span>
+<span id="cb45-635"><a href="#cb45-635" aria-hidden="true" tabindex="-1"></a>%<span class="dt">%</span>{init: {<span class="ot">'</span><span class="ss">theme</span><span class="ot">'</span>: <span class="ot">'</span><span class="ss">neutral</span><span class="ot">'</span>}}%%</span>
+<span id="cb45-636"><a href="#cb45-636" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
+<span id="cb45-637"><a href="#cb45-637" aria-hidden="true" tabindex="-1"></a>  Z[Zotero + Better BibTeX&lt;br/&gt;<span class="kw">local</span> ~<span class="ot">/Zotero] --&gt;</span><span class="ch">|</span><span class="ot">export .bib</span><span class="ch">|</span><span class="ot"> G</span><span class="ch">[</span><span class="bn">Git literature .bib</span><span class="ch">]</span></span>
+<span id="cb45-638"><a href="#cb45-638" aria-hidden="true" tabindex="-1"></a><span class="ot">  G --&gt;</span><span class="ch">|</span><span class="ot">bib_enrich /</span> check_bibliography| G</span>
+<span id="cb45-639"><a href="#cb45-639" aria-hidden="true" tabindex="-1"></a>  Q[Quarto / Cursor&lt;br/&gt;visual citations] --&gt;|[<span class="dt">@keys</span>]| G</span>
+<span id="cb45-640"><a href="#cb45-640" aria-hidden="true" tabindex="-1"></a>  G --&gt;|zotc <span class="fu">keys</span> extract| C[zotcurate]</span>
+<span id="cb45-641"><a href="#cb45-641" aria-hidden="true" tabindex="-1"></a>  C --&gt;|collection add leaf-only| Z</span>
+<span id="cb45-642"><a href="#cb45-642" aria-hidden="true" tabindex="-1"></a>  P[packages.bib] -.-&gt;|software only| Q</span>
+<span id="cb45-643"><a href="#cb45-643" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-644"><a href="#cb45-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-645"><a href="#cb45-645" aria-hidden="true" tabindex="-1"></a><span class="al">![How `.cursorrules` + zotcurate keep Zotero collections and document citekeys aligned across formats](assets/zotero/zotero-zotcurate-sync.png)</span>{#fig-zotero-zotcurate-sync}</span>
+<span id="cb45-646"><a href="#cb45-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-647"><a href="#cb45-647" aria-hidden="true" tabindex="-1"></a>**Both directions (as used in lab projects):**</span>
+<span id="cb45-648"><a href="#cb45-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-649"><a href="#cb45-649" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Zotero → Git:** export →</span>
+<span id="cb45-650"><a href="#cb45-650" aria-hidden="true" tabindex="-1"></a>    <span class="in">`uv run --project scripts/curate_bibliography python scripts/curate_bibliography/bib_enrich.py PATH.bib --write --backup --min-score 92`</span></span>
+<span id="cb45-651"><a href="#cb45-651" aria-hidden="true" tabindex="-1"></a>    (package repos: <span class="in">`check_bibliography.py --clean`</span> with the same <span class="in">`uv run --project`</span> prefix).</span>
+<span id="cb45-652"><a href="#cb45-652" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Git / docs → Zotero:** <span class="in">`zotc keys extract`</span> then</span>
+<span id="cb45-653"><a href="#cb45-653" aria-hidden="true" tabindex="-1"></a>    <span class="in">`collection add|create`</span> (dry-run first); assign each item to</span>
+<span id="cb45-654"><a href="#cb45-654" aria-hidden="true" tabindex="-1"></a>    **exactly one leaf collection**.</span>
+<span id="cb45-655"><a href="#cb45-655" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Software tools → <span class="in">`packages.bib`</span>, not the Zotero literature library.</span>
+<span id="cb45-656"><a href="#cb45-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-657"><a href="#cb45-657" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shortcuts and power options</span></span>
+<span id="cb45-658"><a href="#cb45-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-659"><a href="#cb45-659" aria-hidden="true" tabindex="-1"></a><span class="al">![Zotero shortcut preferences (restart required after changes)](assets/zotero/zotero-shortcuts.png)</span>{#fig-zotero-shortcuts}</span>
+<span id="cb45-660"><a href="#cb45-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-661"><a href="#cb45-661" aria-hidden="true" tabindex="-1"></a>Useful defaults (Linux; change under **Edit → Settings → Shortcuts**):</span>
+<span id="cb45-662"><a href="#cb45-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-663"><a href="#cb45-663" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Action <span class="pp">|</span> Typical shortcut <span class="pp">|</span></span>
+<span id="cb45-664"><a href="#cb45-664" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------------------------------------|------------------|</span></span>
+<span id="cb45-665"><a href="#cb45-665" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> New item <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-N &gt;}} <span class="pp">|</span></span>
+<span id="cb45-666"><a href="#cb45-666" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> New note <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-O &gt;}} <span class="pp">|</span></span>
+<span id="cb45-667"><a href="#cb45-667" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Focus libraries pane <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-L &gt;}} <span class="pp">|</span></span>
+<span id="cb45-668"><a href="#cb45-668" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Quick search <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-K &gt;}} <span class="pp">|</span></span>
+<span id="cb45-669"><a href="#cb45-669" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Copy citations <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-A &gt;}} <span class="pp">|</span></span>
+<span id="cb45-670"><a href="#cb45-670" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Copy items <span class="pp">|</span> {{&lt; kbd Ctrl-Shift-C &gt;}} <span class="pp">|</span></span>
+<span id="cb45-671"><a href="#cb45-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-672"><a href="#cb45-672" aria-hidden="true" tabindex="-1"></a>Additional habits:</span>
+<span id="cb45-673"><a href="#cb45-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-674"><a href="#cb45-674" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>In **Advanced search** results, hold {{&lt; kbd Ctrl &gt;}} while clicking</span>
+<span id="cb45-675"><a href="#cb45-675" aria-hidden="true" tabindex="-1"></a>    an item to reveal / jump to its location in the library tree.</span>
+<span id="cb45-676"><a href="#cb45-676" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Hold {{&lt; kbd Shift &gt;}} to multi-select a contiguous block of items,</span>
+<span id="cb45-677"><a href="#cb45-677" aria-hidden="true" tabindex="-1"></a>    then batch-update Better BibTeX citekeys (right-click → Better BibTeX</span>
+<span id="cb45-678"><a href="#cb45-678" aria-hidden="true" tabindex="-1"></a>    → generate / refresh keys).</span>
+<span id="cb45-679"><a href="#cb45-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-680"><a href="#cb45-680" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto, R and Cursor {#sec-r-quarto-cursor}</span></span>
+<span id="cb45-681"><a href="#cb45-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-682"><a href="#cb45-682" aria-hidden="true" tabindex="-1"></a><span class="fu">### R and recommended packages {#sec-r}</span></span>
+<span id="cb45-683"><a href="#cb45-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-684"><a href="#cb45-684" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>To get recent R builds, add the CRAN signing key and repository</span>
+<span id="cb45-685"><a href="#cb45-685" aria-hidden="true" tabindex="-1"></a>    (@lst-r-repo). Adjust the Ubuntu codename (<span class="in">`jammy`</span>, <span class="in">`noble`</span>, …) to</span>
+<span id="cb45-686"><a href="#cb45-686" aria-hidden="true" tabindex="-1"></a>    match your release:</span>
+<span id="cb45-687"><a href="#cb45-687" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-688"><a href="#cb45-688" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-r-repo .bash lst-cap="Add CRAN APT repository for R"}</span></span>
+<span id="cb45-689"><a href="#cb45-689" aria-hidden="true" tabindex="-1"></a><span class="in">sudo mkdir -p /etc/apt/keyrings</span></span>
+<span id="cb45-690"><a href="#cb45-690" aria-hidden="true" tabindex="-1"></a><span class="in">sudo wget -O /etc/apt/keyrings/cran.gpg \</span></span>
+<span id="cb45-691"><a href="#cb45-691" aria-hidden="true" tabindex="-1"></a><span class="in">  https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc</span></span>
+<span id="cb45-692"><a href="#cb45-692" aria-hidden="true" tabindex="-1"></a><span class="in">echo "deb [signed-by=/etc/apt/keyrings/cran.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" \</span></span>
+<span id="cb45-693"><a href="#cb45-693" aria-hidden="true" tabindex="-1"></a><span class="in">  | sudo tee /etc/apt/sources.list.d/cran.list</span></span>
+<span id="cb45-694"><a href="#cb45-694" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-695"><a href="#cb45-695" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-696"><a href="#cb45-696" aria-hidden="true" tabindex="-1"></a>    i.  Install base packages:</span>
+<span id="cb45-696"><a href="#cb45-696" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Install R:</span>
 <span id="cb45-697"><a href="#cb45-697" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-698"><a href="#cb45-698" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-r-base .bash lst-cap="Install R base"}</span></span>
-<span id="cb45-699"><a href="#cb45-699" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt update</span></span>
-<span id="cb45-700"><a href="#cb45-700" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt install r-base r-base-dev -y</span></span>
-<span id="cb45-701"><a href="#cb45-701" aria-hidden="true" tabindex="-1"></a><span class="st">R --version</span></span>
-<span id="cb45-702"><a href="#cb45-702" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-703"><a href="#cb45-703" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-704"><a href="#cb45-704" aria-hidden="true" tabindex="-1"></a>    ii. Install recommended Ubuntu <span class="fu">system</span> libraries <span class="cf">for</span> scientific</span>
-<span id="cb45-705"><a href="#cb45-705" aria-hidden="true" tabindex="-1"></a>        computing <span class="ot">and</span> network/plotting support (<span class="dt">@lst</span><span class="ot">-r</span>-syslibs):</span>
+<span id="cb45-698"><a href="#cb45-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-699"><a href="#cb45-699" aria-hidden="true" tabindex="-1"></a>    i.  Install base packages:</span>
+<span id="cb45-700"><a href="#cb45-700" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-701"><a href="#cb45-701" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-r-base .bash lst-cap="Install R base"}</span></span>
+<span id="cb45-702"><a href="#cb45-702" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt update</span></span>
+<span id="cb45-703"><a href="#cb45-703" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install r-base r-base-dev -y</span></span>
+<span id="cb45-704"><a href="#cb45-704" aria-hidden="true" tabindex="-1"></a><span class="in">R --version</span></span>
+<span id="cb45-705"><a href="#cb45-705" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-706"><a href="#cb45-706" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-707"><a href="#cb45-707" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-r-syslibs .bash lst-cap="System libraries for R packages"}</span></span>
-<span id="cb45-708"><a href="#cb45-708" aria-hidden="true" tabindex="-1"></a><span class="st">## Compilation tools</span></span>
-<span id="cb45-709"><a href="#cb45-709" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt install cmake</span></span>
-<span id="cb45-710"><a href="#cb45-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-711"><a href="#cb45-711" aria-hidden="true" tabindex="-1"></a><span class="st">## Network, imaging, and plotting libraries</span></span>
-<span id="cb45-712"><a href="#cb45-712" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt install \</span></span>
-<span id="cb45-713"><a href="#cb45-713" aria-hidden="true" tabindex="-1"></a><span class="st">  build-essential \</span></span>
-<span id="cb45-714"><a href="#cb45-714" aria-hidden="true" tabindex="-1"></a><span class="st">  libpng-dev \</span></span>
-<span id="cb45-715"><a href="#cb45-715" aria-hidden="true" tabindex="-1"></a><span class="st">  libjpeg-dev \</span></span>
-<span id="cb45-716"><a href="#cb45-716" aria-hidden="true" tabindex="-1"></a><span class="st">  libtiff-dev \</span></span>
-<span id="cb45-717"><a href="#cb45-717" aria-hidden="true" tabindex="-1"></a><span class="st">  libcairo2-dev \</span></span>
-<span id="cb45-718"><a href="#cb45-718" aria-hidden="true" tabindex="-1"></a><span class="st">  libcurl4-openssl-dev \</span></span>
-<span id="cb45-719"><a href="#cb45-719" aria-hidden="true" tabindex="-1"></a><span class="st">  libssl-dev \</span></span>
-<span id="cb45-720"><a href="#cb45-720" aria-hidden="true" tabindex="-1"></a><span class="st">  libxml2-dev \</span></span>
-<span id="cb45-721"><a href="#cb45-721" aria-hidden="true" tabindex="-1"></a><span class="st">  zlib1g-dev</span></span>
-<span id="cb45-722"><a href="#cb45-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-723"><a href="#cb45-723" aria-hidden="true" tabindex="-1"></a><span class="st">## Scientific libraries</span></span>
-<span id="cb45-724"><a href="#cb45-724" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt install \</span></span>
-<span id="cb45-725"><a href="#cb45-725" aria-hidden="true" tabindex="-1"></a><span class="st">  build-essential \</span></span>
-<span id="cb45-726"><a href="#cb45-726" aria-hidden="true" tabindex="-1"></a><span class="st">  gfortran \</span></span>
-<span id="cb45-727"><a href="#cb45-727" aria-hidden="true" tabindex="-1"></a><span class="st">  libblas-dev \</span></span>
-<span id="cb45-728"><a href="#cb45-728" aria-hidden="true" tabindex="-1"></a><span class="st">  liblapack-dev \</span></span>
-<span id="cb45-729"><a href="#cb45-729" aria-hidden="true" tabindex="-1"></a><span class="st">  libgsl-dev</span></span>
-<span id="cb45-730"><a href="#cb45-730" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-731"><a href="#cb45-731" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-732"><a href="#cb45-732" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-733"><a href="#cb45-733" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  Configure a <span class="cf">default</span> CRAN mirror:</span>
+<span id="cb45-707"><a href="#cb45-707" aria-hidden="true" tabindex="-1"></a><span class="in">    ii. Install recommended Ubuntu system libraries for scientific</span></span>
+<span id="cb45-708"><a href="#cb45-708" aria-hidden="true" tabindex="-1"></a><span class="in">        computing and network/plotting support (@lst-r-syslibs):</span></span>
+<span id="cb45-709"><a href="#cb45-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-710"><a href="#cb45-710" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-r-syslibs .bash lst-cap="System libraries for R packages"}</span></span>
+<span id="cb45-711"><a href="#cb45-711" aria-hidden="true" tabindex="-1"></a><span class="in">## Compilation tools</span></span>
+<span id="cb45-712"><a href="#cb45-712" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install cmake</span></span>
+<span id="cb45-713"><a href="#cb45-713" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-714"><a href="#cb45-714" aria-hidden="true" tabindex="-1"></a><span class="in">## Network, imaging, and plotting libraries</span></span>
+<span id="cb45-715"><a href="#cb45-715" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install \</span></span>
+<span id="cb45-716"><a href="#cb45-716" aria-hidden="true" tabindex="-1"></a><span class="in">  build-essential \</span></span>
+<span id="cb45-717"><a href="#cb45-717" aria-hidden="true" tabindex="-1"></a><span class="in">  libpng-dev \</span></span>
+<span id="cb45-718"><a href="#cb45-718" aria-hidden="true" tabindex="-1"></a><span class="in">  libjpeg-dev \</span></span>
+<span id="cb45-719"><a href="#cb45-719" aria-hidden="true" tabindex="-1"></a><span class="in">  libtiff-dev \</span></span>
+<span id="cb45-720"><a href="#cb45-720" aria-hidden="true" tabindex="-1"></a><span class="in">  libcairo2-dev \</span></span>
+<span id="cb45-721"><a href="#cb45-721" aria-hidden="true" tabindex="-1"></a><span class="in">  libcurl4-openssl-dev \</span></span>
+<span id="cb45-722"><a href="#cb45-722" aria-hidden="true" tabindex="-1"></a><span class="in">  libssl-dev \</span></span>
+<span id="cb45-723"><a href="#cb45-723" aria-hidden="true" tabindex="-1"></a><span class="in">  libxml2-dev \</span></span>
+<span id="cb45-724"><a href="#cb45-724" aria-hidden="true" tabindex="-1"></a><span class="in">  zlib1g-dev</span></span>
+<span id="cb45-725"><a href="#cb45-725" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-726"><a href="#cb45-726" aria-hidden="true" tabindex="-1"></a><span class="in">## Scientific libraries</span></span>
+<span id="cb45-727"><a href="#cb45-727" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install \</span></span>
+<span id="cb45-728"><a href="#cb45-728" aria-hidden="true" tabindex="-1"></a><span class="in">  build-essential \</span></span>
+<span id="cb45-729"><a href="#cb45-729" aria-hidden="true" tabindex="-1"></a><span class="in">  gfortran \</span></span>
+<span id="cb45-730"><a href="#cb45-730" aria-hidden="true" tabindex="-1"></a><span class="in">  libblas-dev \</span></span>
+<span id="cb45-731"><a href="#cb45-731" aria-hidden="true" tabindex="-1"></a><span class="in">  liblapack-dev \</span></span>
+<span id="cb45-732"><a href="#cb45-732" aria-hidden="true" tabindex="-1"></a><span class="in">  libgsl-dev</span></span>
+<span id="cb45-733"><a href="#cb45-733" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-734"><a href="#cb45-734" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-735"><a href="#cb45-735" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-736"><a href="#cb45-736" aria-hidden="true" tabindex="-1"></a>    i.  The official mirror &lt;https://cloud.r-project.org&gt; is the most</span>
-<span id="cb45-737"><a href="#cb45-737" aria-hidden="true" tabindex="-1"></a>        up to date.</span>
-<span id="cb45-738"><a href="#cb45-738" aria-hidden="true" tabindex="-1"></a>    ii. On Ubuntu, the *<span class="dt">*Posit</span> Package Manager*<span class="ot">*</span> mirror is often much</span>
-<span id="cb45-739"><a href="#cb45-739" aria-hidden="true" tabindex="-1"></a>        faster because it serves prebuilt Linux binaries. Pin it in</span>
-<span id="cb45-740"><a href="#cb45-740" aria-hidden="true" tabindex="-1"></a>        <span class="ot">`</span><span class="st">~/.Rprofile</span><span class="ot">`</span> (<span class="dt">@lst</span>-rprofile-ppm), replacing</span>
-<span id="cb45-741"><a href="#cb45-741" aria-hidden="true" tabindex="-1"></a>        <span class="ot">`</span><span class="st">&lt;ubuntu-version&gt;</span><span class="ot">`</span> with your release (e.g. <span class="ot">`</span><span class="st">noble</span><span class="ot">`</span>):</span>
-<span id="cb45-742"><a href="#cb45-742" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-743"><a href="#cb45-743" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-rprofile-ppm .bash lst-cap="Posit Package Manager in ~/.Rprofile"}</span></span>
-<span id="cb45-744"><a href="#cb45-744" aria-hidden="true" tabindex="-1"></a><span class="st">echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/&lt;ubuntu-version&gt;/latest"))' \</span></span>
-<span id="cb45-745"><a href="#cb45-745" aria-hidden="true" tabindex="-1"></a><span class="st">  &gt;&gt; ~/.Rprofile</span></span>
-<span id="cb45-746"><a href="#cb45-746" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-747"><a href="#cb45-747" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-748"><a href="#cb45-748" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-749"><a href="#cb45-749" aria-hidden="true" tabindex="-1"></a><span class="fl">4.</span>  Install packages in a reproducible way (project lockfiles, <span class="ot">`</span><span class="st">renv</span><span class="ot">`</span>,</span>
-<span id="cb45-750"><a href="#cb45-750" aria-hidden="true" tabindex="-1"></a>    <span class="ot">or</span> a curated meta-<span class="kw">package</span>). Stephen Turner’s tidyverse-oriented</span>
-<span id="cb45-751"><a href="#cb45-751" aria-hidden="true" tabindex="-1"></a>    stack is a useful starting set <span class="cf">for</span> many bioinformatics pipelines:</span>
-<span id="cb45-752"><a href="#cb45-752" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`</span><span class="st">remotes::install_github("stephenturner/Tverse", upgrade = TRUE)</span><span class="ot">`</span>.</span>
-<span id="cb45-753"><a href="#cb45-753" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-754"><a href="#cb45-754" aria-hidden="true" tabindex="-1"></a><span class="fl">5.</span>  Install [Air](https://posit-dev.github.io/air/), the recommended fast</span>
-<span id="cb45-755"><a href="#cb45-755" aria-hidden="true" tabindex="-1"></a>    formatter <span class="cf">for</span> R, as a user-level CLI tool via <span class="ot">`</span><span class="st">uv</span><span class="ot">`</span> (<span class="dt">@lst</span>-air-install).</span>
-<span id="cb45-756"><a href="#cb45-756" aria-hidden="true" tabindex="-1"></a>    Configure Cursor (<span class="ot">or</span> your editor) to call <span class="ot">`</span><span class="st">air</span><span class="ot">`</span> on save; see the</span>
-<span id="cb45-757"><a href="#cb45-757" aria-hidden="true" tabindex="-1"></a>    Air documentation <span class="cf">for</span> editor integration.</span>
-<span id="cb45-758"><a href="#cb45-758" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-759"><a href="#cb45-759" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-air-install .bash lst-cap="Install Air formatter via uv"}</span></span>
-<span id="cb45-760"><a href="#cb45-760" aria-hidden="true" tabindex="-1"></a><span class="st">uv tool install air-formatter</span></span>
-<span id="cb45-761"><a href="#cb45-761" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-762"><a href="#cb45-762" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-763"><a href="#cb45-763" aria-hidden="true" tabindex="-1"></a><span class="co">### Quarto {#sec-quarto}</span></span>
-<span id="cb45-764"><a href="#cb45-764" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-765"><a href="#cb45-765" aria-hidden="true" tabindex="-1"></a>Install Quarto from the official site:</span>
-<span id="cb45-766"><a href="#cb45-766" aria-hidden="true" tabindex="-1"></a>&lt;https://quarto.org/docs/get-started/&gt;. Example <span class="kw">local</span> <span class="ot">`</span><span class="st">.deb</span><span class="ot">`</span> install</span>
-<span id="cb45-767"><a href="#cb45-767" aria-hidden="true" tabindex="-1"></a>(<span class="dt">@lst</span>-quarto-install):</span>
-<span id="cb45-768"><a href="#cb45-768" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-769"><a href="#cb45-769" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-quarto-install .bash lst-cap="Install Quarto"}</span></span>
-<span id="cb45-770"><a href="#cb45-770" aria-hidden="true" tabindex="-1"></a><span class="st">sudo apt install ./quarto-1.3.496-linux-amd64.deb</span></span>
-<span id="cb45-771"><a href="#cb45-771" aria-hidden="true" tabindex="-1"></a><span class="st">quarto check</span></span>
-<span id="cb45-772"><a href="#cb45-772" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-773"><a href="#cb45-773" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-774"><a href="#cb45-774" aria-hidden="true" tabindex="-1"></a>A minimal inline maths check:</span>
-<span id="cb45-775"><a href="#cb45-775" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-776"><a href="#cb45-776" aria-hidden="true" tabindex="-1"></a><span class="wa">$$</span></span>
-<span id="cb45-777"><a href="#cb45-777" aria-hidden="true" tabindex="-1"></a>a = <span class="dv">10</span></span>
-<span id="cb45-778"><a href="#cb45-778" aria-hidden="true" tabindex="-1"></a><span class="wa">$$</span></span>
-<span id="cb45-779"><a href="#cb45-779" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-780"><a href="#cb45-780" aria-hidden="true" tabindex="-1"></a><span class="co">### Cursor with R {#sec-cursor-r}</span></span>
-<span id="cb45-781"><a href="#cb45-781" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-782"><a href="#cb45-782" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  Install the following R packages <span class="cf">for</span> language support, rendering,</span>
-<span id="cb45-783"><a href="#cb45-783" aria-hidden="true" tabindex="-1"></a>    <span class="ot">and</span> debugging (<span class="dt">@lst</span><span class="ot">-r</span>-cursor-pkgs):</span>
+<span id="cb45-736"><a href="#cb45-736" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Configure a default CRAN mirror:</span>
+<span id="cb45-737"><a href="#cb45-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-738"><a href="#cb45-738" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-739"><a href="#cb45-739" aria-hidden="true" tabindex="-1"></a>    i.  The official mirror <span class="ot">&lt;https://cloud.r-project.org&gt;</span> is the most</span>
+<span id="cb45-740"><a href="#cb45-740" aria-hidden="true" tabindex="-1"></a>        up to date.</span>
+<span id="cb45-741"><a href="#cb45-741" aria-hidden="true" tabindex="-1"></a>    ii. On Ubuntu, the **Posit Package Manager** mirror is often much</span>
+<span id="cb45-742"><a href="#cb45-742" aria-hidden="true" tabindex="-1"></a>        faster because it serves prebuilt Linux binaries. Pin it in</span>
+<span id="cb45-743"><a href="#cb45-743" aria-hidden="true" tabindex="-1"></a>        <span class="in">`~/.Rprofile`</span> (@lst-rprofile-ppm), replacing</span>
+<span id="cb45-744"><a href="#cb45-744" aria-hidden="true" tabindex="-1"></a>        <span class="in">`&lt;ubuntu-version&gt;`</span> with your release (e.g. <span class="in">`noble`</span>):</span>
+<span id="cb45-745"><a href="#cb45-745" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-746"><a href="#cb45-746" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-rprofile-ppm .bash lst-cap="Posit Package Manager in ~/.Rprofile"}</span></span>
+<span id="cb45-747"><a href="#cb45-747" aria-hidden="true" tabindex="-1"></a><span class="in">echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/&lt;ubuntu-version&gt;/latest"))' \</span></span>
+<span id="cb45-748"><a href="#cb45-748" aria-hidden="true" tabindex="-1"></a><span class="in">  &gt;&gt; ~/.Rprofile</span></span>
+<span id="cb45-749"><a href="#cb45-749" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-750"><a href="#cb45-750" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-751"><a href="#cb45-751" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-752"><a href="#cb45-752" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Install packages in a reproducible way (project lockfiles, <span class="in">`renv`</span>,</span>
+<span id="cb45-753"><a href="#cb45-753" aria-hidden="true" tabindex="-1"></a>    or a curated meta-package). Stephen Turner’s tidyverse-oriented</span>
+<span id="cb45-754"><a href="#cb45-754" aria-hidden="true" tabindex="-1"></a>    stack is a useful starting set for many bioinformatics pipelines:</span>
+<span id="cb45-755"><a href="#cb45-755" aria-hidden="true" tabindex="-1"></a>    <span class="in">`remotes::install_github("stephenturner/Tverse", upgrade = TRUE)`</span>.</span>
+<span id="cb45-756"><a href="#cb45-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-757"><a href="#cb45-757" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Install <span class="co">[</span><span class="ot">Air</span><span class="co">](https://posit-dev.github.io/air/)</span>, the recommended fast</span>
+<span id="cb45-758"><a href="#cb45-758" aria-hidden="true" tabindex="-1"></a>    formatter for R, as a user-level CLI tool via <span class="in">`uv`</span> (@lst-air-install).</span>
+<span id="cb45-759"><a href="#cb45-759" aria-hidden="true" tabindex="-1"></a>    Configure Cursor (or your editor) to call <span class="in">`air`</span> on save; see the</span>
+<span id="cb45-760"><a href="#cb45-760" aria-hidden="true" tabindex="-1"></a>    Air documentation for editor integration.</span>
+<span id="cb45-761"><a href="#cb45-761" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-762"><a href="#cb45-762" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-air-install .bash lst-cap="Install Air formatter via uv"}</span></span>
+<span id="cb45-763"><a href="#cb45-763" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install air-formatter</span></span>
+<span id="cb45-764"><a href="#cb45-764" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-765"><a href="#cb45-765" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-766"><a href="#cb45-766" aria-hidden="true" tabindex="-1"></a><span class="fu">### Quarto {#sec-quarto}</span></span>
+<span id="cb45-767"><a href="#cb45-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-768"><a href="#cb45-768" aria-hidden="true" tabindex="-1"></a>Install Quarto from the official site:</span>
+<span id="cb45-769"><a href="#cb45-769" aria-hidden="true" tabindex="-1"></a><span class="ot">&lt;https://quarto.org/docs/get-started/&gt;</span>. Example local <span class="in">`.deb`</span> install</span>
+<span id="cb45-770"><a href="#cb45-770" aria-hidden="true" tabindex="-1"></a>(@lst-quarto-install):</span>
+<span id="cb45-771"><a href="#cb45-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-772"><a href="#cb45-772" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-quarto-install .bash lst-cap="Install Quarto"}</span></span>
+<span id="cb45-773"><a href="#cb45-773" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install ./quarto-1.3.496-linux-amd64.deb</span></span>
+<span id="cb45-774"><a href="#cb45-774" aria-hidden="true" tabindex="-1"></a><span class="in">quarto check</span></span>
+<span id="cb45-775"><a href="#cb45-775" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-776"><a href="#cb45-776" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-777"><a href="#cb45-777" aria-hidden="true" tabindex="-1"></a>A minimal inline maths check:</span>
+<span id="cb45-778"><a href="#cb45-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-779"><a href="#cb45-779" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb45-780"><a href="#cb45-780" aria-hidden="true" tabindex="-1"></a>a = 10</span>
+<span id="cb45-781"><a href="#cb45-781" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb45-782"><a href="#cb45-782" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-783"><a href="#cb45-783" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cursor with R {#sec-cursor-r}</span></span>
 <span id="cb45-784"><a href="#cb45-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-785"><a href="#cb45-785" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-r-cursor-pkgs .r lst-cap="R packages for Cursor debugging"}</span></span>
-<span id="cb45-786"><a href="#cb45-786" aria-hidden="true" tabindex="-1"></a><span class="st">install.packages(c(</span></span>
-<span id="cb45-787"><a href="#cb45-787" aria-hidden="true" tabindex="-1"></a><span class="st">  "remotes",</span></span>
-<span id="cb45-788"><a href="#cb45-788" aria-hidden="true" tabindex="-1"></a><span class="st">  "languageserver",</span></span>
-<span id="cb45-789"><a href="#cb45-789" aria-hidden="true" tabindex="-1"></a><span class="st">  "rmarkdown",</span></span>
-<span id="cb45-790"><a href="#cb45-790" aria-hidden="true" tabindex="-1"></a><span class="st">  "httpgd"</span></span>
-<span id="cb45-791"><a href="#cb45-791" aria-hidden="true" tabindex="-1"></a><span class="st">))</span></span>
-<span id="cb45-792"><a href="#cb45-792" aria-hidden="true" tabindex="-1"></a><span class="st">remotes::install_github("ManuelHentschel/vscDebugger")</span></span>
-<span id="cb45-793"><a href="#cb45-793" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-794"><a href="#cb45-794" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-795"><a href="#cb45-795" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  (Optional but recommended) Use <span class="ot">`</span><span class="st">radian</span><span class="ot">`</span> as an enhanced R terminal:</span>
-<span id="cb45-796"><a href="#cb45-796" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-797"><a href="#cb45-797" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span><span class="st">{#lst-radian-install .bash lst-cap="Install radian via uv"}</span></span>
-<span id="cb45-798"><a href="#cb45-798" aria-hidden="true" tabindex="-1"></a><span class="st">uv tool install radian</span></span>
-<span id="cb45-799"><a href="#cb45-799" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
-<span id="cb45-800"><a href="#cb45-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-801"><a href="#cb45-801" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  Install the <span class="ot">`</span><span class="st">vscDebugger</span><span class="ot">`</span> <span class="ot">/ R debugger extension in Cursor, then run</span></span>
-<span id="cb45-802"><a href="#cb45-802" aria-hidden="true" tabindex="-1"></a><span class="ot">    the </span><span class="ch">[</span><span class="bn">debug demo</span><span class="ch">](</span><span class="ot">assets/</span>r/debug_demo.R) script to test it</span>
-<span id="cb45-803"><a href="#cb45-803" aria-hidden="true" tabindex="-1"></a>    (<span class="dt">@fig</span>-debugger<span class="ot">-r</span>).</span>
-<span id="cb45-804"><a href="#cb45-804" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-805"><a href="#cb45-805" aria-hidden="true" tabindex="-1"></a>![Side-by-side comparison of the debug demo script <span class="ot">and</span> the debugger in action](assets/r/debugger_R.png){<span class="co">#fig-debugger-r}</span></span>
-<span id="cb45-806"><a href="#cb45-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-807"><a href="#cb45-807" aria-hidden="true" tabindex="-1"></a><span class="co">## Python {#sec-python}</span></span>
-<span id="cb45-808"><a href="#cb45-808" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-809"><a href="#cb45-809" aria-hidden="true" tabindex="-1"></a>&gt; From *<span class="dt">*PEP</span> <span class="dv">668</span>*<span class="wa">*,</span> on modern Debian/Ubuntu with a <span class="fu">system</span> Python of <span class="fl">3.11</span></span>
-<span id="cb45-810"><a href="#cb45-810" aria-hidden="true" tabindex="-1"></a>&gt; <span class="ot">or</span> newer, <span class="ot">`</span><span class="st">pip</span><span class="ot">`</span> is blocked from modifying the *<span class="dt">*system</span> Python*<span class="ot">*</span> so</span>
-<span id="cb45-811"><a href="#cb45-811" aria-hidden="true" tabindex="-1"></a>&gt; that it cannot <span class="cf">break</span> <span class="ot">`</span><span class="st">apt</span><span class="ot">`</span>-managed packages.</span>
-<span id="cb45-812"><a href="#cb45-812" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-813"><a href="#cb45-813" aria-hidden="true" tabindex="-1"></a>&gt; *<span class="dt">*This</span> section evolves quickly.*<span class="ot">*</span> Prefer the <span class="ot">`</span><span class="st">uv</span><span class="ot">`</span>-centric workflow</span>
-<span id="cb45-814"><a href="#cb45-814" aria-hidden="true" tabindex="-1"></a>&gt; below; treat older <span class="ot">`</span><span class="st">pip</span><span class="ot">`</span> <span class="ot">/ Poetry /</span> Conda advice as legacy <span class="cf">unless</span> you</span>
-<span id="cb45-815"><a href="#cb45-815" aria-hidden="true" tabindex="-1"></a>&gt; are constrained by an HPC site.</span>
-<span id="cb45-816"><a href="#cb45-816" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-817"><a href="#cb45-817" aria-hidden="true" tabindex="-1"></a><span class="co">### Modern Python guidelines {#sec-python-guidelines}</span></span>
-<span id="cb45-818"><a href="#cb45-818" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-819"><a href="#cb45-819" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse=<span class="ot">"</span><span class="st">false</span><span class="ot">"</span> title=<span class="ot">"</span><span class="st">Modern Python development guidelines</span><span class="ot">"</span>}</span>
-<span id="cb45-820"><a href="#cb45-820" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  Recent Ubuntu releases (including Noble) strongly discourage</span>
-<span id="cb45-821"><a href="#cb45-821" aria-hidden="true" tabindex="-1"></a>    installing extra <span class="fu">system</span>-wide Python interpreters. Avoid</span>
-<span id="cb45-822"><a href="#cb45-822" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`</span><span class="st">sudo apt install python3.14-full</span><span class="ot">`</span> <span class="ot">and</span> Deadsnakes PPAs <span class="cf">for</span> day-to-day</span>
-<span id="cb45-823"><a href="#cb45-823" aria-hidden="true" tabindex="-1"></a>    work.</span>
-<span id="cb45-824"><a href="#cb45-824" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  *<span class="wa">*`</span>uv<span class="ot">`</span><span class="st"> replaces** a cluster of slower, single-purpose tools (</span><span class="ot">`</span>pip<span class="ot">`</span><span class="st">,</span></span>
-<span id="cb45-825"><a href="#cb45-825" aria-hidden="true" tabindex="-1"></a><span class="st">    </span><span class="ot">`</span>poetry<span class="ot">`</span><span class="st"> for many workflows, </span><span class="ot">`</span>virtualenv<span class="ot">`</span><span class="st">, </span><span class="ot">`</span>pipx<span class="ot">`</span><span class="st">, …) with a faster</span></span>
-<span id="cb45-826"><a href="#cb45-826" aria-hidden="true" tabindex="-1"></a><span class="st">    unified CLI — see </span><span class="dt">@fig</span><span class="st">-uv-development and </span><span class="dt">@fig</span><span class="st">-python-layers.</span></span>
-<span id="cb45-827"><a href="#cb45-827" aria-hidden="true" tabindex="-1"></a><span class="st">    Poetry may still be preferable for some package-publishing edge</span></span>
-<span id="cb45-828"><a href="#cb45-828" aria-hidden="true" tabindex="-1"></a><span class="st">    cases; </span><span class="ot">`</span>pip<span class="ot">`</span><span class="st"> remains the legacy default on older HPC images.</span></span>
-<span id="cb45-829"><a href="#cb45-829" aria-hidden="true" tabindex="-1"></a><span class="st">3.  For **multi-language** environments, </span><span class="ot">`</span>pixi<span class="ot">`</span><span class="st"> has largely superseded</span></span>
-<span id="cb45-830"><a href="#cb45-830" aria-hidden="true" tabindex="-1"></a><span class="st">    Conda/Mamba. Use **</span><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> for Python-centric projects**; use </span><span class="ot">`</span>pixi<span class="ot">`</span></span>
-<span id="cb45-831"><a href="#cb45-831" aria-hidden="true" tabindex="-1"></a><span class="st">    when you need non-Python dependencies in the same lockfile. Note</span></span>
-<span id="cb45-832"><a href="#cb45-832" aria-hidden="true" tabindex="-1"></a><span class="st">    that </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> enforces virtual environments when running project</span></span>
-<span id="cb45-833"><a href="#cb45-833" aria-hidden="true" tabindex="-1"></a><span class="st">    scripts — see </span><span class="dt">@tbl</span><span class="st">-python-tools.</span></span>
-<span id="cb45-834"><a href="#cb45-834" aria-hidden="true" tabindex="-1"></a><span class="st">4.  The ecosystem moves fast: reassess tooling yearly.</span></span>
-<span id="cb45-835"><a href="#cb45-835" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-836"><a href="#cb45-836" aria-hidden="true" tabindex="-1"></a><span class="st">| Feature                 | uv           | Poetry  | Pixi      |</span></span>
-<span id="cb45-837"><a href="#cb45-837" aria-hidden="true" tabindex="-1"></a><span class="st">|-------------------------|--------------|---------|-----------|</span></span>
-<span id="cb45-838"><a href="#cb45-838" aria-hidden="true" tabindex="-1"></a><span class="st">| Speed                   | ⭐⭐⭐⭐     | ⭐⭐    | ⭐⭐⭐    |</span></span>
-<span id="cb45-839"><a href="#cb45-839" aria-hidden="true" tabindex="-1"></a><span class="st">| Dependency management   | ✓            | ✓       | ✓         |</span></span>
-<span id="cb45-840"><a href="#cb45-840" aria-hidden="true" tabindex="-1"></a><span class="st">| Virtual environments    | ✓            | ✓       | ✓         |</span></span>
-<span id="cb45-841"><a href="#cb45-841" aria-hidden="true" tabindex="-1"></a><span class="st">| Python version install  | ✓            | ✗       | ✓         |</span></span>
-<span id="cb45-842"><a href="#cb45-842" aria-hidden="true" tabindex="-1"></a><span class="st">| Package publishing      | ⚠ Acceptable | ⭐ Best | ⚠ Limited |</span></span>
-<span id="cb45-843"><a href="#cb45-843" aria-hidden="true" tabindex="-1"></a><span class="st">| Non-Python dependencies | ✗            | ✗       | ✓         |</span></span>
-<span id="cb45-844"><a href="#cb45-844" aria-hidden="true" tabindex="-1"></a><span class="st">| CI performance          | ⭐⭐⭐⭐     | ⭐⭐    | ⭐⭐⭐    |</span></span>
-<span id="cb45-845"><a href="#cb45-845" aria-hidden="true" tabindex="-1"></a><span class="st">| Maturity                | Medium       | High    | Medium    |</span></span>
-<span id="cb45-846"><a href="#cb45-846" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-847"><a href="#cb45-847" aria-hidden="true" tabindex="-1"></a><span class="st">: Comparison of Python environment and dependency management tools {#tbl-python-tools}</span></span>
-<span id="cb45-848"><a href="#cb45-848" aria-hidden="true" tabindex="-1"></a><span class="st">:::</span></span>
+<span id="cb45-785"><a href="#cb45-785" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Install the following R packages for language support, rendering,</span>
+<span id="cb45-786"><a href="#cb45-786" aria-hidden="true" tabindex="-1"></a>    and debugging (@lst-r-cursor-pkgs):</span>
+<span id="cb45-787"><a href="#cb45-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-788"><a href="#cb45-788" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-r-cursor-pkgs .r lst-cap="R packages for Cursor debugging"}</span></span>
+<span id="cb45-789"><a href="#cb45-789" aria-hidden="true" tabindex="-1"></a><span class="in">install.packages(c(</span></span>
+<span id="cb45-790"><a href="#cb45-790" aria-hidden="true" tabindex="-1"></a><span class="in">  "remotes",</span></span>
+<span id="cb45-791"><a href="#cb45-791" aria-hidden="true" tabindex="-1"></a><span class="in">  "languageserver",</span></span>
+<span id="cb45-792"><a href="#cb45-792" aria-hidden="true" tabindex="-1"></a><span class="in">  "rmarkdown",</span></span>
+<span id="cb45-793"><a href="#cb45-793" aria-hidden="true" tabindex="-1"></a><span class="in">  "httpgd"</span></span>
+<span id="cb45-794"><a href="#cb45-794" aria-hidden="true" tabindex="-1"></a><span class="in">))</span></span>
+<span id="cb45-795"><a href="#cb45-795" aria-hidden="true" tabindex="-1"></a><span class="in">remotes::install_github("ManuelHentschel/vscDebugger")</span></span>
+<span id="cb45-796"><a href="#cb45-796" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-797"><a href="#cb45-797" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-798"><a href="#cb45-798" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>(Optional but recommended) Use <span class="in">`radian`</span> as an enhanced R terminal:</span>
+<span id="cb45-799"><a href="#cb45-799" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-800"><a href="#cb45-800" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-radian-install .bash lst-cap="Install radian via uv"}</span></span>
+<span id="cb45-801"><a href="#cb45-801" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install radian</span></span>
+<span id="cb45-802"><a href="#cb45-802" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-803"><a href="#cb45-803" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-804"><a href="#cb45-804" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Install the <span class="in">`vscDebugger`</span> / R debugger extension in Cursor, then run</span>
+<span id="cb45-805"><a href="#cb45-805" aria-hidden="true" tabindex="-1"></a>    the <span class="co">[</span><span class="ot">debug demo</span><span class="co">](assets/r/debug_demo.R)</span> script to test it</span>
+<span id="cb45-806"><a href="#cb45-806" aria-hidden="true" tabindex="-1"></a>    (@fig-debugger-r).</span>
+<span id="cb45-807"><a href="#cb45-807" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-808"><a href="#cb45-808" aria-hidden="true" tabindex="-1"></a><span class="al">![Side-by-side comparison of the debug demo script and the debugger in action](assets/r/debugger_R.png)</span>{#fig-debugger-r}</span>
+<span id="cb45-809"><a href="#cb45-809" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-810"><a href="#cb45-810" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python {#sec-python}</span></span>
+<span id="cb45-811"><a href="#cb45-811" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-812"><a href="#cb45-812" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; From **PEP 668**, on modern Debian/Ubuntu with a system Python of 3.11</span></span>
+<span id="cb45-813"><a href="#cb45-813" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; or newer, </span><span class="in">`pip`</span><span class="at"> is blocked from modifying the **system Python** so</span></span>
+<span id="cb45-814"><a href="#cb45-814" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; that it cannot break </span><span class="in">`apt`</span><span class="at">-managed packages.</span></span>
+<span id="cb45-815"><a href="#cb45-815" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-816"><a href="#cb45-816" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **This section evolves quickly.** Prefer the </span><span class="in">`uv`</span><span class="at">-centric workflow</span></span>
+<span id="cb45-817"><a href="#cb45-817" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; below; treat older </span><span class="in">`pip`</span><span class="at"> / Poetry / Conda advice as legacy unless you</span></span>
+<span id="cb45-818"><a href="#cb45-818" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; are constrained by an HPC site.</span></span>
+<span id="cb45-819"><a href="#cb45-819" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-820"><a href="#cb45-820" aria-hidden="true" tabindex="-1"></a><span class="fu">### Modern Python guidelines {#sec-python-guidelines}</span></span>
+<span id="cb45-821"><a href="#cb45-821" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-822"><a href="#cb45-822" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="false" title="Modern Python development guidelines"}</span>
+<span id="cb45-823"><a href="#cb45-823" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Recent Ubuntu releases (including Noble) strongly discourage</span>
+<span id="cb45-824"><a href="#cb45-824" aria-hidden="true" tabindex="-1"></a>    installing extra system-wide Python interpreters. Avoid</span>
+<span id="cb45-825"><a href="#cb45-825" aria-hidden="true" tabindex="-1"></a>    <span class="in">`sudo apt install python3.14-full`</span> and Deadsnakes PPAs for day-to-day</span>
+<span id="cb45-826"><a href="#cb45-826" aria-hidden="true" tabindex="-1"></a>    work.</span>
+<span id="cb45-827"><a href="#cb45-827" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**`uv` replaces** a cluster of slower, single-purpose tools (<span class="in">`pip`</span>,</span>
+<span id="cb45-828"><a href="#cb45-828" aria-hidden="true" tabindex="-1"></a>    <span class="in">`poetry`</span> for many workflows, <span class="in">`virtualenv`</span>, <span class="in">`pipx`</span>, …) with a faster</span>
+<span id="cb45-829"><a href="#cb45-829" aria-hidden="true" tabindex="-1"></a>    unified CLI — see @fig-uv-development and @fig-python-layers.</span>
+<span id="cb45-830"><a href="#cb45-830" aria-hidden="true" tabindex="-1"></a>    Poetry may still be preferable for some package-publishing edge</span>
+<span id="cb45-831"><a href="#cb45-831" aria-hidden="true" tabindex="-1"></a>    cases; <span class="in">`pip`</span> remains the legacy default on older HPC images.</span>
+<span id="cb45-832"><a href="#cb45-832" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>For **multi-language** environments, <span class="in">`pixi`</span> has largely superseded</span>
+<span id="cb45-833"><a href="#cb45-833" aria-hidden="true" tabindex="-1"></a>    Conda/Mamba. Use **`uv` for Python-centric projects**; use <span class="in">`pixi`</span></span>
+<span id="cb45-834"><a href="#cb45-834" aria-hidden="true" tabindex="-1"></a>    when you need non-Python dependencies in the same lockfile. Note</span>
+<span id="cb45-835"><a href="#cb45-835" aria-hidden="true" tabindex="-1"></a>    that <span class="in">`uv`</span> enforces virtual environments when running project</span>
+<span id="cb45-836"><a href="#cb45-836" aria-hidden="true" tabindex="-1"></a>    scripts — see @tbl-python-tools.</span>
+<span id="cb45-837"><a href="#cb45-837" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>The ecosystem moves fast: reassess tooling yearly.</span>
+<span id="cb45-838"><a href="#cb45-838" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-839"><a href="#cb45-839" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Feature                 <span class="pp">|</span> uv           <span class="pp">|</span> Poetry  <span class="pp">|</span> Pixi      <span class="pp">|</span></span>
+<span id="cb45-840"><a href="#cb45-840" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------------------------|--------------|---------|-----------|</span></span>
+<span id="cb45-841"><a href="#cb45-841" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Speed                   <span class="pp">|</span> ⭐⭐⭐⭐     <span class="pp">|</span> ⭐⭐    <span class="pp">|</span> ⭐⭐⭐    <span class="pp">|</span></span>
+<span id="cb45-842"><a href="#cb45-842" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dependency management   <span class="pp">|</span> ✓            <span class="pp">|</span> ✓       <span class="pp">|</span> ✓         <span class="pp">|</span></span>
+<span id="cb45-843"><a href="#cb45-843" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Virtual environments    <span class="pp">|</span> ✓            <span class="pp">|</span> ✓       <span class="pp">|</span> ✓         <span class="pp">|</span></span>
+<span id="cb45-844"><a href="#cb45-844" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Python version install  <span class="pp">|</span> ✓            <span class="pp">|</span> ✗       <span class="pp">|</span> ✓         <span class="pp">|</span></span>
+<span id="cb45-845"><a href="#cb45-845" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Package publishing      <span class="pp">|</span> ⚠ Acceptable <span class="pp">|</span> ⭐ Best <span class="pp">|</span> ⚠ Limited <span class="pp">|</span></span>
+<span id="cb45-846"><a href="#cb45-846" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Non-Python dependencies <span class="pp">|</span> ✗            <span class="pp">|</span> ✗       <span class="pp">|</span> ✓         <span class="pp">|</span></span>
+<span id="cb45-847"><a href="#cb45-847" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> CI performance          <span class="pp">|</span> ⭐⭐⭐⭐     <span class="pp">|</span> ⭐⭐    <span class="pp">|</span> ⭐⭐⭐    <span class="pp">|</span></span>
+<span id="cb45-848"><a href="#cb45-848" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Maturity                <span class="pp">|</span> Medium       <span class="pp">|</span> High    <span class="pp">|</span> Medium    <span class="pp">|</span></span>
 <span id="cb45-849"><a href="#cb45-849" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-850"><a href="#cb45-850" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#fig-python-layers layout="[[1,1], [1]]"}</span></span>
-<span id="cb45-851"><a href="#cb45-851" aria-hidden="true" tabindex="-1"></a><span class="st">![Each tool used to have its own perimeter, hence the diversity of Python executables](assets/python/python-development-layers.png){#fig-python-layers-a}</span></span>
+<span id="cb45-850"><a href="#cb45-850" aria-hidden="true" tabindex="-1"></a>: Comparison of Python environment and dependency management tools {#tbl-python-tools}</span>
+<span id="cb45-851"><a href="#cb45-851" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb45-852"><a href="#cb45-852" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-853"><a href="#cb45-853" aria-hidden="true" tabindex="-1"></a><span class="st">![The three levels of Python environments, from system-wide (do not modify) to the project level](assets/python/python-dependencies-use-cases.png){#fig-python-layers-b}</span></span>
-<span id="cb45-854"><a href="#cb45-854" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-855"><a href="#cb45-855" aria-hidden="true" tabindex="-1"></a><span class="st">![Side-by-side comparison of core use cases for each Python tool — </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> covers most of them](assets/python/python-managers-summary-table.png){#fig-python-layers-c}</span></span>
-<span id="cb45-856"><a href="#cb45-856" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-857"><a href="#cb45-857" aria-hidden="true" tabindex="-1"></a><span class="st">Comparison of Python managers and environment layers.</span></span>
-<span id="cb45-858"><a href="#cb45-858" aria-hidden="true" tabindex="-1"></a><span class="st">:::</span></span>
+<span id="cb45-853"><a href="#cb45-853" aria-hidden="true" tabindex="-1"></a>::: {#fig-python-layers layout="[<span class="co">[</span><span class="ot">1,1</span><span class="co">]</span>, <span class="co">[</span><span class="ot">1</span><span class="co">]</span>]"}</span>
+<span id="cb45-854"><a href="#cb45-854" aria-hidden="true" tabindex="-1"></a><span class="al">![Each tool used to have its own perimeter, hence the diversity of Python executables](assets/python/python-development-layers.png)</span>{#fig-python-layers-a}</span>
+<span id="cb45-855"><a href="#cb45-855" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-856"><a href="#cb45-856" aria-hidden="true" tabindex="-1"></a><span class="al">![The three levels of Python environments, from system-wide (do not modify) to the project level](assets/python/python-dependencies-use-cases.png)</span>{#fig-python-layers-b}</span>
+<span id="cb45-857"><a href="#cb45-857" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-858"><a href="#cb45-858" aria-hidden="true" tabindex="-1"></a><span class="al">![Side-by-side comparison of core use cases for each Python tool — `uv` covers most of them](assets/python/python-managers-summary-table.png)</span>{#fig-python-layers-c}</span>
 <span id="cb45-859"><a href="#cb45-859" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-860"><a href="#cb45-860" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#fig-uv-development layout-ncol="3"}</span></span>
-<span id="cb45-861"><a href="#cb45-861" aria-hidden="true" tabindex="-1"></a><span class="st">![Main commands that replace older Python tools with </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st">](assets/python/uv-cheatsheet.png){#fig-uv-cheatsheet}</span></span>
+<span id="cb45-860"><a href="#cb45-860" aria-hidden="true" tabindex="-1"></a>Comparison of Python managers and environment layers.</span>
+<span id="cb45-861"><a href="#cb45-861" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb45-862"><a href="#cb45-862" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-863"><a href="#cb45-863" aria-hidden="true" tabindex="-1"></a><span class="st">![Caricature of the recent dominance of </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st">](assets/python/python-dust-bin.png){#fig-uv-dustbin}</span></span>
-<span id="cb45-864"><a href="#cb45-864" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-865"><a href="#cb45-865" aria-hidden="true" tabindex="-1"></a><span class="st">![Decision tree: </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> for pure Python projects, Poetry (or </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st">) for packaging edge cases, and </span><span class="ot">`</span>pixi<span class="ot">`</span><span class="st"> for cross-language projects. Conda and Mamba are no longer required in a modern default stack.](assets/python/poetry_vs_uv_vs_pixi.png){#fig-uv-decision}</span></span>
-<span id="cb45-866"><a href="#cb45-866" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-867"><a href="#cb45-867" aria-hidden="true" tabindex="-1"></a><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> as the default Python tooling layer.</span></span>
-<span id="cb45-868"><a href="#cb45-868" aria-hidden="true" tabindex="-1"></a><span class="st">:::</span></span>
+<span id="cb45-863"><a href="#cb45-863" aria-hidden="true" tabindex="-1"></a>::: {#fig-uv-development layout-ncol="3"}</span>
+<span id="cb45-864"><a href="#cb45-864" aria-hidden="true" tabindex="-1"></a><span class="al">![Main commands that replace older Python tools with `uv`](assets/python/uv-cheatsheet.png)</span>{#fig-uv-cheatsheet}</span>
+<span id="cb45-865"><a href="#cb45-865" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-866"><a href="#cb45-866" aria-hidden="true" tabindex="-1"></a><span class="al">![Caricature of the recent dominance of `uv`](assets/python/python-dust-bin.png)</span>{#fig-uv-dustbin}</span>
+<span id="cb45-867"><a href="#cb45-867" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-868"><a href="#cb45-868" aria-hidden="true" tabindex="-1"></a><span class="al">![Decision tree: `uv` for pure Python projects, Poetry (or `uv`) for packaging edge cases, and `pixi` for cross-language projects. Conda and Mamba are no longer required in a modern default stack.](assets/python/poetry_vs_uv_vs_pixi.png)</span>{#fig-uv-decision}</span>
 <span id="cb45-869"><a href="#cb45-869" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-870"><a href="#cb45-870" aria-hidden="true" tabindex="-1"></a><span class="st">### One tool to bind them: a </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st"> workflow {#sec-uv}</span></span>
-<span id="cb45-871"><a href="#cb45-871" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-872"><a href="#cb45-872" aria-hidden="true" tabindex="-1"></a><span class="st">The steps below install a recent Python (example: 3.14) **without**</span></span>
-<span id="cb45-873"><a href="#cb45-873" aria-hidden="true" tabindex="-1"></a><span class="st">replacing the system interpreter Ubuntu depends on.</span></span>
+<span id="cb45-870"><a href="#cb45-870" aria-hidden="true" tabindex="-1"></a><span class="in">`uv`</span> as the default Python tooling layer.</span>
+<span id="cb45-871"><a href="#cb45-871" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-872"><a href="#cb45-872" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-873"><a href="#cb45-873" aria-hidden="true" tabindex="-1"></a><span class="fu">### One tool to bind them: a `uv` workflow {#sec-uv}</span></span>
 <span id="cb45-874"><a href="#cb45-874" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-875"><a href="#cb45-875" aria-hidden="true" tabindex="-1"></a><span class="st">1.  Install </span><span class="ot">`</span>uv<span class="ot">`</span><span class="st">:</span></span>
-<span id="cb45-876"><a href="#cb45-876" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-877"><a href="#cb45-877" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span>{<span class="co">#lst-uv-install .bash lst-cap="Install uv"}</span></span>
-<span id="cb45-878"><a href="#cb45-878" aria-hidden="true" tabindex="-1"></a>curl -LsSf https://astral.sh/uv/install.sh | sh</span>
-<span id="cb45-879"><a href="#cb45-879" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-880"><a href="#cb45-880" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-881"><a href="#cb45-881" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Install a managed Python with <span class="in">`uv`</span>:</span>
-<span id="cb45-882"><a href="#cb45-882" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-883"><a href="#cb45-883" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-python-install .bash lst-cap="Install a Python version with uv"}</span></span>
-<span id="cb45-884"><a href="#cb45-884" aria-hidden="true" tabindex="-1"></a><span class="in">uv python install 3.14</span></span>
-<span id="cb45-885"><a href="#cb45-885" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-886"><a href="#cb45-886" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-887"><a href="#cb45-887" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Pin the Python version at one of two levels:</span>
-<span id="cb45-888"><a href="#cb45-888" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-875"><a href="#cb45-875" aria-hidden="true" tabindex="-1"></a>The steps below install a recent Python (example: 3.14) **without**</span>
+<span id="cb45-876"><a href="#cb45-876" aria-hidden="true" tabindex="-1"></a>replacing the system interpreter Ubuntu depends on.</span>
+<span id="cb45-877"><a href="#cb45-877" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-878"><a href="#cb45-878" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Install <span class="in">`uv`</span>:</span>
+<span id="cb45-879"><a href="#cb45-879" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-880"><a href="#cb45-880" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-install .bash lst-cap="Install uv"}</span></span>
+<span id="cb45-881"><a href="#cb45-881" aria-hidden="true" tabindex="-1"></a><span class="in">curl -LsSf https://astral.sh/uv/install.sh | sh</span></span>
+<span id="cb45-882"><a href="#cb45-882" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-883"><a href="#cb45-883" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-884"><a href="#cb45-884" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Install a managed Python with <span class="in">`uv`</span>:</span>
+<span id="cb45-885"><a href="#cb45-885" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-886"><a href="#cb45-886" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-python-install .bash lst-cap="Install a Python version with uv"}</span></span>
+<span id="cb45-887"><a href="#cb45-887" aria-hidden="true" tabindex="-1"></a><span class="in">uv python install 3.14</span></span>
+<span id="cb45-888"><a href="#cb45-888" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-889"><a href="#cb45-889" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-890"><a href="#cb45-890" aria-hidden="true" tabindex="-1"></a>    i.  Project level: <span class="in">`uv python pin 3.14`</span>.</span>
-<span id="cb45-891"><a href="#cb45-891" aria-hidden="true" tabindex="-1"></a>    ii. User level:</span>
+<span id="cb45-890"><a href="#cb45-890" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Pin the Python version at one of two levels:</span>
+<span id="cb45-891"><a href="#cb45-891" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-892"><a href="#cb45-892" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-893"><a href="#cb45-893" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-python-user .bash lst-cap="User-level Python with uv"}</span></span>
-<span id="cb45-894"><a href="#cb45-894" aria-hidden="true" tabindex="-1"></a><span class="in">cd ~</span></span>
-<span id="cb45-895"><a href="#cb45-895" aria-hidden="true" tabindex="-1"></a><span class="in">echo "3.14" &gt; ~/.python-version</span></span>
-<span id="cb45-896"><a href="#cb45-896" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-897"><a href="#cb45-897" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-898"><a href="#cb45-898" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-899"><a href="#cb45-899" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Prefer <span class="in">`uv tool install`</span> (instead of <span class="in">`pipx`</span>) for CLI utilities —</span>
-<span id="cb45-900"><a href="#cb45-900" aria-hidden="true" tabindex="-1"></a>    formatters, notebook tools, hooks, and so on. As with <span class="in">`pipx`</span>, these</span>
-<span id="cb45-901"><a href="#cb45-901" aria-hidden="true" tabindex="-1"></a>    tools are added to the user <span class="in">`PATH`</span> (@lst-uv-tools):</span>
-<span id="cb45-902"><a href="#cb45-902" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-903"><a href="#cb45-903" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-tools .bash lst-cap="Install CLI tools with uv tool"}</span></span>
-<span id="cb45-904"><a href="#cb45-904" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install ruff</span></span>
-<span id="cb45-905"><a href="#cb45-905" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install "dvc[ssh]"   # data versioning when Git LFS is not enough</span></span>
-<span id="cb45-906"><a href="#cb45-906" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install black</span></span>
-<span id="cb45-907"><a href="#cb45-907" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install marimo       # preferred notebook / reactive Python UI</span></span>
-<span id="cb45-908"><a href="#cb45-908" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install ipython</span></span>
-<span id="cb45-909"><a href="#cb45-909" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install pre-commit</span></span>
-<span id="cb45-910"><a href="#cb45-910" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install cookiecutter # project templates for packaging</span></span>
-<span id="cb45-911"><a href="#cb45-911" aria-hidden="true" tabindex="-1"></a><span class="in">## optional legacy / niche tools:</span></span>
-<span id="cb45-912"><a href="#cb45-912" aria-hidden="true" tabindex="-1"></a><span class="in"># uv tool install jupyterlab</span></span>
-<span id="cb45-913"><a href="#cb45-913" aria-hidden="true" tabindex="-1"></a><span class="in"># uv tool install poetry</span></span>
-<span id="cb45-914"><a href="#cb45-914" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-915"><a href="#cb45-915" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-916"><a href="#cb45-916" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="false" title="Python version management: core checks"}</span>
-<span id="cb45-917"><a href="#cb45-917" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Check the system Python:</span>
+<span id="cb45-893"><a href="#cb45-893" aria-hidden="true" tabindex="-1"></a>    i.  Project level: <span class="in">`uv python pin 3.14`</span>.</span>
+<span id="cb45-894"><a href="#cb45-894" aria-hidden="true" tabindex="-1"></a>    ii. User level:</span>
+<span id="cb45-895"><a href="#cb45-895" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-896"><a href="#cb45-896" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-python-user .bash lst-cap="User-level Python with uv"}</span></span>
+<span id="cb45-897"><a href="#cb45-897" aria-hidden="true" tabindex="-1"></a><span class="in">cd ~</span></span>
+<span id="cb45-898"><a href="#cb45-898" aria-hidden="true" tabindex="-1"></a><span class="in">echo "3.14" &gt; ~/.python-version</span></span>
+<span id="cb45-899"><a href="#cb45-899" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-900"><a href="#cb45-900" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-901"><a href="#cb45-901" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-902"><a href="#cb45-902" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Prefer <span class="in">`uv tool install`</span> (instead of <span class="in">`pipx`</span>) for CLI utilities —</span>
+<span id="cb45-903"><a href="#cb45-903" aria-hidden="true" tabindex="-1"></a>    formatters, notebook tools, hooks, and so on. As with <span class="in">`pipx`</span>, these</span>
+<span id="cb45-904"><a href="#cb45-904" aria-hidden="true" tabindex="-1"></a>    tools are added to the user <span class="in">`PATH`</span> (@lst-uv-tools):</span>
+<span id="cb45-905"><a href="#cb45-905" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-906"><a href="#cb45-906" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-uv-tools .bash lst-cap="Install CLI tools with uv tool"}</span></span>
+<span id="cb45-907"><a href="#cb45-907" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install ruff</span></span>
+<span id="cb45-908"><a href="#cb45-908" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install "dvc[ssh]"   # data versioning when Git LFS is not enough</span></span>
+<span id="cb45-909"><a href="#cb45-909" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install black</span></span>
+<span id="cb45-910"><a href="#cb45-910" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install marimo       # preferred notebook / reactive Python UI</span></span>
+<span id="cb45-911"><a href="#cb45-911" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install ipython</span></span>
+<span id="cb45-912"><a href="#cb45-912" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install pre-commit</span></span>
+<span id="cb45-913"><a href="#cb45-913" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install cookiecutter # project templates for packaging</span></span>
+<span id="cb45-914"><a href="#cb45-914" aria-hidden="true" tabindex="-1"></a><span class="in">## optional legacy / niche tools:</span></span>
+<span id="cb45-915"><a href="#cb45-915" aria-hidden="true" tabindex="-1"></a><span class="in"># uv tool install jupyterlab</span></span>
+<span id="cb45-916"><a href="#cb45-916" aria-hidden="true" tabindex="-1"></a><span class="in"># uv tool install poetry</span></span>
+<span id="cb45-917"><a href="#cb45-917" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-918"><a href="#cb45-918" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-919"><a href="#cb45-919" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-check-system-python .bash lst-cap="Inspect system Python"}</span></span>
-<span id="cb45-920"><a href="#cb45-920" aria-hidden="true" tabindex="-1"></a><span class="in">ls /usr/bin/python* ## typically a single 3.12 on modern Ubuntu</span></span>
-<span id="cb45-921"><a href="#cb45-921" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-922"><a href="#cb45-922" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-923"><a href="#cb45-923" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Check versions managed by <span class="in">`uv`</span>:</span>
-<span id="cb45-924"><a href="#cb45-924" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-925"><a href="#cb45-925" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-check-uv-python .bash lst-cap="Inspect uv-managed Python"}</span></span>
-<span id="cb45-926"><a href="#cb45-926" aria-hidden="true" tabindex="-1"></a><span class="in">ls -la ~/.local/share/uv/python*</span></span>
-<span id="cb45-927"><a href="#cb45-927" aria-hidden="true" tabindex="-1"></a><span class="in">## paths should live under your HOME directory</span></span>
-<span id="cb45-928"><a href="#cb45-928" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-929"><a href="#cb45-929" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-930"><a href="#cb45-930" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb45-931"><a href="#cb45-931" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-932"><a href="#cb45-932" aria-hidden="true" tabindex="-1"></a>Checking which Python is active:</span>
-<span id="cb45-933"><a href="#cb45-933" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-934"><a href="#cb45-934" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>From the terminal (system-wide), <span class="in">`ls -d /usr/lib/python3.*`</span> or</span>
-<span id="cb45-935"><a href="#cb45-935" aria-hidden="true" tabindex="-1"></a>    <span class="in">`which -a python`</span> should point at the OS Python only when you intend</span>
-<span id="cb45-936"><a href="#cb45-936" aria-hidden="true" tabindex="-1"></a>    to use it.</span>
-<span id="cb45-937"><a href="#cb45-937" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>From a Python shell (or Marimo / optional Jupyter):</span>
-<span id="cb45-938"><a href="#cb45-938" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-939"><a href="#cb45-939" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-python-sysinfo .python lst-cap="Python environment summary"}</span></span>
-<span id="cb45-940"><a href="#cb45-940" aria-hidden="true" tabindex="-1"></a><span class="in">import sys</span></span>
-<span id="cb45-941"><a href="#cb45-941" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.version)</span></span>
-<span id="cb45-942"><a href="#cb45-942" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.executable)</span></span>
-<span id="cb45-943"><a href="#cb45-943" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.path)</span></span>
-<span id="cb45-944"><a href="#cb45-944" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-945"><a href="#cb45-945" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-946"><a href="#cb45-946" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb45-947"><a href="#cb45-947" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-948"><a href="#cb45-948" aria-hidden="true" tabindex="-1"></a>Useful reading:</span>
-<span id="cb45-949"><a href="#cb45-949" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-950"><a href="#cb45-950" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>[From Pip to Lightning: How <span class="in">`uv`</span> Opened My Eyes to Better Python</span>
-<span id="cb45-951"><a href="#cb45-951" aria-hidden="true" tabindex="-1"></a>    Workflows](https://viveksinghpathania.medium.com/from-pip-to-lightning-how-uv-opened-my-eyes-to-better-python-workflows-dfa50e8a5893)</span>
-<span id="cb45-952"><a href="#cb45-952" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>[LinkedIn post on Python dependency</span>
-<span id="cb45-953"><a href="#cb45-953" aria-hidden="true" tabindex="-1"></a>    managers](https://www.linkedin.com/posts/basilemarchand_pythongestionnaire-activity-7432314684441047040-u53A)</span>
-<span id="cb45-954"><a href="#cb45-954" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb45-955"><a href="#cb45-955" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-956"><a href="#cb45-956" aria-hidden="true" tabindex="-1"></a><span class="fu">### Marimo (preferred over Jupyter Lab) {#sec-marimo}</span></span>
-<span id="cb45-957"><a href="#cb45-957" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-958"><a href="#cb45-958" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Marimo</span><span class="co">](https://marimo.io/)</span> is the recommended interactive notebook</span>
-<span id="cb45-959"><a href="#cb45-959" aria-hidden="true" tabindex="-1"></a>tool for this course: notebooks are plain Python files, reactive, and</span>
-<span id="cb45-960"><a href="#cb45-960" aria-hidden="true" tabindex="-1"></a>easy to version-control. Jupyter Lab remains available as an optional</span>
-<span id="cb45-961"><a href="#cb45-961" aria-hidden="true" tabindex="-1"></a><span class="in">`uv tool`</span> if a collaborator requires it.</span>
-<span id="cb45-962"><a href="#cb45-962" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-963"><a href="#cb45-963" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Install Marimo with commonly used extras (DuckDB SQL cells, Polars /</span>
-<span id="cb45-964"><a href="#cb45-964" aria-hidden="true" tabindex="-1"></a>    PyArrow, Ruff, Vegafusion charts):</span>
+<span id="cb45-919"><a href="#cb45-919" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="false" title="Python version management: core checks"}</span>
+<span id="cb45-920"><a href="#cb45-920" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Check the system Python:</span>
+<span id="cb45-921"><a href="#cb45-921" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-922"><a href="#cb45-922" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-check-system-python .bash lst-cap="Inspect system Python"}</span></span>
+<span id="cb45-923"><a href="#cb45-923" aria-hidden="true" tabindex="-1"></a><span class="in">ls /usr/bin/python* ## typically a single 3.12 on modern Ubuntu</span></span>
+<span id="cb45-924"><a href="#cb45-924" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-925"><a href="#cb45-925" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-926"><a href="#cb45-926" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Check versions managed by <span class="in">`uv`</span>:</span>
+<span id="cb45-927"><a href="#cb45-927" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-928"><a href="#cb45-928" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-check-uv-python .bash lst-cap="Inspect uv-managed Python"}</span></span>
+<span id="cb45-929"><a href="#cb45-929" aria-hidden="true" tabindex="-1"></a><span class="in">ls -la ~/.local/share/uv/python*</span></span>
+<span id="cb45-930"><a href="#cb45-930" aria-hidden="true" tabindex="-1"></a><span class="in">## paths should live under your HOME directory</span></span>
+<span id="cb45-931"><a href="#cb45-931" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-932"><a href="#cb45-932" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-933"><a href="#cb45-933" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb45-934"><a href="#cb45-934" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-935"><a href="#cb45-935" aria-hidden="true" tabindex="-1"></a>Checking which Python is active:</span>
+<span id="cb45-936"><a href="#cb45-936" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-937"><a href="#cb45-937" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>From the terminal (system-wide), <span class="in">`ls -d /usr/lib/python3.*`</span> or</span>
+<span id="cb45-938"><a href="#cb45-938" aria-hidden="true" tabindex="-1"></a>    <span class="in">`which -a python`</span> should point at the OS Python only when you intend</span>
+<span id="cb45-939"><a href="#cb45-939" aria-hidden="true" tabindex="-1"></a>    to use it.</span>
+<span id="cb45-940"><a href="#cb45-940" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>From a Python shell (or Marimo / optional Jupyter):</span>
+<span id="cb45-941"><a href="#cb45-941" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-942"><a href="#cb45-942" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-python-sysinfo .python lst-cap="Python environment summary"}</span></span>
+<span id="cb45-943"><a href="#cb45-943" aria-hidden="true" tabindex="-1"></a><span class="in">import sys</span></span>
+<span id="cb45-944"><a href="#cb45-944" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.version)</span></span>
+<span id="cb45-945"><a href="#cb45-945" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.executable)</span></span>
+<span id="cb45-946"><a href="#cb45-946" aria-hidden="true" tabindex="-1"></a><span class="in">print(sys.path)</span></span>
+<span id="cb45-947"><a href="#cb45-947" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-948"><a href="#cb45-948" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-949"><a href="#cb45-949" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb45-950"><a href="#cb45-950" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-951"><a href="#cb45-951" aria-hidden="true" tabindex="-1"></a>Useful reading:</span>
+<span id="cb45-952"><a href="#cb45-952" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-953"><a href="#cb45-953" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>[From Pip to Lightning: How <span class="in">`uv`</span> Opened My Eyes to Better Python</span>
+<span id="cb45-954"><a href="#cb45-954" aria-hidden="true" tabindex="-1"></a>    Workflows](https://viveksinghpathania.medium.com/from-pip-to-lightning-how-uv-opened-my-eyes-to-better-python-workflows-dfa50e8a5893)</span>
+<span id="cb45-955"><a href="#cb45-955" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>[LinkedIn post on Python dependency</span>
+<span id="cb45-956"><a href="#cb45-956" aria-hidden="true" tabindex="-1"></a>    managers](https://www.linkedin.com/posts/basilemarchand_pythongestionnaire-activity-7432314684441047040-u53A)</span>
+<span id="cb45-957"><a href="#cb45-957" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-958"><a href="#cb45-958" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-959"><a href="#cb45-959" aria-hidden="true" tabindex="-1"></a><span class="fu">### Marimo (preferred over Jupyter Lab) {#sec-marimo}</span></span>
+<span id="cb45-960"><a href="#cb45-960" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-961"><a href="#cb45-961" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Marimo</span><span class="co">](https://marimo.io/)</span> is the recommended interactive notebook</span>
+<span id="cb45-962"><a href="#cb45-962" aria-hidden="true" tabindex="-1"></a>tool for this course: notebooks are plain Python files, reactive, and</span>
+<span id="cb45-963"><a href="#cb45-963" aria-hidden="true" tabindex="-1"></a>easy to version-control. Jupyter Lab remains available as an optional</span>
+<span id="cb45-964"><a href="#cb45-964" aria-hidden="true" tabindex="-1"></a><span class="in">`uv tool`</span> if a collaborator requires it.</span>
 <span id="cb45-965"><a href="#cb45-965" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-966"><a href="#cb45-966" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-install .bash lst-cap="Install Marimo via uv"}</span></span>
-<span id="cb45-967"><a href="#cb45-967" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install "marimo[recommended]"</span></span>
+<span id="cb45-966"><a href="#cb45-966" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Install Marimo with commonly used extras (DuckDB SQL cells, Polars /</span>
+<span id="cb45-967"><a href="#cb45-967" aria-hidden="true" tabindex="-1"></a>    PyArrow, Ruff, Vegafusion charts):</span>
 <span id="cb45-968"><a href="#cb45-968" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-969"><a href="#cb45-969" aria-hidden="true" tabindex="-1"></a><span class="in"># Verify</span></span>
-<span id="cb45-970"><a href="#cb45-970" aria-hidden="true" tabindex="-1"></a><span class="in">marimo --version</span></span>
-<span id="cb45-971"><a href="#cb45-971" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-972"><a href="#cb45-972" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-973"><a href="#cb45-973" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Add the Cursor / VS Code extension:</span>
-<span id="cb45-974"><a href="#cb45-974" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-975"><a href="#cb45-975" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-extension .bash lst-cap="Install Marimo Cursor extension"}</span></span>
-<span id="cb45-976"><a href="#cb45-976" aria-hidden="true" tabindex="-1"></a><span class="in">cursor --install-extension marimo-team.vscode-marimo</span></span>
-<span id="cb45-977"><a href="#cb45-977" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-978"><a href="#cb45-978" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-979"><a href="#cb45-979" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Suggested keybindings (add to <span class="in">`keybindings.json`</span>):</span>
-<span id="cb45-980"><a href="#cb45-980" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-981"><a href="#cb45-981" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-keybindings .json lst-cap="Suggested Marimo keybindings"}</span></span>
-<span id="cb45-982"><a href="#cb45-982" aria-hidden="true" tabindex="-1"></a><span class="in">// --- Marimo ---</span></span>
-<span id="cb45-983"><a href="#cb45-983" aria-hidden="true" tabindex="-1"></a><span class="in">// Open current .py file as a marimo notebook in the editor</span></span>
-<span id="cb45-984"><a href="#cb45-984" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
-<span id="cb45-985"><a href="#cb45-985" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+m",</span></span>
-<span id="cb45-986"><a href="#cb45-986" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "marimo.openNotebook",</span></span>
-<span id="cb45-987"><a href="#cb45-987" aria-hidden="true" tabindex="-1"></a><span class="in">  "when": "resourceExtname == '.py'"</span></span>
-<span id="cb45-988"><a href="#cb45-988" aria-hidden="true" tabindex="-1"></a><span class="in">},</span></span>
-<span id="cb45-989"><a href="#cb45-989" aria-hidden="true" tabindex="-1"></a><span class="in">// Create a new sandboxed marimo notebook via terminal</span></span>
-<span id="cb45-990"><a href="#cb45-990" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
-<span id="cb45-991"><a href="#cb45-991" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+shift+m",</span></span>
-<span id="cb45-992"><a href="#cb45-992" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "workbench.action.terminal.sendSequence",</span></span>
-<span id="cb45-993"><a href="#cb45-993" aria-hidden="true" tabindex="-1"></a><span class="in">  "args": { "text": "uvx marimo edit --sandbox \n" }</span></span>
-<span id="cb45-994"><a href="#cb45-994" aria-hidden="true" tabindex="-1"></a><span class="in">},</span></span>
-<span id="cb45-995"><a href="#cb45-995" aria-hidden="true" tabindex="-1"></a><span class="in">// Run current marimo notebook as a read-only app</span></span>
-<span id="cb45-996"><a href="#cb45-996" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
-<span id="cb45-997"><a href="#cb45-997" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+r",</span></span>
-<span id="cb45-998"><a href="#cb45-998" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "workbench.action.terminal.sendSequence",</span></span>
-<span id="cb45-999"><a href="#cb45-999" aria-hidden="true" tabindex="-1"></a><span class="in">  "when": "resourceExtname == '.py'",</span></span>
-<span id="cb45-1000"><a href="#cb45-1000" aria-hidden="true" tabindex="-1"></a><span class="in">  "args": { "text": "uvx marimo run '${file}'\n" }</span></span>
-<span id="cb45-1001"><a href="#cb45-1001" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb45-1002"><a href="#cb45-1002" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-1003"><a href="#cb45-1003" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1004"><a href="#cb45-1004" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>An interactive example is provided in</span>
-<span id="cb45-1005"><a href="#cb45-1005" aria-hidden="true" tabindex="-1"></a>    <span class="co">[</span><span class="ot">demo.py</span><span class="co">](assets/python/demo.py)</span>.</span>
+<span id="cb45-969"><a href="#cb45-969" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-install .bash lst-cap="Install Marimo via uv"}</span></span>
+<span id="cb45-970"><a href="#cb45-970" aria-hidden="true" tabindex="-1"></a><span class="in">uv tool install "marimo[recommended]"</span></span>
+<span id="cb45-971"><a href="#cb45-971" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-972"><a href="#cb45-972" aria-hidden="true" tabindex="-1"></a><span class="in"># Verify</span></span>
+<span id="cb45-973"><a href="#cb45-973" aria-hidden="true" tabindex="-1"></a><span class="in">marimo --version</span></span>
+<span id="cb45-974"><a href="#cb45-974" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-975"><a href="#cb45-975" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-976"><a href="#cb45-976" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Add the Cursor / VS Code extension:</span>
+<span id="cb45-977"><a href="#cb45-977" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-978"><a href="#cb45-978" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-extension .bash lst-cap="Install Marimo Cursor extension"}</span></span>
+<span id="cb45-979"><a href="#cb45-979" aria-hidden="true" tabindex="-1"></a><span class="in">cursor --install-extension marimo-team.vscode-marimo</span></span>
+<span id="cb45-980"><a href="#cb45-980" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-981"><a href="#cb45-981" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-982"><a href="#cb45-982" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Suggested keybindings (add to <span class="in">`keybindings.json`</span>):</span>
+<span id="cb45-983"><a href="#cb45-983" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-984"><a href="#cb45-984" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-marimo-keybindings .json lst-cap="Suggested Marimo keybindings"}</span></span>
+<span id="cb45-985"><a href="#cb45-985" aria-hidden="true" tabindex="-1"></a><span class="in">// --- Marimo ---</span></span>
+<span id="cb45-986"><a href="#cb45-986" aria-hidden="true" tabindex="-1"></a><span class="in">// Open current .py file as a marimo notebook in the editor</span></span>
+<span id="cb45-987"><a href="#cb45-987" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
+<span id="cb45-988"><a href="#cb45-988" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+m",</span></span>
+<span id="cb45-989"><a href="#cb45-989" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "marimo.openNotebook",</span></span>
+<span id="cb45-990"><a href="#cb45-990" aria-hidden="true" tabindex="-1"></a><span class="in">  "when": "resourceExtname == '.py'"</span></span>
+<span id="cb45-991"><a href="#cb45-991" aria-hidden="true" tabindex="-1"></a><span class="in">},</span></span>
+<span id="cb45-992"><a href="#cb45-992" aria-hidden="true" tabindex="-1"></a><span class="in">// Create a new sandboxed marimo notebook via terminal</span></span>
+<span id="cb45-993"><a href="#cb45-993" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
+<span id="cb45-994"><a href="#cb45-994" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+shift+m",</span></span>
+<span id="cb45-995"><a href="#cb45-995" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "workbench.action.terminal.sendSequence",</span></span>
+<span id="cb45-996"><a href="#cb45-996" aria-hidden="true" tabindex="-1"></a><span class="in">  "args": { "text": "uvx marimo edit --sandbox \n" }</span></span>
+<span id="cb45-997"><a href="#cb45-997" aria-hidden="true" tabindex="-1"></a><span class="in">},</span></span>
+<span id="cb45-998"><a href="#cb45-998" aria-hidden="true" tabindex="-1"></a><span class="in">// Run current marimo notebook as a read-only app</span></span>
+<span id="cb45-999"><a href="#cb45-999" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
+<span id="cb45-1000"><a href="#cb45-1000" aria-hidden="true" tabindex="-1"></a><span class="in">  "key": "ctrl+alt+r",</span></span>
+<span id="cb45-1001"><a href="#cb45-1001" aria-hidden="true" tabindex="-1"></a><span class="in">  "command": "workbench.action.terminal.sendSequence",</span></span>
+<span id="cb45-1002"><a href="#cb45-1002" aria-hidden="true" tabindex="-1"></a><span class="in">  "when": "resourceExtname == '.py'",</span></span>
+<span id="cb45-1003"><a href="#cb45-1003" aria-hidden="true" tabindex="-1"></a><span class="in">  "args": { "text": "uvx marimo run '${file}'\n" }</span></span>
+<span id="cb45-1004"><a href="#cb45-1004" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb45-1005"><a href="#cb45-1005" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-1006"><a href="#cb45-1006" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1007"><a href="#cb45-1007" aria-hidden="true" tabindex="-1"></a><span class="fu">## Nextflow {#sec-nextflow}</span></span>
-<span id="cb45-1008"><a href="#cb45-1008" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1009"><a href="#cb45-1009" aria-hidden="true" tabindex="-1"></a>Install Nextflow as a standalone, self-updating binary. Confirm that</span>
-<span id="cb45-1010"><a href="#cb45-1010" aria-hidden="true" tabindex="-1"></a>Java **≥ 17** is available first (see @sec-cytoscape):</span>
+<span id="cb45-1007"><a href="#cb45-1007" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>An interactive example is provided in</span>
+<span id="cb45-1008"><a href="#cb45-1008" aria-hidden="true" tabindex="-1"></a>    <span class="co">[</span><span class="ot">demo.py</span><span class="co">](assets/python/demo.py)</span>.</span>
+<span id="cb45-1009"><a href="#cb45-1009" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1010"><a href="#cb45-1010" aria-hidden="true" tabindex="-1"></a><span class="fu">## Nextflow {#sec-nextflow}</span></span>
 <span id="cb45-1011"><a href="#cb45-1011" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1012"><a href="#cb45-1012" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-nextflow-install .bash lst-cap="Install Nextflow"}</span></span>
-<span id="cb45-1013"><a href="#cb45-1013" aria-hidden="true" tabindex="-1"></a><span class="in">curl -s https://get.nextflow.io | bash</span></span>
-<span id="cb45-1014"><a href="#cb45-1014" aria-hidden="true" tabindex="-1"></a><span class="in">chmod +x nextflow</span></span>
-<span id="cb45-1015"><a href="#cb45-1015" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1016"><a href="#cb45-1016" aria-hidden="true" tabindex="-1"></a><span class="in"># move nextflow onto the user PATH</span></span>
-<span id="cb45-1017"><a href="#cb45-1017" aria-hidden="true" tabindex="-1"></a><span class="in">mkdir -p "$HOME/.local/bin"</span></span>
-<span id="cb45-1018"><a href="#cb45-1018" aria-hidden="true" tabindex="-1"></a><span class="in">mv nextflow "$HOME/.local/bin/"</span></span>
-<span id="cb45-1019"><a href="#cb45-1019" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-1020"><a href="#cb45-1020" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1021"><a href="#cb45-1021" aria-hidden="true" tabindex="-1"></a><span class="fu">## LaTeX {#sec-latex}</span></span>
-<span id="cb45-1022"><a href="#cb45-1022" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1023"><a href="#cb45-1023" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-latex-install .bash lst-cap="Install TeX Live packages"}</span></span>
-<span id="cb45-1024"><a href="#cb45-1024" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install texlive-full -y</span></span>
-<span id="cb45-1025"><a href="#cb45-1025" aria-hidden="true" tabindex="-1"></a><span class="in">## commonly used extras (often already covered by texlive-full)</span></span>
-<span id="cb45-1026"><a href="#cb45-1026" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install texlive-latex-extra texlive-fonts-recommended \</span></span>
-<span id="cb45-1027"><a href="#cb45-1027" aria-hidden="true" tabindex="-1"></a><span class="in">  texlive-science biber latexmk -y</span></span>
-<span id="cb45-1028"><a href="#cb45-1028" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-1029"><a href="#cb45-1029" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1030"><a href="#cb45-1030" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cursor {#sec-cursor}</span></span>
-<span id="cb45-1031"><a href="#cb45-1031" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1032"><a href="#cb45-1032" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Download the <span class="co">[</span><span class="ot">`.deb` package</span><span class="co">](https://cursor.com/download)</span>.</span>
-<span id="cb45-1033"><a href="#cb45-1033" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Install it (@lst-cursor-install):</span>
+<span id="cb45-1012"><a href="#cb45-1012" aria-hidden="true" tabindex="-1"></a>Install Nextflow as a standalone, self-updating binary. Confirm that</span>
+<span id="cb45-1013"><a href="#cb45-1013" aria-hidden="true" tabindex="-1"></a>Java **≥ 17** is available first (see @sec-cytoscape):</span>
+<span id="cb45-1014"><a href="#cb45-1014" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1015"><a href="#cb45-1015" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-nextflow-install .bash lst-cap="Install Nextflow"}</span></span>
+<span id="cb45-1016"><a href="#cb45-1016" aria-hidden="true" tabindex="-1"></a><span class="in">curl -s https://get.nextflow.io | bash</span></span>
+<span id="cb45-1017"><a href="#cb45-1017" aria-hidden="true" tabindex="-1"></a><span class="in">chmod +x nextflow</span></span>
+<span id="cb45-1018"><a href="#cb45-1018" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1019"><a href="#cb45-1019" aria-hidden="true" tabindex="-1"></a><span class="in"># move nextflow onto the user PATH</span></span>
+<span id="cb45-1020"><a href="#cb45-1020" aria-hidden="true" tabindex="-1"></a><span class="in">mkdir -p "$HOME/.local/bin"</span></span>
+<span id="cb45-1021"><a href="#cb45-1021" aria-hidden="true" tabindex="-1"></a><span class="in">mv nextflow "$HOME/.local/bin/"</span></span>
+<span id="cb45-1022"><a href="#cb45-1022" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-1023"><a href="#cb45-1023" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1024"><a href="#cb45-1024" aria-hidden="true" tabindex="-1"></a><span class="fu">## LaTeX {#sec-latex}</span></span>
+<span id="cb45-1025"><a href="#cb45-1025" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1026"><a href="#cb45-1026" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-latex-install .bash lst-cap="Install TeX Live packages"}</span></span>
+<span id="cb45-1027"><a href="#cb45-1027" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install texlive-full -y</span></span>
+<span id="cb45-1028"><a href="#cb45-1028" aria-hidden="true" tabindex="-1"></a><span class="in">## commonly used extras (often already covered by texlive-full)</span></span>
+<span id="cb45-1029"><a href="#cb45-1029" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install texlive-latex-extra texlive-fonts-recommended \</span></span>
+<span id="cb45-1030"><a href="#cb45-1030" aria-hidden="true" tabindex="-1"></a><span class="in">  texlive-science biber latexmk -y</span></span>
+<span id="cb45-1031"><a href="#cb45-1031" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-1032"><a href="#cb45-1032" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1033"><a href="#cb45-1033" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cursor {#sec-cursor}</span></span>
 <span id="cb45-1034"><a href="#cb45-1034" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1035"><a href="#cb45-1035" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-cursor-install .bash lst-cap="Install Cursor"}</span></span>
-<span id="cb45-1036"><a href="#cb45-1036" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install ./cursor_2.0.77_amd64.deb</span></span>
-<span id="cb45-1037"><a href="#cb45-1037" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-1038"><a href="#cb45-1038" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1039"><a href="#cb45-1039" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Sync your Cursor configuration across devices — see</span>
-<span id="cb45-1040"><a href="#cb45-1040" aria-hidden="true" tabindex="-1"></a>    @tip-cursor-export.</span>
+<span id="cb45-1035"><a href="#cb45-1035" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Download the <span class="co">[</span><span class="ot">`.deb` package</span><span class="co">](https://cursor.com/download)</span>.</span>
+<span id="cb45-1036"><a href="#cb45-1036" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Install it (@lst-cursor-install):</span>
+<span id="cb45-1037"><a href="#cb45-1037" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1038"><a href="#cb45-1038" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-cursor-install .bash lst-cap="Install Cursor"}</span></span>
+<span id="cb45-1039"><a href="#cb45-1039" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install ./cursor_2.0.77_amd64.deb</span></span>
+<span id="cb45-1040"><a href="#cb45-1040" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb45-1041"><a href="#cb45-1041" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1042"><a href="#cb45-1042" aria-hidden="true" tabindex="-1"></a>::: {#tip-cursor-export .callout-tip title="Export Cursor settings"}</span>
-<span id="cb45-1043"><a href="#cb45-1043" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Export the core settings:</span>
+<span id="cb45-1042"><a href="#cb45-1042" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Sync your Cursor configuration across devices — see</span>
+<span id="cb45-1043"><a href="#cb45-1043" aria-hidden="true" tabindex="-1"></a>    @tip-cursor-export.</span>
 <span id="cb45-1044"><a href="#cb45-1044" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1045"><a href="#cb45-1045" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1046"><a href="#cb45-1046" aria-hidden="true" tabindex="-1"></a>    i.  Open the Command Palette (<span class="in">`Ctrl/Cmd + Shift + P`</span>), then search</span>
-<span id="cb45-1047"><a href="#cb45-1047" aria-hidden="true" tabindex="-1"></a>        for **Preferences: Open Settings (JSON)**.</span>
-<span id="cb45-1048"><a href="#cb45-1048" aria-hidden="true" tabindex="-1"></a>    ii. Copy that file onto the new device.</span>
-<span id="cb45-1049"><a href="#cb45-1049" aria-hidden="true" tabindex="-1"></a>    iii. Default Linux path: <span class="in">`~/.config/Cursor/User/settings.json`</span>.</span>
-<span id="cb45-1050"><a href="#cb45-1050" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1051"><a href="#cb45-1051" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1052"><a href="#cb45-1052" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Export keyboard shortcuts:</span>
+<span id="cb45-1045"><a href="#cb45-1045" aria-hidden="true" tabindex="-1"></a>::: {#tip-cursor-export .callout-tip title="Export Cursor settings"}</span>
+<span id="cb45-1046"><a href="#cb45-1046" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Export the core settings:</span>
+<span id="cb45-1047"><a href="#cb45-1047" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1048"><a href="#cb45-1048" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1049"><a href="#cb45-1049" aria-hidden="true" tabindex="-1"></a>    i.  Open the Command Palette (<span class="in">`Ctrl/Cmd + Shift + P`</span>), then search</span>
+<span id="cb45-1050"><a href="#cb45-1050" aria-hidden="true" tabindex="-1"></a>        for **Preferences: Open Settings (JSON)**.</span>
+<span id="cb45-1051"><a href="#cb45-1051" aria-hidden="true" tabindex="-1"></a>    ii. Copy that file onto the new device.</span>
+<span id="cb45-1052"><a href="#cb45-1052" aria-hidden="true" tabindex="-1"></a>    iii. Default Linux path: <span class="in">`~/.config/Cursor/User/settings.json`</span>.</span>
 <span id="cb45-1053"><a href="#cb45-1053" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-1054"><a href="#cb45-1054" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1055"><a href="#cb45-1055" aria-hidden="true" tabindex="-1"></a>    i.  Open **Preferences: Open Keyboard Shortcuts (JSON)**.</span>
-<span id="cb45-1056"><a href="#cb45-1056" aria-hidden="true" tabindex="-1"></a>    ii. Copy <span class="in">`keybindings.json`</span> to</span>
-<span id="cb45-1057"><a href="#cb45-1057" aria-hidden="true" tabindex="-1"></a>        <span class="in">`~/.config/Cursor/User/keybindings.json`</span> on the new machine.</span>
-<span id="cb45-1058"><a href="#cb45-1058" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1059"><a href="#cb45-1059" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1060"><a href="#cb45-1060" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>(**Main difference from VS Code**.) Export the extension list</span>
-<span id="cb45-1061"><a href="#cb45-1061" aria-hidden="true" tabindex="-1"></a>    manually:</span>
+<span id="cb45-1055"><a href="#cb45-1055" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Export keyboard shortcuts:</span>
+<span id="cb45-1056"><a href="#cb45-1056" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1057"><a href="#cb45-1057" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1058"><a href="#cb45-1058" aria-hidden="true" tabindex="-1"></a>    i.  Open **Preferences: Open Keyboard Shortcuts (JSON)**.</span>
+<span id="cb45-1059"><a href="#cb45-1059" aria-hidden="true" tabindex="-1"></a>    ii. Copy <span class="in">`keybindings.json`</span> to</span>
+<span id="cb45-1060"><a href="#cb45-1060" aria-hidden="true" tabindex="-1"></a>        <span class="in">`~/.config/Cursor/User/keybindings.json`</span> on the new machine.</span>
+<span id="cb45-1061"><a href="#cb45-1061" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-1062"><a href="#cb45-1062" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1063"><a href="#cb45-1063" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1064"><a href="#cb45-1064" aria-hidden="true" tabindex="-1"></a>    i.  List extensions with</span>
-<span id="cb45-1065"><a href="#cb45-1065" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cursor --list-extensions &gt; extensions.txt`</span>. To also record each</span>
-<span id="cb45-1066"><a href="#cb45-1066" aria-hidden="true" tabindex="-1"></a>        extension’s version, use</span>
-<span id="cb45-1067"><a href="#cb45-1067" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cursor --list-extensions --show-versions &gt; extensions.txt`</span>.</span>
-<span id="cb45-1068"><a href="#cb45-1068" aria-hidden="true" tabindex="-1"></a>    ii. Reinstall them with @lst-cursor-extensions:</span>
-<span id="cb45-1069"><a href="#cb45-1069" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1070"><a href="#cb45-1070" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-cursor-extensions .bash lst-cap="Reinstall Cursor extensions"}</span></span>
-<span id="cb45-1071"><a href="#cb45-1071" aria-hidden="true" tabindex="-1"></a><span class="in">grep -v '^\s*#' ~/.config/Cursor/User/extensions.txt \</span></span>
-<span id="cb45-1072"><a href="#cb45-1072" aria-hidden="true" tabindex="-1"></a><span class="in">  | grep -v '^\s*$' \</span></span>
-<span id="cb45-1073"><a href="#cb45-1073" aria-hidden="true" tabindex="-1"></a><span class="in">  | xargs -I{} cursor --install-extension {}</span></span>
-<span id="cb45-1074"><a href="#cb45-1074" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb45-1075"><a href="#cb45-1075" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1076"><a href="#cb45-1076" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1077"><a href="#cb45-1077" aria-hidden="true" tabindex="-1"></a>More detail (including symlink automation) is in</span>
-<span id="cb45-1078"><a href="#cb45-1078" aria-hidden="true" tabindex="-1"></a>[*Sync Cursor Settings the Dotfiles</span>
-<span id="cb45-1079"><a href="#cb45-1079" aria-hidden="true" tabindex="-1"></a>Way*](https://dev.to/0916dhkim/sync-cursor-settings-the-dotfiles-way-20c9).</span>
-<span id="cb45-1080"><a href="#cb45-1080" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1081"><a href="#cb45-1081" aria-hidden="true" tabindex="-1"></a>For syncing configuration across many users, see also Benjamin’s notes</span>
-<span id="cb45-1082"><a href="#cb45-1082" aria-hidden="true" tabindex="-1"></a>and</span>
-<span id="cb45-1083"><a href="#cb45-1083" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Cursor Config Sync</span><span class="co">](https://open-vsx.org/extension/KushalCodes/cursor-config-sync)</span>.</span>
-<span id="cb45-1084"><a href="#cb45-1084" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1085"><a href="#cb45-1085" aria-hidden="true" tabindex="-1"></a><span class="al">![Map of the main sections hard-coded in `Config/.cursor/.cursorrules` (structure, R, bibliography, writing, LaTeX, slides)](Config/.cursor/cursorrules-map.png)</span>{#fig-cursorrules-map}</span>
-<span id="cb45-1086"><a href="#cb45-1086" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1087"><a href="#cb45-1087" aria-hidden="true" tabindex="-1"></a>The figure summarises what those rules enforce for agents and humans:</span>
-<span id="cb45-1088"><a href="#cb45-1088" aria-hidden="true" tabindex="-1"></a>project layout, R package hygiene, Zotero/bibliography sync, Nature</span>
-<span id="cb45-1089"><a href="#cb45-1089" aria-hidden="true" tabindex="-1"></a>Methods–style writing, LaTeX semantics, and Quarto reveal.js slidecraft.</span>
-<span id="cb45-1090"><a href="#cb45-1090" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb45-1091"><a href="#cb45-1091" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1092"><a href="#cb45-1092" aria-hidden="true" tabindex="-1"></a><span class="fu">## Password manager: Bitwarden {#sec-bitwarden}</span></span>
-<span id="cb45-1093"><a href="#cb45-1093" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1094"><a href="#cb45-1094" aria-hidden="true" tabindex="-1"></a>Bitwarden is the recommended password manager on Linux for most teaching</span>
-<span id="cb45-1095"><a href="#cb45-1095" aria-hidden="true" tabindex="-1"></a>and research setups: it is largely free, works with major browsers</span>
-<span id="cb45-1096"><a href="#cb45-1096" aria-hidden="true" tabindex="-1"></a>(Firefox, Chrome, …), syncs across many devices, and stores more than</span>
-<span id="cb45-1097"><a href="#cb45-1097" aria-hidden="true" tabindex="-1"></a>passwords (passkeys, SSH secrets, payment cards). Lightweight mobile</span>
-<span id="cb45-1098"><a href="#cb45-1098" aria-hidden="true" tabindex="-1"></a>apps exist for iPhone and Android. It also covers Windows and Linux,</span>
-<span id="cb45-1099"><a href="#cb45-1099" aria-hidden="true" tabindex="-1"></a>which goes well beyond the local GNOME **Passwords and Keys** tool.</span>
-<span id="cb45-1100"><a href="#cb45-1100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1101"><a href="#cb45-1101" aria-hidden="true" tabindex="-1"></a>One limitation: it does not automatically flag duplicate entries as</span>
-<span id="cb45-1102"><a href="#cb45-1102" aria-hidden="true" tabindex="-1"></a>thoroughly as some commercial managers.</span>
+<span id="cb45-1063"><a href="#cb45-1063" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>(**Main difference from VS Code**.) Export the extension list</span>
+<span id="cb45-1064"><a href="#cb45-1064" aria-hidden="true" tabindex="-1"></a>    manually:</span>
+<span id="cb45-1065"><a href="#cb45-1065" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1066"><a href="#cb45-1066" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1067"><a href="#cb45-1067" aria-hidden="true" tabindex="-1"></a>    i.  List extensions with</span>
+<span id="cb45-1068"><a href="#cb45-1068" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cursor --list-extensions &gt; extensions.txt`</span>. To also record each</span>
+<span id="cb45-1069"><a href="#cb45-1069" aria-hidden="true" tabindex="-1"></a>        extension’s version, use</span>
+<span id="cb45-1070"><a href="#cb45-1070" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cursor --list-extensions --show-versions &gt; extensions.txt`</span>.</span>
+<span id="cb45-1071"><a href="#cb45-1071" aria-hidden="true" tabindex="-1"></a>    ii. Reinstall them with @lst-cursor-extensions:</span>
+<span id="cb45-1072"><a href="#cb45-1072" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1073"><a href="#cb45-1073" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-cursor-extensions .bash lst-cap="Reinstall Cursor extensions"}</span></span>
+<span id="cb45-1074"><a href="#cb45-1074" aria-hidden="true" tabindex="-1"></a><span class="in">grep -v '^\s*#' ~/.config/Cursor/User/extensions.txt \</span></span>
+<span id="cb45-1075"><a href="#cb45-1075" aria-hidden="true" tabindex="-1"></a><span class="in">  | grep -v '^\s*$' \</span></span>
+<span id="cb45-1076"><a href="#cb45-1076" aria-hidden="true" tabindex="-1"></a><span class="in">  | xargs -I{} cursor --install-extension {}</span></span>
+<span id="cb45-1077"><a href="#cb45-1077" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-1078"><a href="#cb45-1078" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1079"><a href="#cb45-1079" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1080"><a href="#cb45-1080" aria-hidden="true" tabindex="-1"></a>More detail (including symlink automation) is in</span>
+<span id="cb45-1081"><a href="#cb45-1081" aria-hidden="true" tabindex="-1"></a>[*Sync Cursor Settings the Dotfiles</span>
+<span id="cb45-1082"><a href="#cb45-1082" aria-hidden="true" tabindex="-1"></a>Way*](https://dev.to/0916dhkim/sync-cursor-settings-the-dotfiles-way-20c9).</span>
+<span id="cb45-1083"><a href="#cb45-1083" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1084"><a href="#cb45-1084" aria-hidden="true" tabindex="-1"></a>For syncing configuration across many users, see also Benjamin’s notes</span>
+<span id="cb45-1085"><a href="#cb45-1085" aria-hidden="true" tabindex="-1"></a>and</span>
+<span id="cb45-1086"><a href="#cb45-1086" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Cursor Config Sync</span><span class="co">](https://open-vsx.org/extension/KushalCodes/cursor-config-sync)</span>.</span>
+<span id="cb45-1087"><a href="#cb45-1087" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1088"><a href="#cb45-1088" aria-hidden="true" tabindex="-1"></a><span class="al">![Map of the main sections hard-coded in `Config/.cursor/.cursorrules` (structure, R, bibliography, writing, LaTeX, slides)](Config/.cursor/cursorrules-map.png)</span>{#fig-cursorrules-map}</span>
+<span id="cb45-1089"><a href="#cb45-1089" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1090"><a href="#cb45-1090" aria-hidden="true" tabindex="-1"></a>The figure summarises what those rules enforce for agents and humans:</span>
+<span id="cb45-1091"><a href="#cb45-1091" aria-hidden="true" tabindex="-1"></a>project layout, R package hygiene, Zotero/bibliography sync, Nature</span>
+<span id="cb45-1092"><a href="#cb45-1092" aria-hidden="true" tabindex="-1"></a>Methods–style writing, LaTeX semantics, and Quarto reveal.js slidecraft.</span>
+<span id="cb45-1093"><a href="#cb45-1093" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-1094"><a href="#cb45-1094" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1095"><a href="#cb45-1095" aria-hidden="true" tabindex="-1"></a><span class="fu">## Password manager: Bitwarden {#sec-bitwarden}</span></span>
+<span id="cb45-1096"><a href="#cb45-1096" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1097"><a href="#cb45-1097" aria-hidden="true" tabindex="-1"></a>Bitwarden is the recommended password manager on Linux for most teaching</span>
+<span id="cb45-1098"><a href="#cb45-1098" aria-hidden="true" tabindex="-1"></a>and research setups: it is largely free, works with major browsers</span>
+<span id="cb45-1099"><a href="#cb45-1099" aria-hidden="true" tabindex="-1"></a>(Firefox, Chrome, …), syncs across many devices, and stores more than</span>
+<span id="cb45-1100"><a href="#cb45-1100" aria-hidden="true" tabindex="-1"></a>passwords (passkeys, SSH secrets, payment cards). Lightweight mobile</span>
+<span id="cb45-1101"><a href="#cb45-1101" aria-hidden="true" tabindex="-1"></a>apps exist for iPhone and Android. It also covers Windows and Linux,</span>
+<span id="cb45-1102"><a href="#cb45-1102" aria-hidden="true" tabindex="-1"></a>which goes well beyond the local GNOME **Passwords and Keys** tool.</span>
 <span id="cb45-1103"><a href="#cb45-1103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1104"><a href="#cb45-1104" aria-hidden="true" tabindex="-1"></a>Follow the steps in @lst-bitwarden-install<span class="ot">[^soft-10]</span>.</span>
-<span id="cb45-1105"><a href="#cb45-1105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1106"><a href="#cb45-1106" aria-hidden="true" tabindex="-1"></a><span class="ot">[^soft-10]: </span>Contrary to the preference for <span class="in">`apt`</span> in</span>
-<span id="cb45-1107"><a href="#cb45-1107" aria-hidden="true" tabindex="-1"></a>    @nte-software-installation, only Flatpak and Snap installs are</span>
-<span id="cb45-1108"><a href="#cb45-1108" aria-hidden="true" tabindex="-1"></a>    practical for Bitwarden on Ubuntu — so you do not get the same</span>
-<span id="cb45-1109"><a href="#cb45-1109" aria-hidden="true" tabindex="-1"></a>    native <span class="in">`apt`</span> update story.</span>
-<span id="cb45-1110"><a href="#cb45-1110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1111"><a href="#cb45-1111" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-bitwarden-install .bash lst-cap="Install Bitwarden via Flatpak"}</span></span>
-<span id="cb45-1112"><a href="#cb45-1112" aria-hidden="true" tabindex="-1"></a><span class="in">## Install Flatpak and the GNOME Flatpak plugin</span></span>
-<span id="cb45-1113"><a href="#cb45-1113" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install flatpak</span></span>
-<span id="cb45-1114"><a href="#cb45-1114" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install gnome-software-plugin-flatpak</span></span>
-<span id="cb45-1115"><a href="#cb45-1115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1116"><a href="#cb45-1116" aria-hidden="true" tabindex="-1"></a><span class="in">## Add the Flathub repository</span></span>
-<span id="cb45-1117"><a href="#cb45-1117" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak remote-add --if-not-exists flathub \</span></span>
-<span id="cb45-1118"><a href="#cb45-1118" aria-hidden="true" tabindex="-1"></a><span class="in">  https://dl.flathub.org/repo/flathub.flatpakrepo</span></span>
-<span id="cb45-1119"><a href="#cb45-1119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1120"><a href="#cb45-1120" aria-hidden="true" tabindex="-1"></a><span class="in">## Install and run Bitwarden locally</span></span>
-<span id="cb45-1121"><a href="#cb45-1121" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak install flathub com.bitwarden.desktop</span></span>
-<span id="cb45-1122"><a href="#cb45-1122" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak run com.bitwarden.desktop</span></span>
-<span id="cb45-1123"><a href="#cb45-1123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1124"><a href="#cb45-1124" aria-hidden="true" tabindex="-1"></a><span class="in">## Install the browser add-on (Chrome example), then pin it:</span></span>
-<span id="cb45-1125"><a href="#cb45-1125" aria-hidden="true" tabindex="-1"></a><span class="in">## https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb?hl=en</span></span>
+<span id="cb45-1104"><a href="#cb45-1104" aria-hidden="true" tabindex="-1"></a>One limitation: it does not automatically flag duplicate entries as</span>
+<span id="cb45-1105"><a href="#cb45-1105" aria-hidden="true" tabindex="-1"></a>thoroughly as some commercial managers.</span>
+<span id="cb45-1106"><a href="#cb45-1106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1107"><a href="#cb45-1107" aria-hidden="true" tabindex="-1"></a>Follow the steps in @lst-bitwarden-install<span class="ot">[^soft-10]</span>.</span>
+<span id="cb45-1108"><a href="#cb45-1108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1109"><a href="#cb45-1109" aria-hidden="true" tabindex="-1"></a><span class="ot">[^soft-10]: </span>Contrary to the preference for <span class="in">`apt`</span> in</span>
+<span id="cb45-1110"><a href="#cb45-1110" aria-hidden="true" tabindex="-1"></a>    @nte-software-installation, only Flatpak and Snap installs are</span>
+<span id="cb45-1111"><a href="#cb45-1111" aria-hidden="true" tabindex="-1"></a>    practical for Bitwarden on Ubuntu — so you do not get the same</span>
+<span id="cb45-1112"><a href="#cb45-1112" aria-hidden="true" tabindex="-1"></a>    native <span class="in">`apt`</span> update story.</span>
+<span id="cb45-1113"><a href="#cb45-1113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1114"><a href="#cb45-1114" aria-hidden="true" tabindex="-1"></a><span class="in">```{#lst-bitwarden-install .bash lst-cap="Install Bitwarden via Flatpak"}</span></span>
+<span id="cb45-1115"><a href="#cb45-1115" aria-hidden="true" tabindex="-1"></a><span class="in">## Install Flatpak and the GNOME Flatpak plugin</span></span>
+<span id="cb45-1116"><a href="#cb45-1116" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install flatpak</span></span>
+<span id="cb45-1117"><a href="#cb45-1117" aria-hidden="true" tabindex="-1"></a><span class="in">sudo apt install gnome-software-plugin-flatpak</span></span>
+<span id="cb45-1118"><a href="#cb45-1118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1119"><a href="#cb45-1119" aria-hidden="true" tabindex="-1"></a><span class="in">## Add the Flathub repository</span></span>
+<span id="cb45-1120"><a href="#cb45-1120" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak remote-add --if-not-exists flathub \</span></span>
+<span id="cb45-1121"><a href="#cb45-1121" aria-hidden="true" tabindex="-1"></a><span class="in">  https://dl.flathub.org/repo/flathub.flatpakrepo</span></span>
+<span id="cb45-1122"><a href="#cb45-1122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1123"><a href="#cb45-1123" aria-hidden="true" tabindex="-1"></a><span class="in">## Install and run Bitwarden locally</span></span>
+<span id="cb45-1124"><a href="#cb45-1124" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak install flathub com.bitwarden.desktop</span></span>
+<span id="cb45-1125"><a href="#cb45-1125" aria-hidden="true" tabindex="-1"></a><span class="in">flatpak run com.bitwarden.desktop</span></span>
 <span id="cb45-1126"><a href="#cb45-1126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1127"><a href="#cb45-1127" aria-hidden="true" tabindex="-1"></a><span class="in">## Export, then import your password database from other browsers</span></span>
-<span id="cb45-1128"><a href="#cb45-1128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-1127"><a href="#cb45-1127" aria-hidden="true" tabindex="-1"></a><span class="in">## Install the browser add-on (Chrome example), then pin it:</span></span>
+<span id="cb45-1128"><a href="#cb45-1128" aria-hidden="true" tabindex="-1"></a><span class="in">## https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb?hl=en</span></span>
 <span id="cb45-1129"><a href="#cb45-1129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-1130"><a href="#cb45-1130" aria-hidden="true" tabindex="-1"></a>In the **Auto-fill** settings, leave **Do not auto-fill on page load**</span>
-<span id="cb45-1131"><a href="#cb45-1131" aria-hidden="true" tabindex="-1"></a>unticked, and set **Default URI matching** to **Exact** to reduce</span>
-<span id="cb45-1132"><a href="#cb45-1132" aria-hidden="true" tabindex="-1"></a>ambiguous fills. Counter-intuitively, use the</span>
-<span id="cb45-1133"><a href="#cb45-1133" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Bitwarden Web Vault</span><span class="co">](https://vault.bitwarden.com/)</span> for bulk deletion of</span>
-<span id="cb45-1134"><a href="#cb45-1134" aria-hidden="true" tabindex="-1"></a>entries; that workflow is not fully exposed in the desktop app.</span>
+<span id="cb45-1130"><a href="#cb45-1130" aria-hidden="true" tabindex="-1"></a><span class="in">## Export, then import your password database from other browsers</span></span>
+<span id="cb45-1131"><a href="#cb45-1131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-1132"><a href="#cb45-1132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-1133"><a href="#cb45-1133" aria-hidden="true" tabindex="-1"></a>In the **Auto-fill** settings, leave **Do not auto-fill on page load**</span>
+<span id="cb45-1134"><a href="#cb45-1134" aria-hidden="true" tabindex="-1"></a>unticked, and set **Default URI matching** to **Exact** to reduce</span>
+<span id="cb45-1135"><a href="#cb45-1135" aria-hidden="true" tabindex="-1"></a>ambiguous fills. Counter-intuitively, use the</span>
+<span id="cb45-1136"><a href="#cb45-1136" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Bitwarden Web Vault</span><span class="co">](https://vault.bitwarden.com/)</span> for bulk deletion of</span>
+<span id="cb45-1137"><a href="#cb45-1137" aria-hidden="true" tabindex="-1"></a>entries; that workflow is not fully exposed in the desktop app.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
