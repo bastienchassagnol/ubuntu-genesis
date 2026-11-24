@@ -23,14 +23,22 @@ For each candidate, give:
 
 Do not download anything until the user picks one.
 
-## 2. Draw it in R or Python
+## 2. Draw it (code)
 
-If no licensed image exists, draw the figure in R or Python when the picture
-is a plot, diagram, or teaching sketch the code can produce. Follow the
+If no licensed image exists, draw the figure when code can produce it. Follow the
 repository's figure scripts and seeds.
+
+- **R / Python:** plots and teaching sketches (`ggplot2`, matplotlib, etc.).
+  Manuscripts: prefer **`ggplot2::ggsave(..., device = cairo_pdf)`** (or PDF) and
+  `\includegraphics` when the figure does not need to live in TeX.
+- **LaTeX (LuaLaTeX):** **`latex-scientific`** rule — **TikZ** (DAGs, pipelines,
+  boxes), **`pgfplots`** (`compat=1.18`) for plots that must compile in TeX, **`curve2e`**
+  for Bézier outlines (load **`xcolor` before `curve2e`**; flip SVG *y*; trace with
+  pict2e `\curveto`, not `\Curve` on fixed control points). No PSTricks. Very long
+  paths: split paths or include SVG/PDF; `standalone` for transparent exports.
 
 ## 3. Generate it
 
-If neither a licensed image nor an R or Python drawing will do, generate the
+If neither a licensed image nor a code-drawn figure will do, generate the
 image with the session's image generator. Say that the picture is generated,
 and do not present it as a published figure.
